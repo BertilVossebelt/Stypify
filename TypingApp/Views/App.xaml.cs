@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using TypingApp.Models;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
+using TypingApp.Commands;
 
 namespace TypingApp.Views
 {
@@ -21,7 +22,8 @@ namespace TypingApp.Views
     {
         private readonly User _user;
         private readonly NavigationStore _navigationStore;
-        
+        private readonly DatabaseConnection _connection;
+
         public App()
         {
             var characters = new List<Character>()
@@ -34,17 +36,18 @@ namespace TypingApp.Views
             
             _user = new User(1, "email@email.nl", "Voornaam", "Achternaam", characters);
             _navigationStore = new NavigationStore();
+            _connection = new DatabaseConnection();
         }
         
         protected override void OnStartup(StartupEventArgs e)
         {
             // dotnet ef migrations add InitialMigration --project TypingApp
             
-            _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
+            _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore, _connection);
             
             MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel(_navigationStore)
+                DataContext = new MainViewModel(_navigationStore, _connection)
             };
             
             MainWindow.Show();

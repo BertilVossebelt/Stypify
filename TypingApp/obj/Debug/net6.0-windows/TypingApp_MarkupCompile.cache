@@ -4,17 +4,17 @@
 exe
 C#
 .cs
-C:\Users\berti\RiderProjects\TypingApp\TypingApp\obj\Debug\net6.0-windows\
+C:\Users\jared\Source\Repos\TypingApp1\TypingApp\obj\Debug\net6.0-windows\
 TypingApp
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\berti\RiderProjects\TypingApp\TypingApp\Views\App.xaml
+C:\Users\jared\Source\Repos\TypingApp1\TypingApp\Views\App.xaml
 3-681242841
 
-161040597641
-2061308008700
+17-1430730113
+209813865606
 Views\ExerciseView.xaml;Views\MainWindow.xaml;Views\StudentDashboardView.xaml;
 
-True
+False
 
