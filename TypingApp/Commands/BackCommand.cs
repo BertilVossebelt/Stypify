@@ -17,6 +17,14 @@ public class BackCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
+        if (_user.IsTeacher)
+        {
+            _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore);
+        }
+        else
+        {
+            _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
+        }
+        
     }
 }

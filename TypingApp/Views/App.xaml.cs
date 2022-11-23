@@ -32,7 +32,7 @@ namespace TypingApp.Views
                 new(1, 't', 0),
             };
             
-            _user = new User(1, "email@email.nl", "Voornaam", "Achternaam", characters);
+            _user = new User(1, "email@email.nl", "Voornaam", "Achternaam", characters,true);
             _navigationStore = new NavigationStore();
         }
         
@@ -40,8 +40,8 @@ namespace TypingApp.Views
         {
             // dotnet ef migrations add InitialMigration --project TypingApp
             
-            _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
-            
+            _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore);
+
             MainWindow = new MainWindow()
             {
                 DataContext = new MainViewModel(_navigationStore)

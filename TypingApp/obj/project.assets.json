@@ -719,24 +719,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\berti\\.nuget\\packages\\": {}
+    "C:\\Users\\jesse\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\berti\\RiderProjects\\TypingApp\\TypingApp\\TypingApp.csproj",
+      "projectUniqueName": "C:\\Users\\jesse\\Source\\Repos\\TypingApp\\TypingApp\\TypingApp.csproj",
       "projectName": "TypingApp",
-      "projectPath": "C:\\Users\\berti\\RiderProjects\\TypingApp\\TypingApp\\TypingApp.csproj",
-      "packagesPath": "C:\\Users\\berti\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\berti\\RiderProjects\\TypingApp\\TypingApp\\obj\\",
+      "projectPath": "C:\\Users\\jesse\\Source\\Repos\\TypingApp\\TypingApp\\TypingApp.csproj",
+      "packagesPath": "C:\\Users\\jesse\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jesse\\Source\\Repos\\TypingApp\\TypingApp\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\berti\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\jesse\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0-windows"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -776,7 +784,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -788,7 +797,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
