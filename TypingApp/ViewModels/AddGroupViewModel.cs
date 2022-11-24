@@ -16,11 +16,12 @@ public class AddGroupViewModel : ViewModelBase
     private string _groupCodeText { get; set; }
     public string GroupCodeText
     {
-        get => _groupCodeText;
+        get => _group.GroupCode;
         set
         {
             _groupCodeText = _group.GroupCode;
             OnPropertyChanged();
+
         }
     }
 
@@ -40,6 +41,7 @@ public class AddGroupViewModel : ViewModelBase
     public AddGroupViewModel(Group newGroup,NavigationStore navigationStore, User user)
     {
         _group = newGroup;
+
         GroupCodeText = newGroup.GroupCode;
         SaveButton = new SaveGroupCommand(newGroup,navigationStore, user);
         BackButton = new BackCommand(navigationStore, user);

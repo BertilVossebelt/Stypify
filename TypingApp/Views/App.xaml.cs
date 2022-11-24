@@ -39,8 +39,14 @@ namespace TypingApp.Views
         protected override void OnStartup(StartupEventArgs e)
         {
             // dotnet ef migrations add InitialMigration --project TypingApp
-            
-            _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore);
+            if (_user.IsTeacher)
+            {
+                _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore);
+            }
+            else
+            {
+                _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
+            }
 
             MainWindow = new MainWindow()
             {

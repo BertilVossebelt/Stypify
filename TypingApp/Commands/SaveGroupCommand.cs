@@ -45,6 +45,7 @@ public class SaveGroupCommand : CommandBase
                 System.Console.WriteLine(_group.GroupCode);
                 //Save here to database
 
+                //
             };
         }
 

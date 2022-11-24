@@ -1,6 +1,9 @@
-﻿using TypingApp.Models;
+﻿using System.Windows.Controls;
+using System.Windows.Data;
+using TypingApp.Models;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
+using TypingApp.Views;
 
 namespace TypingApp.Commands
 {
