@@ -21,34 +21,34 @@ namespace TypingApp.Views
     {
         private readonly User _user;
         private readonly NavigationStore _navigationStore;
-        
+
         public App()
         {
             var characters = new List<Character>()
             {
-                new(1, 'e', 0),
-                new(1, 'n', 0),
-                new(1, 'a', 0),
-                new(1, 't', 0),
+                new('e'),
+                new('n'),
+                new('a'),
+                new('t'),
             };
-            
+
             _user = new User(1, "email@email.nl", "Voornaam", "Achternaam", characters);
             _navigationStore = new NavigationStore();
         }
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
             // dotnet ef migrations add InitialMigration --project TypingApp
-            
+
             _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
-            
-            MainWindow = new MainWindow()
+
+            MainWindow = new MainWindow(_navigationStore)
             {
                 DataContext = new MainViewModel(_navigationStore)
             };
-            
+
             MainWindow.Show();
-            
+
             base.OnStartup(e);
         }
     }
