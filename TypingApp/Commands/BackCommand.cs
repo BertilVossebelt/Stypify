@@ -9,14 +9,16 @@ public class BackCommand : CommandBase
 {
     private readonly NavigationStore _navigationStore;
     private readonly User _user;
-    public BackCommand(NavigationStore navigationStore, User user)
+    private readonly DatabaseConnection _connection;
+    public BackCommand(NavigationStore navigationStore, User user, DatabaseConnection connection)
     {
         _navigationStore = navigationStore;
         _user = user;
+        _connection = connection;
     }
 
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
+        _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore, _connection);
     }
 }
