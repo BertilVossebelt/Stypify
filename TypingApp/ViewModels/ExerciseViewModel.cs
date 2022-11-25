@@ -19,9 +19,9 @@ public class ExerciseViewModel : ViewModelBase
     }
     public ICommand BackButton { get; }
 
-    public ExerciseViewModel(string text, NavigationStore navigationStore, User user)
+    public ExerciseViewModel(string text, NavigationStore navigationStore, User user , DatabaseConnection connection)
     {
         Text = text;
-        BackButton = new BackCommand(navigationStore, user);
+        BackButton = new BackCommand(navigationStore, user, connection);
     }
 }

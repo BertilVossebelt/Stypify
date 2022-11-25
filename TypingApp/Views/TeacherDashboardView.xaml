@@ -9,18 +9,29 @@
     <Grid>
         <Button Command="{Binding AddGroupButton}" Width="250" Height="30" >Groep toevoegen</Button>
 
-        <StackPanel Margin="0,370,0,0" HorizontalAlignment="Center" Width="1000" Orientation="Horizontal">
-            <Rectangle Height="330" Stroke="Black" Width="200"/>
-            <Rectangle Height="330" Stroke="Black" Width="200"/>
-            <Rectangle Height="330" Stroke="Black" Width="200"/>
-            <Rectangle Height="330" Stroke="Black" Width="200"/>
-            <Rectangle Height="330" Stroke="Black" Width="200"/>
-            
-            
+        <StackPanel Margin="0,370,0,0" HorizontalAlignment="Center" Width="200" Orientation="Horizontal">
 
-            
+            <Border BorderBrush="#d390d3" CornerRadius="16, 16, 16 ,16" BorderThickness="15" Width="200" Height="200" Visibility="{Binding GroupBoxVisibility}">
+                <StackPanel Background="#fff">
+                    <TextBlock Text="{Binding GroupNumber}" Width="165" />
+                    
+                    <TextBlock
+                            HorizontalAlignment="Center" 
+                            FontSize="18" 
+                            TextWrapping="Wrap"
+                            Text="{Binding GroupNameText2}"/>
+                    <TextBlock
+                            HorizontalAlignment="Center" 
+                            FontSize="18" 
+                            TextWrapping="Wrap"
+                            Text="{Binding GroupCodeText2}"/>
+                    <Button Content="VolgendeGroup" Command="{Binding NextGroupButton}"/>
+                    <Button Content="Nieuwe Code" Command="{Binding NewGroupCodeButton}" />
+                </StackPanel>
+            </Border>
+
         </StackPanel>
-        
+
     </Grid>
 
 </UserControl>

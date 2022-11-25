@@ -8,16 +8,18 @@ namespace TypingApp.Commands
     {
         private readonly User _user;
         private readonly NavigationStore _navigationStore;
-        public AddGroupCommand(User user, NavigationStore navigationStore)
+        private readonly DatabaseConnection _connection;
+        public AddGroupCommand(User user, NavigationStore navigationStore, DatabaseConnection connection)
         {
             _user = user;
             _navigationStore = navigationStore;
+            _connection = connection;
         }
 
         public override void Execute(object? parameter)
         {
-            Group newGroup = new Group();
-            _navigationStore.CurrentViewModel = new AddGroupViewModel(newGroup ,_navigationStore, _user);
+            Group newGroup = new Group(_connection);
+            _navigationStore.CurrentViewModel = new AddGroupViewModel(newGroup ,_navigationStore, _user, _connection);
         }
     }
 

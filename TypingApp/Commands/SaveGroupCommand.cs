@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls.Primitives;
 using TypingApp.Models;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TypingApp.Commands;
 
@@ -10,11 +13,14 @@ public class SaveGroupCommand : CommandBase
     private readonly User _user;
     private readonly NavigationStore _navigationStore;
     private Group _group;
-    public SaveGroupCommand(Group newGroup, NavigationStore navigationStore, User user)
+    private DatabaseConnection _connection;
+    
+    public SaveGroupCommand(Group newGroup, NavigationStore navigationStore, User user,DatabaseConnection connection)
     {
         _group = newGroup;
         _user = user;
         _navigationStore = navigationStore;
+        _connection = connection;
     }
 
     public override void Execute(object? parameter)
@@ -40,14 +46,16 @@ public class SaveGroupCommand : CommandBase
             result2 = MessageBox.Show(messageBoxText2, caption2, button2, icon2);
             if (result2 == MessageBoxResult.Yes)
             {
-                _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore);
+                //Save here to database
+                String QueryString = $"INSERT INTO Groups (teacher_id,name,code) VALUES ({_user.Id},'{_group.GroupName}','{_group.GroupCode}')";
+                _connection.ExecuteSqlStatement2(QueryString);
+                //
+                _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore,_connection);
+
                 System.Console.WriteLine(_group.GroupName);
                 System.Console.WriteLine(_group.GroupCode);
-                //Save here to database
-
             };
-        }
 
-        
+        }
     }
 }

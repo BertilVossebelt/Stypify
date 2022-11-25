@@ -43,3 +43,11 @@ C:\Users\jesse\Source\Repos\TypingApp\TypingApp\obj\Debug\net6.0-windows\refint\
 C:\Users\jesse\Source\Repos\TypingApp\TypingApp\obj\Debug\net6.0-windows\TypingApp.pdb
 C:\Users\jesse\Source\Repos\TypingApp\TypingApp\obj\Debug\net6.0-windows\TypingApp.genruntimeconfig.cache
 C:\Users\jesse\Source\Repos\TypingApp\TypingApp\obj\Debug\net6.0-windows\ref\TypingApp.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\Renci.SshNet.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\SshNet.Security.Cryptography.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\System.Data.SqlClient.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\win-arm64\native\sni.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\win-x64\native\sni.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\win-x86\native\sni.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll

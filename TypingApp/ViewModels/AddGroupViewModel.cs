@@ -16,12 +16,13 @@ public class AddGroupViewModel : ViewModelBase
     private string _groupCodeText { get; set; }
     public string GroupCodeText
     {
-        get => _groupCodeText;
+        /*get => _group.GroupCode;
         set
         {
-            _groupCodeText = _group.GroupCode;
-            OnPropertyChanged();
-        }
+
+        }*/
+        get { return _groupCodeText; }
+        set { _groupCodeText = value; OnPropertyChanged(); }
     }
 
     private string _groupNameText { get; set; }
@@ -36,14 +37,14 @@ public class AddGroupViewModel : ViewModelBase
         }
     }
 
-
-    public AddGroupViewModel(Group newGroup,NavigationStore navigationStore, User user)
+    public AddGroupViewModel(Group newGroup,NavigationStore navigationStore, User user,DatabaseConnection connection)
     {
         _group = newGroup;
+
         GroupCodeText = newGroup.GroupCode;
-        SaveButton = new SaveGroupCommand(newGroup,navigationStore, user);
-        BackButton = new BackCommand(navigationStore, user);
-        CancelButton = new CancelCommand(navigationStore, user);
-        NewGroupCodeButton = new NewGroupCodeCommand(newGroup, navigationStore, user);
+        SaveButton = new SaveGroupCommand(newGroup,navigationStore, user, connection);
+        BackButton = new BackCommand(navigationStore, user, connection);
+        CancelButton = new CancelCommand(navigationStore, user, connection);
+        NewGroupCodeButton = new NewGroupCodeCommand(newGroup, navigationStore, user ,connection,this);
     }
 }

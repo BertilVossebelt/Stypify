@@ -10,10 +10,12 @@ public class CancelCommand : CommandBase
 {
     private readonly NavigationStore _navigationStore;
     private readonly User _user;
-    public CancelCommand(NavigationStore navigationStore, User user)
+    private readonly DatabaseConnection _connection;
+    public CancelCommand(NavigationStore navigationStore, User user, DatabaseConnection connection)
     {
         _navigationStore = navigationStore;
         _user = user;
+        _connection = connection;
     }
 
     public override void Execute(object? parameter)
@@ -27,7 +29,7 @@ public class CancelCommand : CommandBase
         result = MessageBox.Show(messageBoxText, caption, button, icon);
         if (result == MessageBoxResult.Yes)
         {
-            _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore);
+            _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore,_connection);
         }
     }
 }

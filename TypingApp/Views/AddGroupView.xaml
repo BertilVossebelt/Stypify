@@ -54,7 +54,7 @@
         </TextBlock>
     -->
 
-        <TextBlock x:Name="GroupCodeText" Text="{Binding GroupCodeText}" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Center" Margin="150,0,0,150"/>
+        <TextBlock x:Name="GroupCodeText" Text="{Binding GroupCodeText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Center" Margin="150,0,0,150"/>
         <Button x:Name="NewGroupCode_Button" Command="{Binding NewGroupCodeButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="9" Width="17" Margin="250,0,0,150"/>
 
     </Grid>

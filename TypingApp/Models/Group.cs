@@ -1,4 +1,5 @@
 ﻿using System;
+using TypingApp.Commands;
 
 namespace TypingApp.Models
 {
@@ -6,6 +7,8 @@ namespace TypingApp.Models
     {
         private string _groupCode;
         private string _groupName;
+        private string _groupID;
+        private DatabaseConnection _connection;
 
         public string GroupName
         {
@@ -18,14 +21,18 @@ namespace TypingApp.Models
             set { _groupCode = value; }
         }
 
-        public Group()
+        public string GroupID { get { return _groupID; } set { _groupID = value; } }
+
+        public Group(DatabaseConnection connection)
         {
+            _connection = connection;
             GroupCodeGeneratorMethod();
         }
 
         public void GroupCodeGeneratorMethod()
         {
             // loop tot de code heeft gecheckt of dezelfde code niet al voorkomt in database
+            //Dit kan misschien nog wat anders
             while (true)
             {
                 string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -48,9 +55,21 @@ namespace TypingApp.Models
 
         public bool CheckCodeInDataBase(string groupCode)
         {
-            //Hier komt de check of de code al is gebruikt
+            //check of de code al is gebruikt
+            string QueryString = $"SELECT id FROM Groups WHERE code='{groupCode}';";
 
-            return true;
+            var reader = _connection.ExecuteSqlStatement(QueryString);
+            if(reader.HasRows == false)
+            {
+                reader.Close();
+                return true;
+            }
+            return false;
+        }
+
+        public void newGroupCodeUpdater()
+        {
+
         }
 
 

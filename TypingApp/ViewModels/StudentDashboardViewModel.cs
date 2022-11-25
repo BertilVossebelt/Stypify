@@ -9,8 +9,8 @@ public class StudentDashboardViewModel : ViewModelBase
 {
     public ICommand StartPracticeButton { get; }
     
-    public StudentDashboardViewModel(User user, NavigationStore navigationStore)
+    public StudentDashboardViewModel(User user, NavigationStore navigationStore,DatabaseConnection connection)
     { 
-        StartPracticeButton = new StartPracticeCommand(user, navigationStore);
+        StartPracticeButton = new StartPracticeCommand(user, navigationStore, connection);
     }
 }
