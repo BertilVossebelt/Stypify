@@ -43,7 +43,7 @@ namespace TypingApp.Views
         {
             // dotnet ef migrations add InitialMigration --project TypingApp
 
-            _navigationStore.CurrentViewModel = new GroupViewModel();
+            _navigationStore.CurrentViewModel = new GroupViewModel(_connection);
             
             MainWindow = new MainWindow()
             {
