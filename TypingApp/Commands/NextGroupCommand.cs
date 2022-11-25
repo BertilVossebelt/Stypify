@@ -33,10 +33,11 @@ public class NextGroupCommand : CommandBase
         }
         
 
-        System.Console.WriteLine(_teacherDashboardView.GroupNumber + "ID"+_teacherDashboardView.GroupID);
+        
         _teacherDashboardView.GroupID = _teacherDashboardView.getGroupIDFromDatabase(_teacherDashboardView.GroupNumber);
         _teacherDashboardView.GroupNameText2 = _teacherDashboardView.getGroupNameFromDatabase(_teacherDashboardView.GroupNumber);
         _teacherDashboardView.GroupCodeText2 = _teacherDashboardView.getGroupCodeFromDatabase(_teacherDashboardView.GroupNumber);
+        System.Console.WriteLine(_teacherDashboardView.GroupNumber + "ID" + _teacherDashboardView.GroupID);
 
     }
 }

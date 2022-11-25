@@ -31,12 +31,12 @@ namespace TypingApp.Commands
 
 
             System.Console.WriteLine(_group.GroupCode);
-            string QueryString3 = $"SELECT teacher_id,name,code FROM Groups WHERE teacher_id='{_user.Id}'";
+            string QueryString3 = $"SELECT id,teacher_id,name,code FROM Groups WHERE teacher_id='{_user.Id}'";
 
             var reader = _connection.ExecuteSqlStatement(QueryString3);
             while (reader.Read())
             {
-                Console.WriteLine($"{reader["teacher_id"]} {reader["name"]} {reader["code"]}");
+                Console.WriteLine($"{reader["id"]} {reader["teacher_id"]} {reader["name"]} {reader["code"]}");
             }
             reader.Close();
         }

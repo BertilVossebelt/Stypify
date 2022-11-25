@@ -30,7 +30,6 @@ namespace TypingApp.Commands
             _group.GroupCodeGeneratorMethod();
 
             System.Console.WriteLine("Nieuwe code: "+ _group.GroupCode);
-            Console.WriteLine("GroupID: " + _group.GroupID);
             string QueryString3 = $"UPDATE Groups SET code='{_group.GroupCode}'WHERE id='{_group.GroupID}'";
             _connection.ExecuteSqlStatement2(QueryString3);
 
