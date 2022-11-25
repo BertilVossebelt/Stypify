@@ -40,7 +40,7 @@ namespace TypingApp.Views
         {
             // dotnet ef migrations add InitialMigration --project TypingApp
 
-            _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
+            _navigationStore.CurrentViewModel = new GroupViewModel();
             
             MainWindow = new MainWindow()
             {
