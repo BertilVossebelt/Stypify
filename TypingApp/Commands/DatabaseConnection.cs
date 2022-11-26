@@ -35,11 +35,17 @@ namespace TypingApp.Commands
                 Console.WriteLine(e.ToString());
             }
         }
+
         public SqlDataReader ExecuteSqlStatement(String sqlQuery)
         {
             SqlCommand command = new SqlCommand(sqlQuery, connection);
             SqlDataReader reader = command.ExecuteReader();
             return reader;
+        }
+
+        public SqlConnection GetConnection()
+        {
+            return connection;
         }
     }
 }
