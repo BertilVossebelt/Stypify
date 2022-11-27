@@ -34,12 +34,13 @@ namespace TypingApp.Commands
                 AuthenticateUser(new NetworkCredential(_loginViewModel.Email, _loginViewModel.Password));
             if (isValidUser)
             {
+                MessageBox.Show("Succesvol ingelogd.", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
                 _navigationStore.CurrentViewModel = 
                     new StudentDashboardViewModel(_user, _navigationStore, _connection);
             }
             else
             {
-                MessageBox.Show("Invalid username or password", "Error", MessageBoxButton.OK);
+                MessageBox.Show("Email of wachtwoord incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -49,14 +50,11 @@ namespace TypingApp.Commands
 
             SqlCommand command = new SqlCommand();
             command.Connection = _connection.GetConnection();
-            //using (var command = new SqlCommand())
-            //using (command.Connection = getConnection())
-            {
-                command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
-                command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
-                command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
-                validUser = command.ExecuteScalar() == null ? false : true;
-            }
+            
+            command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
+            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
+            command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
+            validUser = command.ExecuteScalar() == null ? false : true;
 
             return validUser;
         }

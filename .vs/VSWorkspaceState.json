@@ -3,8 +3,9 @@
     "",
     "\\TypingApp",
     "\\TypingApp\\Commands",
-    "\\TypingApp\\ViewModels"
+    "\\TypingApp\\ViewModels",
+    "\\TypingApp\\Views"
   ],
-  "SelectedNode": "\\TypingApp\\ViewModels\\LoginViewModel.cs",
+  "SelectedNode": "\\TypingApp\\Views\\RegisterView.xaml",
   "PreviewInSolutionExplorer": false
 }

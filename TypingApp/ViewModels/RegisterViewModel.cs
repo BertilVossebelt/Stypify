@@ -12,13 +12,99 @@ namespace TypingApp.ViewModels
 {
     public class RegisterViewModel : ViewModelBase
     {
+        private string _email;
+        private string _firstName;
+        private string? _preposition;
+        private string _lastName;
+        private SecureString _password;
+        private SecureString _passwordConfirm;
+
+        public string Email
+        {
+            get
+            {
+                return _email;
+            }
+            set
+            {
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+        }
+
+        public string FirstName
+        {
+            get
+            {
+                return _firstName;
+            }
+            set
+            {
+                _firstName = value;
+                OnPropertyChanged(nameof(FirstName));
+            }
+        }
+
+        public string? Preposition
+        {
+            get
+            {
+                return _preposition;
+            }
+            set
+            {
+                _preposition = value;
+                OnPropertyChanged(nameof(Preposition));
+            }
+        }
+
+        public string LastName
+        {
+            get
+            {
+                return _lastName;
+            }
+            set
+            {
+                _lastName = value;
+                OnPropertyChanged(nameof(LastName));
+            }
+        }
+
+        public SecureString Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        public SecureString PasswordConfirm
+        {
+            get
+            {
+                return _passwordConfirm;
+            }
+            set
+            {
+                _passwordConfirm = value;
+                OnPropertyChanged(nameof(PasswordConfirm));
+            }
+        }
+
         public ICommand GoToLoginButton { get; }
-        public ICommand RegisterCommand { get; }
+        public ICommand RegisterButton { get; }
 
         public RegisterViewModel(NavigationStore navigationStore, DatabaseConnection connection) 
         {
                 _connection = connection;
                 GoToLoginButton = new GoToLoginCommand(navigationStore, _connection);
+                RegisterButton = new RegisterCommand(this, navigationStore, _connection);
         }
     }
 }
