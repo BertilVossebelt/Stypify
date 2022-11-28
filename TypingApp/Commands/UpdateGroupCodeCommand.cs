@@ -33,7 +33,7 @@ namespace TypingApp.Commands
             string QueryString3 = $"UPDATE Groups SET code='{_group.GroupCode}'WHERE id='{_group.GroupID}'";
             _connection.ExecuteSqlStatement2(QueryString3);
 
-            _teacherDashboardViewModel.getGroupsFromDatabase(false);
+            _teacherDashboardViewModel.getGroupsFromDatabase();
             _teacherDashboardViewModel.GroupCodeText2 = _teacherDashboardViewModel.getGroupCodeFromDatabase(_teacherDashboardViewModel.GroupNumber);
         }
     }

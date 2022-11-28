@@ -29,6 +29,10 @@
             <DataTemplate DataType="{x:Type viewModels:AddGroupViewModel}">
                 <views:AddGroupView />
             </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModels:LinkToGroupViewModel}">
+                <views:LinkToGroupView />
+            </DataTemplate>
 
 
 

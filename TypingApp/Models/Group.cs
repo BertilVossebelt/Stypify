@@ -26,7 +26,7 @@ namespace TypingApp.Models
         public Group(DatabaseConnection connection)
         {
             _connection = connection;
-            GroupCodeGeneratorMethod();
+            //GroupCodeGeneratorMethod();
         }
 
         public void GroupCodeGeneratorMethod()
@@ -66,13 +66,5 @@ namespace TypingApp.Models
             }
             return false;
         }
-
-        public void newGroupCodeUpdater()
-        {
-
-        }
-
-
-
     }
 }

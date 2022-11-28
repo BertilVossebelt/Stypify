@@ -16,11 +16,7 @@ public class AddGroupViewModel : ViewModelBase
     private string _groupCodeText { get; set; }
     public string GroupCodeText
     {
-        /*get => _group.GroupCode;
-        set
-        {
 
-        }*/
         get { return _groupCodeText; }
         set { _groupCodeText = value; OnPropertyChanged(); }
     }

@@ -51,3 +51,5 @@ C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtime
 C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\win-x86\native\sni.dll
 C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\jesse\source\repos\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\jesse\source\repos\TypingApp\TypingApp\obj\Debug\net6.0-windows\Views\LinkToGroupView.g.cs
+C:\Users\jesse\source\repos\TypingApp\TypingApp\obj\Debug\net6.0-windows\Views\LinkToGroupView.baml

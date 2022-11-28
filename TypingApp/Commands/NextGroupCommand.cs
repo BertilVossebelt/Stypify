@@ -31,9 +31,9 @@ public class NextGroupCommand : CommandBase
             _teacherDashboardView.GroupNumber++;
            
         }
-        
 
-        
+
+
         _teacherDashboardView.GroupID = _teacherDashboardView.getGroupIDFromDatabase(_teacherDashboardView.GroupNumber);
         _teacherDashboardView.GroupNameText2 = _teacherDashboardView.getGroupNameFromDatabase(_teacherDashboardView.GroupNumber);
         _teacherDashboardView.GroupCodeText2 = _teacherDashboardView.getGroupCodeFromDatabase(_teacherDashboardView.GroupNumber);

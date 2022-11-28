@@ -19,6 +19,8 @@ namespace TypingApp.Commands
         public override void Execute(object? parameter)
         {
             Group newGroup = new Group(_connection);
+            newGroup.GroupCodeGeneratorMethod();
+
             _navigationStore.CurrentViewModel = new AddGroupViewModel(newGroup ,_navigationStore, _user, _connection);
         }
     }
