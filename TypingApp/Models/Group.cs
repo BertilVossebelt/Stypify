@@ -1,28 +1,42 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TypingApp.Commands;
 
 namespace TypingApp.Models
 {
     public class Group
     {
-        private string _groupCode;
-        private string _groupName;
-        private string _groupID;
-        private DatabaseConnection _connection;
+        private string? _groupCode;
+        private string? Name;
+        private string? _groupID;
+        private DatabaseConnection? _connection;
 
         public string GroupName
         {
-            get { return _groupName; }
-            set { _groupName = value; }
+            get { return Name; }
+            set { Name = value; }
         }
         public string GroupCode
         {
             get { return _groupCode; }
             set { _groupCode = value; }
         }
+        
+        public int? AmountOfStudents { get; set; }
+        public int? Id { get; set; }
 
         public string GroupID { get { return _groupID; } set { _groupID = value; } }
 
+        public Group(string _groupName, int amount, int id)
+        {
+            GroupName = _groupName;
+            AmountOfStudents = amount;
+            Id = id;
+        }
+        
         public Group(DatabaseConnection connection)
         {
             _connection = connection;

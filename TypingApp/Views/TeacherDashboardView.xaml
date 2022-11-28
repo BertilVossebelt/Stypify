@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1200">
     <Grid>
-        <Button Command="{Binding AddGroupButton}" Width="250" Height="30" >Groep toevoegen</Button>
+        <Button Command="{Binding AddGroupButton}" Width="250" Height="30">Groep toevoegen</Button>
 
         <StackPanel Margin="0,370,0,0" HorizontalAlignment="Center" Width="200" Orientation="Horizontal">
 

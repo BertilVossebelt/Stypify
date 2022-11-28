@@ -47,6 +47,7 @@ namespace TypingApp.Commands
                 {
                     var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
                     navigateCommand.Execute(this);
+                    
                 }
 
                 if (isAdminAccount())

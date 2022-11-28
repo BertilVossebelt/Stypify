@@ -52,26 +52,25 @@ public class TeacherDashboardViewModel : ViewModelBase
     //bool startup is voor als je de viewmodel in komt, als die false is werkt de functie als een refresh
     public void GetGroupsFromDatabase()
     {
-        // var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_user.Id}'";
-        var queryString3 = "SELECT * FROM Users'";
+        var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_user.Id}'";
         var reader = _connection.ExecuteSqlStatement(queryString3);
         
-        // if (!reader.IsDBNull(0) && reader.HasRows)
-        // {
-        //     groupDataArray.Clear();
-        //     while (reader.Read())
-        //     {
-        //         string[] groupNameCodeArray = { $"{reader["id"]}", $"{reader["name"]}", $"{reader["code"]}" };
-        //         groupDataArray.Add(groupNameCodeArray);
-        //     }
-        //     reader.Close();
-        //     
-        //     GroupNameText2 = GetGroupNameFromDatabase(GroupNumber);
-        //     GroupCodeText2 = GetGroupCodeFromDatabase(GroupNumber);
-        //     GroupID = GetGroupIdFromDatabase(GroupNumber);
-        //
-        //     _groupBoxVisibility = Visibility.Visible;
-        // }
+        if (reader.HasRows)
+        {
+            groupDataArray.Clear();
+            while (reader.Read())
+            {
+                string[] groupNameCodeArray = { $"{reader["id"]}", $"{reader["name"]}", $"{reader["code"]}" };
+                groupDataArray.Add(groupNameCodeArray);
+            }
+            reader.Close();
+            
+            GroupNameText2 = GetGroupNameFromDatabase(GroupNumber);
+            GroupCodeText2 = GetGroupCodeFromDatabase(GroupNumber);
+            GroupID = GetGroupIdFromDatabase(GroupNumber);
+        
+            _groupBoxVisibility = Visibility.Visible;
+        }
     }
 
     public string GetGroupIdFromDatabase(int groupNumber)

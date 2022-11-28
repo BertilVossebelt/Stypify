@@ -24,6 +24,7 @@ namespace TypingApp.Commands
             _connection = connection;
             _studentDashboardNavigationService = studentDashboardNavigationService;
         }
+        
         public override void Execute(object? parameter)
         {
             string messageBoxText2 = "Weet je zeker dat je  aan deze groep wilt koppelen";

@@ -2,6 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="Views\GroupView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LinkToGroupView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -19,6 +22,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\GroupView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\LinkToGroupView.xaml">
       <SubType>Designer</SubType>
     </Page>

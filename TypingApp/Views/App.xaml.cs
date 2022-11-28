@@ -45,6 +45,8 @@ namespace TypingApp.Views
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // _navigationStore.CurrentViewModel = new GroupViewModel(_connection);
+            
             _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
             MainWindow = new MainWindow(_navigationStore, _exerciseStore, _user)

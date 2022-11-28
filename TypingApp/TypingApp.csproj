@@ -11,6 +11,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Views\Nos.png" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ApplicationDefinition Include="Views\App.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
@@ -29,7 +33,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Resource Include="Views\Nos.png" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Folder Include="Services\" />
     </ItemGroup>
-    
+
 </Project>
