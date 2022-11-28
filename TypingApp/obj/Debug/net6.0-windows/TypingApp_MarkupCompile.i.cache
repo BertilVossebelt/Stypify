@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\niels\OneDrive\Documents\Windesheim\Jaar2\KBS\TypingAppCORRECTEVERSIE\TypingApp\TypingApp\Views\App.xaml
-6-226860644
+71323233080
 
-281911875040
+31-255249133
 209-647469513
-Stores\BindablePasswordBox.xaml;Views\ExerciseView.xaml;Views\LoginView.xaml;Views\MainWindow.xaml;Views\RegisterView.xaml;Views\StudentDashboardView.xaml;
+Stores\BindablePasswordBox.xaml;Views\AdminDashboardView.xaml;Views\ExerciseView.xaml;Views\LoginView.xaml;Views\MainWindow.xaml;Views\RegisterView.xaml;Views\StudentDashboardView.xaml;
 
 True
 

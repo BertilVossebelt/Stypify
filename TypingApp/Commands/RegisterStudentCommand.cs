@@ -16,13 +16,13 @@ using System.Runtime.Intrinsics.X86;
 
 namespace TypingApp.Commands
 {
-    public class RegisterCommand : CommandBase
+    public class RegisterStudentCommand : CommandBase
     {
         private readonly NavigationStore _navigationStore;
         private readonly DatabaseConnection _connection;
         private readonly RegisterViewModel _registerViewModel;
 
-        public RegisterCommand(RegisterViewModel registerViewModel, NavigationStore navigationStore,
+        public RegisterStudentCommand(RegisterViewModel registerViewModel, NavigationStore navigationStore,
             DatabaseConnection connection)
         {
             _registerViewModel = registerViewModel;

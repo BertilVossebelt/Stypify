@@ -30,6 +30,11 @@
             <DataTemplate DataType="{x:Type viewModels:ExerciseViewModel}">
                 <views:ExerciseView />
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:AdminDashboardViewModel}">
+                <views:AdminDashboardView />
+            </DataTemplate>
+
         </Grid.Resources>
         
         <ContentControl Content="{Binding CurrentViewModel}" />

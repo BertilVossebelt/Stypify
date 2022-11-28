@@ -53,3 +53,5 @@ C:\Users\niels\OneDrive\Documents\Windesheim\Jaar2\KBS\TypingAppCORRECTEVERSIE\T
 C:\Users\niels\OneDrive\Documents\Windesheim\Jaar2\KBS\TypingAppCORRECTEVERSIE\TypingApp\TypingApp\bin\Debug\net6.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\niels\OneDrive\Documents\Windesheim\Jaar2\KBS\TypingAppCORRECTEVERSIE\TypingApp\TypingApp\obj\Debug\net6.0-windows\Stores\BindablePasswordBox.g.cs
 C:\Users\niels\OneDrive\Documents\Windesheim\Jaar2\KBS\TypingAppCORRECTEVERSIE\TypingApp\TypingApp\obj\Debug\net6.0-windows\Stores\BindablePasswordBox.baml
+C:\Users\niels\OneDrive\Documents\Windesheim\Jaar2\KBS\TypingAppCORRECTEVERSIE\TypingApp\TypingApp\obj\Debug\net6.0-windows\Views\AdminDashboardView.g.cs
+C:\Users\niels\OneDrive\Documents\Windesheim\Jaar2\KBS\TypingAppCORRECTEVERSIE\TypingApp\TypingApp\obj\Debug\net6.0-windows\Views\AdminDashboardView.baml

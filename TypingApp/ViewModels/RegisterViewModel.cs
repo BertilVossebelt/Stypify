@@ -104,7 +104,7 @@ namespace TypingApp.ViewModels
         {
                 _connection = connection;
                 GoToLoginButton = new GoToLoginCommand(navigationStore, _connection);
-                RegisterButton = new RegisterCommand(this, navigationStore, _connection);
+                RegisterButton = new RegisterStudentCommand(this, navigationStore, _connection);
         }
     }
 }
