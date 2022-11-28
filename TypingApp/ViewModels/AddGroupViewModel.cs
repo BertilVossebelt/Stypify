@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
@@ -33,14 +34,19 @@ public class AddGroupViewModel : ViewModelBase
         }
     }
 
-    public AddGroupViewModel(Group newGroup,NavigationStore navigationStore, User user,DatabaseConnection connection)
+    public AddGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseConnection connection)
     {
-        _group = newGroup;
+        _group = new Group(connection);
+        _group.GroupCodeGeneratorMethod();
 
-        GroupCodeText = newGroup.GroupCode;
-        SaveButton = new SaveGroupCommand(newGroup,navigationStore, user, connection);
-        BackButton = new BackCommand(navigationStore, user, connection);
-        CancelButton = new CancelCommand(navigationStore, user, connection);
-        NewGroupCodeButton = new NewGroupCodeCommand(newGroup, navigationStore, user ,connection,this);
+        GroupCodeText = _group.GroupCode;
+        SaveButton = new SaveGroupCommand(_group, user, connection, teacherDashboardNavigationService);
+        
+        var teacher = new NavigateCommand(teacherDashboardNavigationService);
+        var student = new NavigateCommand(studentDashboardNavigationService);
+        BackButton = user.IsTeacher ? teacher : student;
+        
+        CancelButton = new CancelCommand(teacherDashboardNavigationService, user, connection);
+        NewGroupCodeButton = new NewGroupCodeCommand(_group, user ,connection,this);
     }
 }

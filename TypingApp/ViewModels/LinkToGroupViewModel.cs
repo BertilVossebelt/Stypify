@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Group = TypingApp.Models.Group;
+using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels
 {
@@ -18,7 +20,7 @@ namespace TypingApp.ViewModels
         public ICommand LinkToGroupSaveButton { get; }
         public ICommand BackButton { get; }
         private Group _groupCodeGroup { get; set; }
-
+        
         private string _groupNameText { get; set; }
         public string GroupNameText
         {
@@ -32,12 +34,15 @@ namespace TypingApp.ViewModels
         }
 
 
-        public LinkToGroupViewModel(NavigationStore navigationStore, User user, DatabaseConnection connection)
+        public LinkToGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseConnection connection)
         {
             _groupCodeGroup = new Group(connection);
 
-            BackButton = new BackCommand(navigationStore, user, connection);
-            LinkToGroupSaveButton = new LinkToGroupSaveCommand(_groupCodeGroup, user, navigationStore, connection);
+            var teacher = new NavigateCommand(teacherDashboardNavigationService);
+            var student = new NavigateCommand(teacherDashboardNavigationService);
+            BackButton = user.IsTeacher ? teacher : student;
+
+            LinkToGroupSaveButton = new LinkToGroupSaveCommand(_groupCodeGroup, user, connection, studentDashboardNavigationService);
         }
 
     }

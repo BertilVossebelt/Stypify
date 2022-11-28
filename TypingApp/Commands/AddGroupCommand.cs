@@ -1,4 +1,5 @@
 ﻿using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 
@@ -7,13 +8,14 @@ namespace TypingApp.Commands
     internal class AddGroupCommand : CommandBase
     {
         private readonly User _user;
-        private readonly NavigationStore _navigationStore;
         private readonly DatabaseConnection _connection;
-        public AddGroupCommand(User user, NavigationStore navigationStore, DatabaseConnection connection)
+        private NavigationService _addGroupNavigationService;
+
+        public AddGroupCommand(User user, DatabaseConnection connection, NavigationService addGroupNavigationService)
         {
             _user = user;
-            _navigationStore = navigationStore;
             _connection = connection;
+            _addGroupNavigationService = addGroupNavigationService;
         }
 
         public override void Execute(object? parameter)
@@ -21,7 +23,8 @@ namespace TypingApp.Commands
             Group newGroup = new Group(_connection);
             newGroup.GroupCodeGeneratorMethod();
 
-            _navigationStore.CurrentViewModel = new AddGroupViewModel(newGroup ,_navigationStore, _user, _connection);
+            var navigateCommand = new NavigateCommand(_addGroupNavigationService);
+            navigateCommand.Execute(this);
         }
     }
 

@@ -28,7 +28,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _email = value;
-                OnPropertyChanged(nameof(Email));
+                OnPropertyChanged();
             }
         }
 
@@ -41,7 +41,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _firstName = value;
-                OnPropertyChanged(nameof(FirstName));
+                OnPropertyChanged();
             }
         }
 
@@ -54,7 +54,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _preposition = value;
-                OnPropertyChanged(nameof(Preposition));
+                OnPropertyChanged();
             }
         }
 
@@ -67,7 +67,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _lastName = value;
-                OnPropertyChanged(nameof(LastName));
+                OnPropertyChanged();
             }
         }
 
@@ -80,7 +80,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _password = value;
-                OnPropertyChanged(nameof(Password));
+                OnPropertyChanged();
             }
         }
 
@@ -93,16 +93,16 @@ namespace TypingApp.ViewModels
             set
             {
                 _passwordConfirm = value;
-                OnPropertyChanged(nameof(PasswordConfirm));
+                OnPropertyChanged();
             }
         }
 
-        public ICommand RegisterTeacherButton;
+        public ICommand RegisterTeacherButton { get;}
 
         public AdminDashboardViewModel(DatabaseConnection connection)
         {
             _connection = connection;
-            // RegisterTeacherButton = new RegisterTeacherCommand();
+            RegisterTeacherButton = new RegisterTeacherCommand(this, connection);
         }
     }
 }

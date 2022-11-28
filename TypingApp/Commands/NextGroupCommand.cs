@@ -7,14 +7,12 @@ namespace TypingApp.Commands;
 
 public class NextGroupCommand : CommandBase
 {
-    private readonly NavigationStore _navigationStore;
     private readonly User _user;
     private readonly DatabaseConnection _connection;
     private readonly TeacherDashboardViewModel _teacherDashboardView;
     
-    public NextGroupCommand(User user, NavigationStore navigationStore, DatabaseConnection connection, TeacherDashboardViewModel teacherDashboardViewModel)
+    public NextGroupCommand(User user, DatabaseConnection connection, TeacherDashboardViewModel teacherDashboardViewModel)
     {
-        _navigationStore = navigationStore;
         _user = user;
         _connection = connection;
         _teacherDashboardView = teacherDashboardViewModel;
@@ -29,14 +27,13 @@ public class NextGroupCommand : CommandBase
         else
         {
             _teacherDashboardView.GroupNumber++;
-           
         }
 
 
 
-        _teacherDashboardView.GroupID = _teacherDashboardView.getGroupIDFromDatabase(_teacherDashboardView.GroupNumber);
-        _teacherDashboardView.GroupNameText2 = _teacherDashboardView.getGroupNameFromDatabase(_teacherDashboardView.GroupNumber);
-        _teacherDashboardView.GroupCodeText2 = _teacherDashboardView.getGroupCodeFromDatabase(_teacherDashboardView.GroupNumber);
+        _teacherDashboardView.GroupID = _teacherDashboardView.GetGroupIdFromDatabase(_teacherDashboardView.GroupNumber);
+        _teacherDashboardView.GroupNameText2 = _teacherDashboardView.GetGroupNameFromDatabase(_teacherDashboardView.GroupNumber);
+        _teacherDashboardView.GroupCodeText2 = _teacherDashboardView.GetGroupCodeFromDatabase(_teacherDashboardView.GroupNumber);
         System.Console.WriteLine(_teacherDashboardView.GroupNumber + "ID" + _teacherDashboardView.GroupID);
 
     }

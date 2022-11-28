@@ -21,13 +21,15 @@ namespace TypingApp.Commands
         private readonly User _user;
         private readonly NavigationService _studentDashboardNavigationService;
         private readonly NavigationService _adminDashboardNavigationService;
+        private NavigationService _teacherDashboardNavigationService;
 
-        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection, NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService)
+        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection, NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService, NavigationService teacherDashboardNavigationService)
         {
             _loginViewModel = loginViewModel;
             _connection = connection;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
+            _teacherDashboardNavigationService = teacherDashboardNavigationService;
         }
 
         public override void Execute(object? parameter)
@@ -43,8 +45,8 @@ namespace TypingApp.Commands
 
                 if (isTeacherAccount())
                 {
-                    // _navigationStore.CurrentViewModel =
-                    // new TeacherDashboardViewModel(_user, _navigationStore, _connection)
+                    var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+                    navigateCommand.Execute(this);
                 }
 
                 if (isAdminAccount())

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 using TypingApp.Views;
@@ -8,12 +9,13 @@ namespace TypingApp.Commands;
 
 public class CancelCommand : CommandBase
 {
-    private readonly NavigationStore _navigationStore;
+    private readonly NavigationService _teacherDashboardNavigationService;
     private readonly User _user;
     private readonly DatabaseConnection _connection;
-    public CancelCommand(NavigationStore navigationStore, User user, DatabaseConnection connection)
+
+    public CancelCommand(NavigationService teacherDashboardNavigationService, User user, DatabaseConnection connection)
     {
-        _navigationStore = navigationStore;
+        _teacherDashboardNavigationService = teacherDashboardNavigationService;
         _user = user;
         _connection = connection;
     }
@@ -29,7 +31,8 @@ public class CancelCommand : CommandBase
         result = MessageBox.Show(messageBoxText, caption, button, icon);
         if (result == MessageBoxResult.Yes)
         {
-            _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore,_connection);
+            var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+            navigateCommand.Execute(this);
         }
     }
 }

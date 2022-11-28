@@ -8,6 +8,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 
@@ -15,15 +16,12 @@ namespace TypingApp.Commands
 {
     public class RegisterTeacherCommand : CommandBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly DatabaseConnection _connection;
         private readonly AdminDashboardViewModel _adminDashboardViewModel;
 
-        public RegisterTeacherCommand(AdminDashboardViewModel adminDashboardViewModel, NavigationStore navigationStore,
-            DatabaseConnection connection)
+        public RegisterTeacherCommand(AdminDashboardViewModel adminDashboardViewModel, DatabaseConnection connection)
         {
             _adminDashboardViewModel = adminDashboardViewModel;
-            _navigationStore = navigationStore;
             _connection = connection;
         }
 

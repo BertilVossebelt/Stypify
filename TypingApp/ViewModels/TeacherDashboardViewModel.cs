@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
@@ -15,7 +17,6 @@ public class TeacherDashboardViewModel : ViewModelBase
     public ICommand NextGroupButton { get; }
     public ICommand NewGroupCodeButton { get; } 
 
-    private NavigationStore _navigationStore;
     private DatabaseConnection _connection;
     private User _user;
     private Group CurrentGroup;
@@ -34,64 +35,62 @@ public class TeacherDashboardViewModel : ViewModelBase
     public string GroupCodeText2 { get { return _groupCodeText2; } set { _groupCodeText2 = value; OnPropertyChanged(); } }
     public string GroupID { get { return _groupID;  } set { _groupID = value; OnPropertyChanged();} }
 
-
-
-    public TeacherDashboardViewModel(User user, NavigationStore navigationStore,DatabaseConnection connection)
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, User user, DatabaseConnection connection)
     {
         _connection = connection;
         _user = user;
-        _navigationStore = navigationStore;
         _groupBoxVisibility = Visibility.Hidden;
         _groupNumber = 0;
         CurrentGroup = new Group(connection);
-        getGroupsFromDatabase();
-
-        GroupNameText2 = getGroupNameFromDatabase(GroupNumber);
-        GroupCodeText2 = getGroupCodeFromDatabase(GroupNumber);
-        GroupID = getGroupIDFromDatabase(GroupNumber);
-
-        AddGroupButton = new AddGroupCommand(user, navigationStore,connection);
-        NextGroupButton = new NextGroupCommand(user, navigationStore, connection,this);
-        NewGroupCodeButton = new UpdateGroupCodeCommand(CurrentGroup,navigationStore, user, connection,this);
+        GetGroupsFromDatabase();
+        
+        AddGroupButton = new AddGroupCommand(user, connection, addGroupNavigationService);
+        NextGroupButton = new NextGroupCommand(user, connection,this);
+        NewGroupCodeButton = new UpdateGroupCodeCommand(CurrentGroup, user, connection,this);
     }
 
     //bool startup is voor als je de viewmodel in komt, als die false is werkt de functie als een refresh
-    public void getGroupsFromDatabase()
+    public void GetGroupsFromDatabase()
     {
-        string QueryString3 = $"SELECT id,name,code FROM Groups WHERE teacher_id='{_user.Id}'";
-        var reader = _connection.ExecuteSqlStatement(QueryString3);
-        if (reader.HasRows)
-        {
-            groupDataArray.Clear();
-            while (reader.Read())
-            {
-                String[] groupNameCodeArray = new string[] { $"{reader["id"]}", $"{reader["name"]}", $"{reader["code"]}" };
-                groupDataArray.Add(groupNameCodeArray);
-            }
-            reader.Close();
-            _groupBoxVisibility = Visibility.Visible;
-        }
+        // var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_user.Id}'";
+        var queryString3 = "SELECT * FROM Users'";
+        var reader = _connection.ExecuteSqlStatement(queryString3);
+        
+        // if (!reader.IsDBNull(0) && reader.HasRows)
+        // {
+        //     groupDataArray.Clear();
+        //     while (reader.Read())
+        //     {
+        //         string[] groupNameCodeArray = { $"{reader["id"]}", $"{reader["name"]}", $"{reader["code"]}" };
+        //         groupDataArray.Add(groupNameCodeArray);
+        //     }
+        //     reader.Close();
+        //     
+        //     GroupNameText2 = GetGroupNameFromDatabase(GroupNumber);
+        //     GroupCodeText2 = GetGroupCodeFromDatabase(GroupNumber);
+        //     GroupID = GetGroupIdFromDatabase(GroupNumber);
+        //
+        //     _groupBoxVisibility = Visibility.Visible;
+        // }
     }
-    
 
-    public string getGroupIDFromDatabase(int groupNumber)
+    public string GetGroupIdFromDatabase(int groupNumber)
     {
-        string[] GroupNameCodeArray = groupDataArray[groupNumber];
-        string groupID = GroupNameCodeArray[0];
+        var groupNameCodeArray = groupDataArray[groupNumber];
+        var groupID = groupNameCodeArray[0];
         CurrentGroup.GroupID = groupID;
         return groupID;
     }
-    public string getGroupNameFromDatabase(int groupNumber)
+    public string GetGroupNameFromDatabase(int groupNumber)
     {
         string[] GroupNameCodeArray = groupDataArray[groupNumber];
         string groupName = GroupNameCodeArray[1];
         return groupName;
     }
-    public string getGroupCodeFromDatabase(int groupNumber)
+    public string GetGroupCodeFromDatabase(int groupNumber)
     {
         string[] testArray2 = groupDataArray[groupNumber];
         string groupCode = testArray2[2];
         return groupCode;
     }
-
 }

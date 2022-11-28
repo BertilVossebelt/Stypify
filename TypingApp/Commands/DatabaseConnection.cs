@@ -14,7 +14,7 @@ namespace TypingApp.Commands
         SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
         public SqlConnection connection;
-        
+
         public DatabaseConnection()
         {
             SshClient cSSH = new SshClient("145.44.233.157", "student", "UB22TypApp");
@@ -38,10 +38,10 @@ namespace TypingApp.Commands
             }
         }
 
-        public SqlDataReader ExecuteSqlStatement(String sqlQuery)
+        public SqlDataReader ExecuteSqlStatement(string sqlQuery)
         {
-            SqlCommand command = new SqlCommand(sqlQuery, connection);
-            SqlDataReader reader = command.ExecuteReader();
+            var command = new SqlCommand(sqlQuery, connection);
+            var reader = command.ExecuteReader();
             command.StatementCompleted += sqlCommand_StatementCompleted;
 
             return reader;
@@ -63,7 +63,7 @@ namespace TypingApp.Commands
         {
             Console.WriteLine($"Records changed:{e.RecordCount}");
         }
-        
+
         public SqlConnection GetConnection()
         {
             return connection;

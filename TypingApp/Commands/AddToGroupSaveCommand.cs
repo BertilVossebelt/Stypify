@@ -2,6 +2,7 @@
 using System.Windows;
 using System;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 using Group = TypingApp.Models.Group;
@@ -11,16 +12,17 @@ namespace TypingApp.Commands
     internal class LinkToGroupSaveCommand : CommandBase
     {
         private readonly User _user;
-        private readonly NavigationStore _navigationStore;
         private readonly DatabaseConnection _connection;
         private readonly Group _code;
         private string _groupId;
-        public LinkToGroupSaveCommand(Group code, User user, NavigationStore navigationStore, DatabaseConnection connection)
+        private NavigationService _studentDashboardNavigationService;
+
+        public LinkToGroupSaveCommand(Group code, User user, DatabaseConnection connection, NavigationService studentDashboardNavigationService)
         {
             _code = code;
             _user = user;
-            _navigationStore = navigationStore;
             _connection = connection;
+            _studentDashboardNavigationService = studentDashboardNavigationService;
         }
         public override void Execute(object? parameter)
         {
@@ -33,10 +35,10 @@ namespace TypingApp.Commands
             result2 = MessageBox.Show(messageBoxText2, caption2, button2, icon2);
             if (result2 == MessageBoxResult.Yes)
             {
-
                 //Save here to database
-                String QueryString = $"SELECT id FROM Groups WHERE code='{_code.GroupCode}'";
+                var QueryString = $"SELECT id FROM Groups WHERE code='{_code.GroupCode}'";
                 var reader = _connection.ExecuteSqlStatement(QueryString);
+                
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -45,13 +47,15 @@ namespace TypingApp.Commands
                     }
                     reader.Close();
 
-                    String QueryString2 = $"SELECT id FROM Group_Student WHERE group_id='{_groupId}' AND student_id='{_user.Id}';";
+                    var QueryString2 = $"SELECT id FROM Group_Student WHERE group_id='{_groupId}' AND student_id='{_user.Id}';";
                     reader = _connection.ExecuteSqlStatement(QueryString2);
                     if (reader.HasRows == false)
                     {
-                        String QueryString3 = $"INSERT INTO Group_Student (group_id,student_id) VALUES ('{_groupId}','{_user.Id}')";
+                        var QueryString3 = $"INSERT INTO Group_Student (group_id,student_id) VALUES ('{_groupId}','{_user.Id}')";
                         _connection.ExecuteSqlStatement2(QueryString3);
-                        _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore, _connection);
+                        
+                        var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
+                        navigateCommand.Execute(this);
                     }
                     else
                     {

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -11,16 +12,16 @@ namespace TypingApp.Commands;
 public class SaveGroupCommand : CommandBase
 {
     private readonly User _user;
-    private readonly NavigationStore _navigationStore;
     private Group _group;
     private DatabaseConnection _connection;
-    
-    public SaveGroupCommand(Group newGroup, NavigationStore navigationStore, User user,DatabaseConnection connection)
+    private NavigationService _teacherDashboardNavigationService;
+
+    public SaveGroupCommand(Group newGroup, User user,DatabaseConnection connection, NavigationService teacherDashboardNavigationService)
     {
         _group = newGroup;
         _user = user;
-        _navigationStore = navigationStore;
         _connection = connection;
+        _teacherDashboardNavigationService = teacherDashboardNavigationService;
     }
 
     public override void Execute(object? parameter)
@@ -31,9 +32,8 @@ public class SaveGroupCommand : CommandBase
             string caption1 = "Geen naam";
             MessageBoxButton button1 = MessageBoxButton.OK;
             MessageBoxImage icon1 = MessageBoxImage.Error;
-            MessageBoxResult result1;
-
-            result1 = MessageBox.Show(messageBoxText1, caption1, button1, icon1);
+            
+            MessageBox.Show(messageBoxText1, caption1, button1, icon1);
         }
         else
         {
@@ -49,11 +49,12 @@ public class SaveGroupCommand : CommandBase
                 //Save here to database
                 String QueryString = $"INSERT INTO Groups (teacher_id,name,code) VALUES ({_user.Id},'{_group.GroupName}','{_group.GroupCode}')";
                 _connection.ExecuteSqlStatement2(QueryString);
-                //
-                _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore,_connection);
 
-                System.Console.WriteLine(_group.GroupName);
-                System.Console.WriteLine(_group.GroupCode);
+                var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+                navigateCommand.Execute(this);
+                
+                Console.WriteLine(_group.GroupName);
+                Console.WriteLine(_group.GroupCode);
             };
 
         }

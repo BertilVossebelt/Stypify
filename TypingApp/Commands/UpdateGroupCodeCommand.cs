@@ -11,15 +11,13 @@ namespace TypingApp.Commands
     internal class UpdateGroupCodeCommand : CommandBase
     {
         private readonly User _user;
-        private readonly NavigationStore _navigationStore;
         private Group _group;
         private readonly DatabaseConnection _connection;
         private readonly TeacherDashboardViewModel _teacherDashboardViewModel;
-        public UpdateGroupCodeCommand(Group CurrentGroup, NavigationStore navigationStore, User user, DatabaseConnection connection,TeacherDashboardViewModel teacherDashboardViewModel)
+        public UpdateGroupCodeCommand(Group CurrentGroup, User user, DatabaseConnection connection,TeacherDashboardViewModel teacherDashboardViewModel)
         {
             _group = CurrentGroup;
             _user = user;
-            _navigationStore = navigationStore;
             _connection = connection;
             _teacherDashboardViewModel = teacherDashboardViewModel;
         }
@@ -33,8 +31,8 @@ namespace TypingApp.Commands
             string QueryString3 = $"UPDATE Groups SET code='{_group.GroupCode}'WHERE id='{_group.GroupID}'";
             _connection.ExecuteSqlStatement2(QueryString3);
 
-            _teacherDashboardViewModel.getGroupsFromDatabase();
-            _teacherDashboardViewModel.GroupCodeText2 = _teacherDashboardViewModel.getGroupCodeFromDatabase(_teacherDashboardViewModel.GroupNumber);
+            _teacherDashboardViewModel.GetGroupsFromDatabase();
+            _teacherDashboardViewModel.GroupCodeText2 = _teacherDashboardViewModel.GetGroupCodeFromDatabase(_teacherDashboardViewModel.GroupNumber);
         }
     }
 
