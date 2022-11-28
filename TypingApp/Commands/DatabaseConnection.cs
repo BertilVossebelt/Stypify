@@ -14,6 +14,7 @@ namespace TypingApp.Commands
         SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
         public SqlConnection connection;
+        
         public DatabaseConnection()
         {
             SshClient cSSH = new SshClient("145.44.233.157", "student", "UB22TypApp");
@@ -36,6 +37,7 @@ namespace TypingApp.Commands
                 Console.WriteLine(e.ToString());
             }
         }
+
         public SqlDataReader ExecuteSqlStatement(String sqlQuery)
         {
             SqlCommand command = new SqlCommand(sqlQuery, connection);
@@ -60,6 +62,11 @@ namespace TypingApp.Commands
         static void sqlCommand_StatementCompleted(object sender, StatementCompletedEventArgs e)
         {
             Console.WriteLine($"Records changed:{e.RecordCount}");
+        }
+        
+        public SqlConnection GetConnection()
+        {
+            return connection;
         }
     }
 }

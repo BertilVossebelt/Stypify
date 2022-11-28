@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace TypingApp.Models;
 
@@ -24,11 +25,11 @@ public class Exercise
                 var letter = subset[index].Char;
                 text += letter;
             }
-
+            
             text += " ";
         }
 
-        Text = text;
+        Text = text.TrimEnd(' ');
     }
 }
 

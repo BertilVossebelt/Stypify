@@ -2,10 +2,8 @@
 
 public class Character
 {
-    public Character(uint userId, char c, byte accuracy)
+    public Character(char c)
     {
-        User_id = userId;
-        Accuracy = accuracy;
         Char = c;
     }
 
@@ -13,5 +11,9 @@ public class Character
     
     public char Char { get; }
     
-    public byte Accuracy { get; }
+    public byte Accuracy { get; set; }
+    
+    public bool Wrong { get; set; }
+    
+    public bool Correct { get; set; }
 }

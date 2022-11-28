@@ -3,11 +3,35 @@
   <PropertyGroup />
   <ItemGroup>
     <Compile Update="Views\LinkToGroupView.xaml.cs">
+              <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Stores\BindablePasswordBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AdminDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\LoginView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RegisterView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\LinkToGroupView.xaml">
+        <SubType>Designer</SubType>
+    <Page>
+    <Page Update="Stores\BindablePasswordBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminDashboardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RegisterView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

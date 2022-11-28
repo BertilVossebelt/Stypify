@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="TypingApp.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:TypingApp.ViewModels"
+        xmlns:stores="clr-namespace:TypingApp.Stores"
+        mc:Ignorable="d"
+        d:DesignHeight="450" d:DesignWidth="800"
+        MinHeight="400" MinWidth="330">
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="2" 
+                    Background="#f7e1ff"/>
+
+            <StackPanel Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                <Image></Image>
+                <TextBlock 
+                    Text ="Logo"
+                    FontSize="80"
+                    FontFamily="Helvetica"
+                    FontWeight="DemiBold"
+                    FontStyle="Italic"
+                    Margin="0,0,0,60"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+                <TextBlock
+                    Text="Emailadres"
+                    FontFamily="Helvetica"
+                    FontWeight="Light"
+                    FontSize="17"/>
+
+                <TextBox 
+                    x:Name="EmailLoginBox"
+                    Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Padding="3"
+                    FontFamily="Helvetica"
+                    FontWeight="Light"
+                    FontSize="17"
+                    Foreground="Gray"
+                    BorderThickness="1"
+                    Width="200"
+                    Height="30"
+                    FontStyle="Italic"
+                    Margin="0,0,0,0"/>
+
+                <TextBlock
+                    Text="Wachtwoord"
+                    FontFamily="Helvetica"
+                    FontWeight="Light"
+                    FontSize="17"
+                    Margin="0,5,0,0"/>
+
+                <stores:BindablePasswordBox 
+                    Password="{Binding Password, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                    Width="200"
+                    Height="30"
+                    Margin="0,0,0,0">
+                </stores:BindablePasswordBox>
+
+                <Button x:Name="LoginButton"
+                        Command="{Binding LoginButton}"
+                        FontFamily="Helvetica"
+                        FontSize="17"
+                        Background="Purple"
+                        Foreground="White"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Width="200"
+                        Height="30"
+                        Content="Inloggen"
+                        Margin="0,10,0,0">
+
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="15"></Setter>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button x:Name="GoToRegisterButton"
+                        Command="{Binding GoToRegisterButton}"
+                        FontFamily="Helvetica"
+                        FontSize="14"
+                        Background="#f7e1ff"
+                        Foreground="Black"
+                        BorderThickness="0"
+                        Width="200"
+                        Height="30"
+                        Content="Ik heb nog geen account..."
+                        FontStyle="Italic"
+                        Margin="0,5,0,0"/>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</UserControl>
+

@@ -10,8 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TypingApp.Commands;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
+using TypingApp.Commands;
 
 namespace TypingApp.Views
 {
@@ -21,6 +23,7 @@ namespace TypingApp.Views
     public partial class App : Application
     {
         private readonly User _user;
+        private readonly ExerciseStore _exerciseStore;
         private readonly NavigationStore _navigationStore;
         private readonly DatabaseConnection _connection;
 
@@ -28,37 +31,58 @@ namespace TypingApp.Views
         {
             var characters = new List<Character>()
             {
-                new(1, 'e', 0),
-                new(1, 'n', 0),
-                new(1, 'a', 0),
-                new(1, 't', 0),
+                new('e'),
+                new('n'),
+                new('a'),
+                new('t'),
             };
-            
-            _user = new User(4, "email@email.nl", "Voornaam", "Achternaam", characters,true);
+
+            _user = new User(1, "email@email.nl", "Voornaam", "Achternaam", characters);
             _navigationStore = new NavigationStore();
             _connection = new DatabaseConnection();
+            _exerciseStore = new ExerciseStore();
         }
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            // dotnet ef migrations add InitialMigration --project TypingApp
-            if (_user.IsTeacher)
-            {
-                _navigationStore.CurrentViewModel = new TeacherDashboardViewModel(_user, _navigationStore,_connection);
-            }
-            else
-            {
-                _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore,_connection);
-            }
+            _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
-            MainWindow = new MainWindow()
+            MainWindow = new MainWindow(_navigationStore, _exerciseStore, _user)
             {
-                DataContext = new MainViewModel(_navigationStore,_connection)
+                DataContext = new MainViewModel(_navigationStore, _connection)
             };
-            
+
             MainWindow.Show();
-            
+
             base.OnStartup(e);
+        }
+
+        private LoginViewModel CreateLoginViewModel()
+        {
+            var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
+            var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
+            var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            
+            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel, _connection);
+        }
+        
+        private AdminDashboardViewModel CreateAdminDashboardViewModel()
+        {
+            return new AdminDashboardViewModel(_connection);
+        }
+        
+        private RegisterViewModel CreateRegisterViewModel()
+        {
+            return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel), _connection);
+        }
+        
+        private StudentDashboardViewModel CreateStudentDashboardViewModel()
+        {
+            return new StudentDashboardViewModel(new NavigationService(_navigationStore, CreateExerciseViewModel));
+        }
+        private ExerciseViewModel CreateExerciseViewModel()
+        {
+            return new ExerciseViewModel(new NavigationService(_navigationStore, CreateStudentDashboardViewModel), _user, _exerciseStore);
         }
     }
 }
