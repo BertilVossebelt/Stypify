@@ -9,10 +9,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Stores;
 using TypingApp.Views;
+using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels
 {
@@ -23,10 +25,7 @@ namespace TypingApp.ViewModels
 
         public string Email
         {
-            get
-            {
-                return _email;
-            }
+            get { return _email; }
             set
             {
                 _email = value;
@@ -36,10 +35,7 @@ namespace TypingApp.ViewModels
 
         public SecureString Password
         {
-            get
-            {
-                return _password;
-            }
+            get { return _password; }
             set
             {
                 _password = value;
@@ -50,11 +46,13 @@ namespace TypingApp.ViewModels
         public ICommand GoToRegisterButton { get; }
         public ICommand LoginButton { get; }
 
-        public LoginViewModel(NavigationStore navigationStore, DatabaseConnection connection)
+        public LoginViewModel(NavigationService registerNavigationService,
+            NavigationService adminDashboardNavigationService, NavigationService studentDashboardNavigationService,
+            DatabaseConnection connection)
         {
             _connection = connection;
-            GoToRegisterButton = new GoToRegisterCommand(navigationStore, _connection);
-            LoginButton = new LoginCommand(this, navigationStore, _connection);
+            GoToRegisterButton = new NavigateCommand(registerNavigationService);
+            LoginButton = new LoginCommand(this, _connection, studentDashboardNavigationService, adminDashboardNavigationService);
         }
     }
 }

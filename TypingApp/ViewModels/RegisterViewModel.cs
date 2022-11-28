@@ -5,8 +5,10 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using TypingApp.Commands;
 using TypingApp.Stores;
+using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels
 {
@@ -100,11 +102,11 @@ namespace TypingApp.ViewModels
         public ICommand GoToLoginButton { get; }
         public ICommand RegisterButton { get; }
 
-        public RegisterViewModel(NavigationStore navigationStore, DatabaseConnection connection) 
+        public RegisterViewModel(NavigationService loginNavigationService, DatabaseConnection connection) 
         {
                 _connection = connection;
-                GoToLoginButton = new GoToLoginCommand(navigationStore, _connection);
-                RegisterButton = new RegisterStudentCommand(this, navigationStore, _connection);
+                GoToLoginButton = new NavigateCommand(loginNavigationService);
+                RegisterButton = new NavigateCommand(loginNavigationService);
         }
     }
 }

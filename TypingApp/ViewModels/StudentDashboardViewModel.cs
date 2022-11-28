@@ -2,6 +2,8 @@
 using TypingApp.Models;
 using TypingApp.Commands;
 using TypingApp.Stores;
+using System;
+using TypingApp.Services;
 
 namespace TypingApp.ViewModels;
 
@@ -9,9 +11,8 @@ public class StudentDashboardViewModel : ViewModelBase
 {
     public ICommand StartPracticeButton { get; }
     
-    public StudentDashboardViewModel(User user, NavigationStore navigationStore, DatabaseConnection connection)
+    public StudentDashboardViewModel(NavigationService exerciseNavigationService) 
     {
-        _connection = connection;
-        StartPracticeButton = new StartPracticeCommand(user, navigationStore, _connection);
+        StartPracticeButton = new NavigateCommand(exerciseNavigationService);
     }
 }

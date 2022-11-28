@@ -10,34 +10,35 @@ using System.Windows;
 using TypingApp.Models;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
+using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.Commands
 {
     public class LoginCommand : CommandBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly DatabaseConnection _connection;
         private readonly LoginViewModel _loginViewModel;
         private readonly User _user;
+        private readonly NavigationService _studentDashboardNavigationService;
+        private readonly NavigationService _adminDashboardNavigationService;
 
-        public LoginCommand(LoginViewModel loginViewModel, NavigationStore navigationStore,
-            DatabaseConnection connection)
+        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection, NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService)
         {
             _loginViewModel = loginViewModel;
-            _navigationStore = navigationStore;
             _connection = connection;
+            _studentDashboardNavigationService = studentDashboardNavigationService;
+            _adminDashboardNavigationService = adminDashboardNavigationService;
         }
 
         public override void Execute(object? parameter)
         {
-            var isValidUser =
-                AuthenticateUser(new NetworkCredential(_loginViewModel.Email, _loginViewModel.Password));
+            var isValidUser = AuthenticateUser(new NetworkCredential(_loginViewModel.Email, _loginViewModel.Password));
             if (isValidUser)
             {
                 if (isStudentAccount())
                 {
-                    _navigationStore.CurrentViewModel = 
-                        new StudentDashboardViewModel(_user, _navigationStore, _connection);
+                    var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
+                    navigateCommand.Execute(this);
                 }
 
                 if (isTeacherAccount())
@@ -48,10 +49,9 @@ namespace TypingApp.Commands
 
                 if (isAdminAccount())
                 {
-                    _navigationStore.CurrentViewModel = new AdminDashboardViewModel(_navigationStore, _connection);
+                    var navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
+                    navigateCommand.Execute(this);
                 }
-
-                MessageBox.Show("Succesvol ingelogd.", "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
