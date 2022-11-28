@@ -55,7 +55,7 @@
                 </Border>
                 
                 <Border BorderBrush="#fff" CornerRadius="0, 16, 15 ,0" BorderThickness="15" Grid.Column="1">
-                    <ItemsControl ItemsSource="{Binding Path=TextAsCharList}">
+                    <ItemsControl ItemsSource="{Binding Path=TextAsCharList, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Background="#fff"/>
@@ -67,13 +67,13 @@
                                 <TextBlock FontSize="20">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding Char}" />
+                                            <Setter Property="Text" Value="{Binding Char, UpdateSourceTrigger=PropertyChanged}" />
                                             <Setter Property="Foreground" Value="Black" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Correct}" Value="true">
+                                                <DataTrigger Binding="{Binding Correct, UpdateSourceTrigger=PropertyChanged}" Value="true">
                                                     <Setter Property="Foreground" Value="Green"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding Wrong}" Value="true">
+                                                <DataTrigger Binding="{Binding Wrong, UpdateSourceTrigger=PropertyChanged}" Value="true">
                                                     <Setter Property="Foreground" Value="Red" />
                                                 </DataTrigger>
                                             </Style.Triggers>

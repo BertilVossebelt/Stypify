@@ -25,11 +25,11 @@ public class Exercise
                 var letter = subset[index].Char;
                 text += letter;
             }
-
+            
             text += " ";
         }
 
-        Text = text;
+        Text = text.TrimEnd(' ');
     }
 }
 

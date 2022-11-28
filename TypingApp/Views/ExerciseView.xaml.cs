@@ -13,6 +13,5 @@ public partial class ExerciseView : UserControl
     public ExerciseView()
     {
         InitializeComponent();
-        
     }
 }
