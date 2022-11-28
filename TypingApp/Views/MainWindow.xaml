@@ -13,14 +13,37 @@
     <!-- Borderless window: WindowStyle="None" -->
     <!-- <local:ExerciseView DataContext="{Binding CurrentViewModel}"/> -->
     <Grid>
-        <Grid.Resources>
-            
+        <Grid.Resources> 
             <DataTemplate DataType="{x:Type viewModels:StudentDashboardViewModel}">
                 <views:StudentDashboardView />
-            </DataTemplate> 
-            
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:TeacherDashboardViewModel}">
+                <views:TeacherDashboardView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
+                <views:RegisterView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+                <views:LoginView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModels:ExerciseViewModel}">
-                <views:ExerciseView />
+                <views:ExerciseView Loaded="TextInputListener"/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:AdminDashboardViewModel}">
+                <views:AdminDashboardView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:AddGroupViewModel}">
+                <views:AddGroupView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModels:LinkToGroupViewModel}">
+                <views:LinkToGroupView />
             </DataTemplate>
             
             <DataTemplate DataType="{x:Type viewModels:GroupViewModel}">

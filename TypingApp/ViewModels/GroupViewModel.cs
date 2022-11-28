@@ -80,7 +80,8 @@ namespace TypingApp.ViewModels
             Groups.Add(new Group("dads", 10, 10));
             Groups.Add(new Group("dads", 10, 10));
             Groups.Add(new Group("dads", 10, 10));
-            var reader2 = _connection.ExecuteSqlStatement("SELECT name, group_id  FROM Groups JOIN Group_Student ON Groups.id = Group_Student.group_id");//TODO TESTEN
+            var reader2 = _connection.ExecuteSqlStatement("SELECT name, group_id  FROM Groups JOIN Group_Student ON Groups.id = Group_Student.group_id"); //TODO TESTEN
+            
             if (reader2 != null)
             {
                 var previousName = " ";

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Renci.SshNet;
+using System.Data;
 
 namespace TypingApp.Commands
 {
@@ -12,7 +13,8 @@ namespace TypingApp.Commands
     {
         SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
-        SqlConnection connection;
+        public SqlConnection connection;
+
         public DatabaseConnection()
         {
             SshClient cSSH = new SshClient("145.44.233.157", "student", "UB22TypApp");
@@ -35,11 +37,36 @@ namespace TypingApp.Commands
                 Console.WriteLine(e.ToString());
             }
         }
-        public SqlDataReader ExecuteSqlStatement(String sqlQuery)
+
+        public SqlDataReader ExecuteSqlStatement(string sqlQuery)
+        {
+            var command = new SqlCommand(sqlQuery, connection);
+            var reader = command.ExecuteReader();
+            command.StatementCompleted += sqlCommand_StatementCompleted;
+
+            return reader;
+        }
+
+
+        public void ExecuteSqlStatement2(String sqlQuery)
         {
             SqlCommand command = new SqlCommand(sqlQuery, connection);
-            SqlDataReader reader = command.ExecuteReader();
-            return reader;
+            command.StatementCompleted += sqlCommand_StatementCompleted;
+            int result = command.ExecuteNonQuery();
+
+            // Check Error
+            if (result < 0) Console.WriteLine("Error inserting data into Database!");
+            else Console.WriteLine("gelukt " + result);
+        }
+
+        static void sqlCommand_StatementCompleted(object sender, StatementCompletedEventArgs e)
+        {
+            Console.WriteLine($"Records changed:{e.RecordCount}");
+        }
+
+        public SqlConnection GetConnection()
+        {
+            return connection;
         }
     }
 }

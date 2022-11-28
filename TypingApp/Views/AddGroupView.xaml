@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="TypingApp.Views.AddGroupView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:TypingApp"
+      mc:Ignorable="d"
+      Height="700" 
+      Width="1200">
+
+    <Grid>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <Button Command="{Binding BackButton}" Width="70" HorizontalAlignment="Left" Margin="10" >Terug</Button>
+        </StackPanel>
+
+        <Rectangle HorizontalAlignment="Center" Height="136" VerticalAlignment="Center" Width="125" Fill="#ac31a9" Margin="0,0,200,0"/>
+        <Rectangle HorizontalAlignment="Center" Height="136" Margin="100,0,0,0" Stroke="#d390d3" VerticalAlignment="Center" Width="175" Fill="#f6e0fe"/>
+
+        <TextBlock x:Name="GroupNameText" Text="{Binding GroupNameText}" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="White" Margin="0,100,250,0"/>
+
+        <Button x:Name="Save_Button" Content="Opslaan" Command="{Binding SaveButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#ac31a9" Foreground="White" Width="63" Margin="50,175,0,0">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"></Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Button x:Name="Cancel_Button" Content="Annuleren" Command="{Binding CancelButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Margin="200,175,0,0" >
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"></Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+
+        <TextBox x:Name="Group_InputBox" Text="{Binding GroupNameText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="75,75,0,0"/>
+
+        
+        <!--
+        <TextBlock x:Name="Placeholder" IsHitTestVisible="False" TextWrapping="Wrap" Text="Groepnaam" VerticalAlignment="Top" Margin="0,381,408,0" Foreground="DarkGray" HorizontalAlignment="Right" Width="214">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=Group_InputBox}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    -->
+
+        <TextBlock x:Name="GroupCodeText" Text="{Binding GroupCodeText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Center" Margin="150,0,0,150"/>
+        <Button x:Name="NewGroupCode_Button" Command="{Binding NewGroupCodeButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="9" Width="17" Margin="250,0,0,150"/>
+
+    </Grid>
+</UserControl>
