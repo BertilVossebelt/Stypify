@@ -17,11 +17,24 @@
             
             <DataTemplate DataType="{x:Type viewModels:StudentDashboardViewModel}">
                 <views:StudentDashboardView />
-            </DataTemplate> 
-            
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
+                <views:RegisterView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+                <views:LoginView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModels:ExerciseViewModel}">
                 <views:ExerciseView Loaded="TextInputListener"/>
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:AdminDashboardViewModel}">
+                <views:AdminDashboardView />
+            </DataTemplate>
+
         </Grid.Resources>
         
         <ContentControl Content="{Binding CurrentViewModel}" />

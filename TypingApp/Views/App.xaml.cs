@@ -12,6 +12,7 @@ using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
+using TypingApp.Commands;
 
 namespace TypingApp.Views
 {
@@ -23,6 +24,7 @@ namespace TypingApp.Views
         private readonly User _user;
         private readonly ExerciseStore _exerciseStore;
         private readonly NavigationStore _navigationStore;
+        private readonly DatabaseConnection _connection;
 
         public App()
         {
@@ -36,16 +38,19 @@ namespace TypingApp.Views
 
             _user = new User(1, "email@email.nl", "Voornaam", "Achternaam", characters);
             _navigationStore = new NavigationStore();
+            _connection = new DatabaseConnection();
             _exerciseStore = new ExerciseStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _navigationStore.CurrentViewModel = CreateStudentDashboardViewModel();
+            // dotnet ef migrations add InitialMigration --project TypingApp
+            
+            _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
             MainWindow = new MainWindow(_navigationStore, _exerciseStore, _user)
             {
-                DataContext = new MainViewModel(_navigationStore)
+                DataContext = new MainViewModel(_navigationStore, _connection)
             };
 
             MainWindow.Show();
@@ -53,6 +58,25 @@ namespace TypingApp.Views
             base.OnStartup(e);
         }
 
+        private LoginViewModel CreateLoginViewModel()
+        {
+            var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
+            var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
+            var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            
+            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel, _connection);
+        }
+        
+        private AdminDashboardViewModel CreateAdminDashboardViewModel()
+        {
+            return new AdminDashboardViewModel(_connection);
+        }
+        
+        private RegisterViewModel CreateRegisterViewModel()
+        {
+            return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel), _connection);
+        }
+        
         private StudentDashboardViewModel CreateStudentDashboardViewModel()
         {
             return new StudentDashboardViewModel(new NavigationService(_navigationStore, CreateExerciseViewModel));
