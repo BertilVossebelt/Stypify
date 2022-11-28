@@ -8,6 +8,7 @@ using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Stores;
@@ -44,8 +45,6 @@ namespace TypingApp.Views
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // dotnet ef migrations add InitialMigration --project TypingApp
-            
             _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
             MainWindow = new MainWindow(_navigationStore, _exerciseStore, _user)
