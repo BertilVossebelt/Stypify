@@ -9,81 +9,66 @@
     <Grid>
         <StackPanel>
             <Border BorderBrush="Black" BorderThickness="1" Height="45" Background="#FFF7E1FF" Padding="0,0,0,0"/>
-            <Label x:Name="WelkomLabel" Content="{Binding BoundNumber, Mode=TwoWay}" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" FontSize="36" Foreground="#FFD07FCD" FontFamily="Monotype Corsiva" Height="40"/>
+            <Label x:Name="WelkomLabel" Content="{Binding BoundNumber, Mode=TwoWay}" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Stretch" FontSize="36" Foreground="#FFD07FCD" FontFamily="Monotype Corsiva" Height="50"/>
             <Rectangle Height="2" Margin="25,10,25,2" >
                 <Rectangle.Fill>
                     <SolidColorBrush Color="Black" Opacity="0.45"/>
                 </Rectangle.Fill>
             </Rectangle>
             <Label Content="Mijn groepen:" Foreground="Black" Margin="15,0,0,0" FontSize="24" />
-            <Grid Margin="30,10,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                </Grid.ColumnDefinitions>
-
-                <Border BorderBrush="Black" BorderThickness="1" Width="120" Height="140" HorizontalAlignment="Left" Margin="0,0,0,0" Background="Black">
-                    <Grid>
-                        <Button Canvas.Left="0" Canvas.Top="0" Margin="5,5,5,5" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch">
-                            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Views/Nos.png" StretchDirection="Both" Stretch="Fill"/>
-                        </Button>
-                        <Label x:Name="StudentAmountLabel" Content="Label" Canvas.Left="17" Canvas.Top="69" Foreground="White" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" FontStyle="Italic" FontWeight="Medium" FontStretch="Normal"/>
-                        <Label x:Name="GroupNameLabel" Content="Label" Canvas.Left="13" Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Margin="5,0,0,18" Foreground="White" FontSize="18" FontWeight="Medium" FontStyle="Normal" FontStretch="Normal" OpacityMask="Black" BorderBrush="Black"/>
-                    </Grid>
-                </Border>
-                <Border BorderBrush="Black" BorderThickness="1" Width="120" Height="140" HorizontalAlignment="Left" Margin="0,0,0,0" Background="Black" Grid.Column="1">
-                    <Grid>
-                        <Button Canvas.Left="0" Canvas.Top="0" Margin="5,5,5,5" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch">
-                            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Views/Nos.png" StretchDirection="Both" Stretch="Fill"/>
-                        </Button>
-                        <Label x:Name="StudentAmountLabel1" Content="Label" Canvas.Left="17" Canvas.Top="69" Foreground="White" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" FontStyle="Italic" FontWeight="Medium" FontStretch="Normal"/>
-                        <Label x:Name="GroupNameLabel1" Content="Label" Canvas.Left="13" Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Margin="5,0,0,18" Foreground="White" FontSize="18" FontWeight="Medium" FontStyle="Normal" FontStretch="Normal" OpacityMask="Black" BorderBrush="Black"/>
-                    </Grid>
-                </Border>
+            
 
 
+                <ItemsControl ItemsSource="{Binding Groups}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-            </Grid>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Black" BorderThickness="1" Width="120" Height="140" HorizontalAlignment="Left" Margin="0,0,0,0" Background="Black" CornerRadius="10">
+                                <Grid>
+                                    <Button Canvas.Left="0" Canvas.Top="0" Margin="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" BorderBrush="Black">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="10"/>
+                                            </Style>
+                                        </Button.Resources>
+                                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Margin="0,0,0,0" Visibility="Visible" IsManipulationEnabled="True" HorizontalAlignment="Stretch" Width="110" Height="130">
+                                            <Border.Background>
+                                                <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png"/>
+                                            </Border.Background>
+                                        </Border>
+                                    </Button >
+                                    <Label x:Name="StudentAmountLabel" Content="Label" Canvas.Left="17" Canvas.Top="69" Foreground="White" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" FontStyle="Italic" FontWeight="Medium" FontStretch="Normal"/>
+                                    <Label x:Name="GroupNameLabel" Content="Label" Canvas.Left="13" Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Margin="5,0,0,18" Foreground="White" FontSize="18" FontWeight="Medium" FontStyle="Normal" FontStretch="Normal" OpacityMask="Black" BorderBrush="Black"/>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+       
             <Rectangle Height="2" Margin="25,10,25,2" >
                 <Rectangle.Fill>
                     <SolidColorBrush Color="Black" Opacity="0.45"/>
                 </Rectangle.Fill>
             </Rectangle>
             <Label Content="(naam Groep):" Foreground="Black" Margin="15,0,0,0" FontSize="24" />
-            <Grid Margin="30,10,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                    <ColumnDefinition Width="125" />
-                </Grid.ColumnDefinitions>
-                <Border BorderBrush="Black" BorderThickness="1" Width="120" Height="140" HorizontalAlignment="Left" Margin="0,0,0,0" Background="Black">
-                    <Grid>
-                        <Button Canvas.Left="0" Canvas.Top="0" Margin="5,5,5,5" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch">
-                            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Views/Nos.png" StretchDirection="Both" Stretch="Fill"/>
-                        </Button>
-                        <Label x:Name="StudentAmountLabe2l1" Content="Label" Canvas.Left="17" Canvas.Top="69" Foreground="White" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" FontStyle="Italic" FontWeight="Medium" FontStretch="Normal"/>
-                        <Label x:Name="GroupNameLabel21" Content="Label" Canvas.Left="13" Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Margin="5,0,0,18" Foreground="White" FontSize="18" FontWeight="Medium" FontStyle="Normal" FontStretch="Normal" OpacityMask="Black" BorderBrush="Black"/>
-                    </Grid>
-                </Border>
 
-
-
-
-            </Grid>
+            <!--  HIER IMPLEMENTEREN VAN LESSEN (er moet dan boven en onder ook nog wat aangepast/verwijderd/aangemaakt worden) -->
+           
+            
+            
             <Rectangle Height="2" Margin="25,10,25,10" >
                 <Rectangle.Fill>
                     <SolidColorBrush Color="Black" Opacity="0.45"/>
                 </Rectangle.Fill>
             </Rectangle>
 
-            <StackPanel Height="100" Margin="15,0,15,0">
+            <StackPanel Margin="15,0,15,0">
 
                 <Border BorderBrush="Black" BorderThickness="1" Height="25" VerticalAlignment="Top" Margin="0,2,0,2">
                     <StackPanel Height="25" Orientation="Horizontal" Margin="0,2,0,2">
@@ -91,22 +76,30 @@
                         <Label Content="Aantal Oefeningen" Margin="150,0,0,0"/>
                     </StackPanel>
                 </Border>
-                <Border BorderBrush="Black" BorderThickness="1" Height="25" VerticalAlignment="Top">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="300"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Height="25" Orientation="Horizontal">
-
-                            <Label Content="Jared"/>
-                            <Label Content="66" Margin="195,0,0,0"/>
-                        </StackPanel>
-                        <StatusBar Width="260" Margin="0,0,0,0" Height="4" HorizontalAlignment="Left" Grid.Column="1"/>
-                        <Label Content="55%" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0" />
-                    </Grid>
+                
+                <ItemsControl ItemsSource="{Binding Students}">
                     
-                </Border>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Black" BorderThickness="1" Height="25" VerticalAlignment="Top">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="300"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Height="25" Orientation="Horizontal">
+
+                                        <Label Content="Jared"/>
+                                        <Label Content="66" Margin="195,0,0,0"/>
+                                    </StackPanel>
+                                    <StatusBar Width="260" Margin="0,0,0,0" Height="4" HorizontalAlignment="Left" Grid.Column="1"/>
+                                    <Label Content="55%" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="0,0,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,5,0" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
 
 
