@@ -37,7 +37,7 @@ namespace TypingApp.Views
                 new('t'),
             };
 
-            _user = new User(11, "email@email.nl", "Voornaam", "Achternaam", characters, true);
+            _user = new User(0, "email@email.nl", "Voornaam", "Achternaam", characters, false);
             _navigationStore = new NavigationStore();
             _connection = new DatabaseConnection();
             _exerciseStore = new ExerciseStore();
@@ -66,7 +66,7 @@ namespace TypingApp.Views
             var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             
-            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel, teacherDashboardViewModel, _connection);
+            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel, teacherDashboardViewModel, _connection, _user);
         }
         
         private AdminDashboardViewModel CreateAdminDashboardViewModel()

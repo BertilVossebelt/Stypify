@@ -104,9 +104,9 @@ namespace TypingApp.ViewModels
 
         public RegisterViewModel(NavigationService loginNavigationService, DatabaseConnection connection) 
         {
-                _connection = connection;
-                GoToLoginButton = new NavigateCommand(loginNavigationService);
-                RegisterButton = new NavigateCommand(loginNavigationService);
+            _connection = connection;
+            GoToLoginButton = new NavigateCommand(loginNavigationService);
+            RegisterButton = new RegisterStudentCommand(this, connection);
         }
     }
 }

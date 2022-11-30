@@ -4,7 +4,7 @@ namespace TypingApp.Models;
 
 public class User
 {
-    public uint Id { get; }
+    public int Id { get; set; }
     public string Email { get; }
     public string FirstName { get; set; }
     public string? Preposition { get; set; }
@@ -12,7 +12,7 @@ public class User
     public List<Character> Characters { get; set; }
     public bool IsTeacher { get; set; }
 
-    public User(uint id, string email, string firstName, string lastName, List<Character> characters, bool isTeacher)
+    public User(int id, string email, string firstName, string lastName, List<Character> characters, bool isTeacher)
     {
         Id = id;
         Email = email;

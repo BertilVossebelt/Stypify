@@ -52,14 +52,18 @@ namespace TypingApp.Commands
                     reader = _connection.ExecuteSqlStatement(QueryString2);
                     if (reader.HasRows == false)
                     {
+                        reader.Close();
                         var QueryString3 = $"INSERT INTO Group_Student (group_id,student_id) VALUES ('{_groupId}','{_user.Id}')";
                         _connection.ExecuteSqlStatement2(QueryString3);
+
+                        reader.Close();
                         
                         var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
                         navigateCommand.Execute(this);
                     }
                     else
                     {
+                        reader.Close();
                         string messageBoxText3 = "Je bent al gekoppeld aan deze groep";
                         string caption3 = "Fout";
                         MessageBoxButton button3 = MessageBoxButton.OK;
@@ -70,6 +74,7 @@ namespace TypingApp.Commands
                 }
                 else
                 {
+                    reader.Close();
                     string messageBoxText4 = "Deze group code bestaat niet";
                     string caption4 = "Fout";
                     MessageBoxButton button4 = MessageBoxButton.OK;

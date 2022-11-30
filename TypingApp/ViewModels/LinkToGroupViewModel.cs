@@ -39,7 +39,7 @@ namespace TypingApp.ViewModels
             _groupCodeGroup = new Group(connection);
 
             var teacher = new NavigateCommand(teacherDashboardNavigationService);
-            var student = new NavigateCommand(teacherDashboardNavigationService);
+            var student = new NavigateCommand(studentDashboardNavigationService);
             BackButton = user.IsTeacher ? teacher : student;
 
             LinkToGroupSaveButton = new LinkToGroupSaveCommand(_groupCodeGroup, user, connection, studentDashboardNavigationService);

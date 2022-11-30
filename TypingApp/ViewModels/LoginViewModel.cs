@@ -49,12 +49,14 @@ namespace TypingApp.ViewModels
         public LoginViewModel(NavigationService registerNavigationService,
             NavigationService adminDashboardNavigationService, NavigationService studentDashboardNavigationService,
             NavigationService teacherDashboardNavigationService,
-            DatabaseConnection connection)
+            DatabaseConnection connection,
+            User user)
         {
+            
             _connection = connection;
             GoToRegisterButton = new NavigateCommand(registerNavigationService);
             LoginButton = new LoginCommand(this, _connection, studentDashboardNavigationService,
-                adminDashboardNavigationService, teacherDashboardNavigationService);
+                adminDashboardNavigationService, teacherDashboardNavigationService,user);
         }
     }
 }

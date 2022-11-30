@@ -49,7 +49,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         NewGroupCodeButton = new UpdateGroupCodeCommand(CurrentGroup, user, connection,this);
     }
 
-    //bool startup is voor als je de viewmodel in komt, als die false is werkt de functie als een refresh
+
     public void GetGroupsFromDatabase()
     {
         var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_user.Id}'";
@@ -71,6 +71,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         
             _groupBoxVisibility = Visibility.Visible;
         }
+        reader.Close();
     }
 
     public string GetGroupIdFromDatabase(int groupNumber)

@@ -18,15 +18,12 @@ namespace TypingApp.Commands
 {
     public class RegisterStudentCommand : CommandBase
     {
-        private readonly NavigationStore _navigationStore;
         private readonly DatabaseConnection _connection;
         private readonly RegisterViewModel _registerViewModel;
 
-        public RegisterStudentCommand(RegisterViewModel registerViewModel, NavigationStore navigationStore,
-            DatabaseConnection connection)
+        public RegisterStudentCommand(RegisterViewModel registerViewModel, DatabaseConnection connection)
         {
             _registerViewModel = registerViewModel;
-            _navigationStore = navigationStore;
             _connection = connection;
         }
 

@@ -5,7 +5,7 @@
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
         <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
         <RootNamespace>TypingApp</RootNamespace>
     </PropertyGroup>

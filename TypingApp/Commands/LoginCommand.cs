@@ -23,13 +23,14 @@ namespace TypingApp.Commands
         private readonly NavigationService _adminDashboardNavigationService;
         private NavigationService _teacherDashboardNavigationService;
 
-        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection, NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService, NavigationService teacherDashboardNavigationService)
+        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection, NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user)
         {
             _loginViewModel = loginViewModel;
             _connection = connection;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
             _teacherDashboardNavigationService = teacherDashboardNavigationService;
+            _user = user;
         }
 
         public override void Execute(object? parameter)
@@ -72,6 +73,11 @@ namespace TypingApp.Commands
             command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
             command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
             validUser = command.ExecuteScalar() == null ? false : true;
+            if (validUser)
+            {   int userId = (int)command.ExecuteScalar();
+                Console.WriteLine(userId);
+                _user.Id = userId;
+            }
 
             return validUser;
         }
@@ -85,7 +91,7 @@ namespace TypingApp.Commands
             command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND student = 1";
             command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
             isStudentAccount = command.ExecuteScalar() == null ? false : true;
-
+            _user.IsTeacher = false;
             return isStudentAccount;
         }
 
@@ -98,7 +104,7 @@ namespace TypingApp.Commands
             command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND teacher = 1";
             command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
             isTeacherAccount = command.ExecuteScalar() == null ? false : true;
-
+            _user.IsTeacher = true;
             return isTeacherAccount;
         }
 
