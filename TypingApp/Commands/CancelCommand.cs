@@ -10,26 +10,16 @@ namespace TypingApp.Commands;
 public class CancelCommand : CommandBase
 {
     private readonly NavigationService _teacherDashboardNavigationService;
-    private readonly User _user;
-    private readonly DatabaseConnection _connection;
 
-    public CancelCommand(NavigationService teacherDashboardNavigationService, User user, DatabaseConnection connection)
+    public CancelCommand(NavigationService teacherDashboardNavigationService)
     {
         _teacherDashboardNavigationService = teacherDashboardNavigationService;
-        _user = user;
-        _connection = connection;
     }
 
     public override void Execute(object? parameter)
     {
-        string messageBoxText = "Weet je zeker dat je wilt annuleren";
-        string caption = "Annuleren";
-        MessageBoxButton button = MessageBoxButton.YesNo;
-        MessageBoxImage icon = MessageBoxImage.Warning;
-        MessageBoxResult result;
-
-        result = MessageBox.Show(messageBoxText, caption, button, icon);
-        if (result == MessageBoxResult.Yes)
+        var CancelMessageBox = MessageBox.Show("Weet je zeker dat je wilt annuleren", "Annuleren", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        if (CancelMessageBox == MessageBoxResult.Yes)
         {
             var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
             navigateCommand.Execute(this);

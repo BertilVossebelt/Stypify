@@ -19,12 +19,12 @@
                             HorizontalAlignment="Center" 
                             FontSize="18" 
                             TextWrapping="Wrap"
-                            Text="{Binding GroupNameText2}"/>
+                            Text="{Binding GroupNameText}"/>
                     <TextBlock
                             HorizontalAlignment="Center" 
                             FontSize="18" 
                             TextWrapping="Wrap"
-                            Text="{Binding GroupCodeText2}"/>
+                            Text="{Binding GroupCodeText}"/>
                     <Button Content="VolgendeGroup" Command="{Binding NextGroupButton}"/>
                     <Button Content="Nieuwe Code" Command="{Binding NewGroupCodeButton}" />
                 </StackPanel>

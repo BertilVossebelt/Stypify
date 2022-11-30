@@ -10,14 +10,14 @@ namespace TypingApp.Models
     public class Group
     {
         private string? _groupCode;
-        private string? Name;
-        private string? _groupID;
+        private string? _name;
+        private int _groupID;
         private DatabaseConnection? _connection;
 
         public string GroupName
         {
-            get { return Name; }
-            set { Name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         public string GroupCode
         {
@@ -28,7 +28,7 @@ namespace TypingApp.Models
         public int? AmountOfStudents { get; set; }
         public int? Id { get; set; }
 
-        public string GroupID { get { return _groupID; } set { _groupID = value; } }
+        public int GroupID { get { return _groupID; } set { _groupID = value; } }
 
         public Group(string _groupName, int amount, int id)
         {
@@ -40,13 +40,11 @@ namespace TypingApp.Models
         public Group(DatabaseConnection connection)
         {
             _connection = connection;
-            //GroupCodeGeneratorMethod();
         }
 
         public void GroupCodeGeneratorMethod()
         {
             // loop tot de code heeft gecheckt of dezelfde code niet al voorkomt in database
-            //Dit kan misschien nog wat anders
             while (true)
             {
                 string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
