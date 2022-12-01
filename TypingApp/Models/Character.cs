@@ -8,7 +8,7 @@ public class Character
     }
 
     public uint User_id { get; set; }
-    
+
     public char Char { get; }
     
     public byte Accuracy { get; set; }
