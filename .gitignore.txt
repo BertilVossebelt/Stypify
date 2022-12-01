@@ -1,8 +1,11 @@
 .idea
 .idea/
+.idea/.idea.TypingApp/.idea/workspace.xml
 
 .vscode
 .vscode/
+
+TypingApp/obj/Debug/net6.0-windows/TypingApp.csproj.FileListAbsolute.txt
 
 TypingApp/packages
 TypingApp/bin
