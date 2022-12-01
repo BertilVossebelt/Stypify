@@ -12,6 +12,7 @@ namespace TypingApp.Commands
 
         public DatabaseConnection()
         {
+            // Test
             var cSsh = new SshClient("145.44.233.157", "student", "UB22TypApp");
             cSsh.Connect();
 
