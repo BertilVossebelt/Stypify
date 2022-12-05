@@ -1,7 +1,8 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
-using TypingApp.Services;
+using Group = TypingApp.Models.Group;
+using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels
 {
@@ -30,7 +31,7 @@ namespace TypingApp.ViewModels
 
             var teacher = new NavigateCommand(teacherDashboardNavigationService);
             var student = new NavigateCommand(studentDashboardNavigationService);
-            BackButton = user.IsTeacher ? teacher : student;
+            BackButton = user.IsTeacher ? student : teacher;
 
             LinkToGroupSaveButton = new LinkToGroupSaveCommand(_groupCodeGroup, user, connection, studentDashboardNavigationService);
         }
