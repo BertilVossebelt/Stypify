@@ -16,7 +16,7 @@ namespace TypingApp.Commands
 
         public override void Execute(object? parameter)
         {
-            Group newGroup = new Group(_connection);
+            var newGroup = new Group(_connection);
             newGroup.GroupCodeGeneratorMethod();
 
             var navigateCommand = new NavigateCommand(_addGroupNavigationService);

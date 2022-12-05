@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using TypingApp.Models;
 using TypingApp.Stores;
-using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.Commands;
 

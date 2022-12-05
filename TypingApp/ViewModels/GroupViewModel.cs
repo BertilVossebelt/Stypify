@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 
@@ -92,7 +90,6 @@ namespace TypingApp.ViewModels
 
             Groups = new ObservableCollection<Group>();
             var reader2 = _connection.ExecuteSqlStatement($"SELECT name, id, code  FROM Groups WHERE teacher_id='{_user.Id}'" ); //TODO TESTEN
-
             if (reader2 != null)
             {
                 var previousName = " ";
@@ -100,8 +97,6 @@ namespace TypingApp.ViewModels
                 while (reader2.Read())
                 {
                     Groups.Add(new Group(reader2.GetString(0), 10, reader2.GetInt32(1), reader2.GetString(2)));
-                    Console.WriteLine(reader2.GetString(0));
-                    Console.WriteLine("Groep id: " + reader2.GetInt32(1));
                 }
                 reader2.Close();
             }

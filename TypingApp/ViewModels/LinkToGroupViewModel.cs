@@ -1,7 +1,6 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Group = TypingApp.Models.Group;
 using NavigationService = TypingApp.Services.NavigationService;
 

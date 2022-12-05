@@ -73,7 +73,7 @@ public class TeacherDashboardViewModel : ViewModelBase
     {
         var groupNameCodeArray = groupDataArray[groupNumber];
         int groupID = Int32.Parse(groupNameCodeArray[0]);
-        CurrentGroup.GroupID = groupID;
+        CurrentGroup.GroupId = groupID;
         return groupID;
     }
     public string GetGroupNameFromDatabase(int groupNumber)

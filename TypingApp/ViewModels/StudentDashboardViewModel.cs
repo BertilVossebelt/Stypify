@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using TypingApp.Models;
+using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
 using System.Collections.ObjectModel;
