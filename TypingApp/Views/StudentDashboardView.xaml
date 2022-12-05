@@ -7,6 +7,74 @@
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1200">
     <Grid>
-        <Button Command="{Binding StartPracticeButton}" Width="250" Height="30">Oefenen</Button>
+
+        <StackPanel>
+
+
+            <StackPanel Background="#EFDEFE" Orientation="Horizontal" HorizontalAlignment="Stretch" FlowDirection="RightToLeft">
+                <Button Content="Uitloggen" Margin="10" Command="{Binding LogOutButton}" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                <Button Content="Nieuwe Groep" Margin="10" Command="{Binding AddToGroupButton}" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+            </StackPanel>
+
+            <StackPanel>
+
+                <TextBlock FontSize="50" FontStyle="Italic" Text="{Binding WelcomeNameText}" Foreground="#B273C2" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400" Height="150" Margin="20">
+
+                    <Border CornerRadius="10" BorderThickness="2" BorderBrush="#C194D1" Background="#EFDEFE">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                            <TextBlock FontSize="20" FontStyle="Italic" Margin="10" HorizontalAlignment="Center" Text="Gepersonaliseerde oefeningen" />
+
+                            <Button Command="{Binding StartPracticeButton}" Foreground="White" Width="250" Height="30" BorderThickness="0" BorderBrush="Purple" Background="Purple" >Oefenen
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="10"></Setter>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                            <TextBlock Text="{Binding CompletedExercisesText}" FontStyle="Italic" Margin="5"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto">
+                <ListBox x:Name="LessonListBox" ItemsSource="{Binding Lessons}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+                     SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                     >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+
+                            <Border BorderBrush="Black" BorderThickness="1" Width="120" Height="140" HorizontalAlignment="Left" Margin="0,0,0,0" Background="Black" CornerRadius="10">
+                                <Grid>
+                                    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Margin="0,0,0,0" Visibility="Visible" IsManipulationEnabled="True" HorizontalAlignment="Stretch" Width="110" Height="130">
+                                        <Border.Background>
+                                            <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <Label x:Name="StudentAmountLabel" Content="{Binding Path=GroupCode}" Canvas.Left="17" Canvas.Top="69" Foreground="White" FontSize="11" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" FontStyle="Italic" FontWeight="Medium" FontStretch="Normal"/>
+                                    <Label x:Name="GroupNameLabel" Content="{Binding Path=GroupName}" Canvas.Left="13" Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Margin="5,0,0,18" Foreground="White" FontSize="18" FontWeight="Medium" FontStyle="Normal" FontStretch="Normal" OpacityMask="Black" BorderBrush="Black"/>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+
+        </StackPanel>
+
+
+
     </Grid>
+
+
 </UserControl>

@@ -8,9 +8,12 @@ using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TypingApp.Commands;
 using TypingApp.Models;
+using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
+using TypingApp.Commands;
 
 namespace TypingApp.Views
 {
@@ -20,36 +23,93 @@ namespace TypingApp.Views
     public partial class App : Application
     {
         private readonly User _user;
+        private readonly ExerciseStore _exerciseStore;
         private readonly NavigationStore _navigationStore;
-        
+        private readonly DatabaseConnection _connection;
+
         public App()
         {
             var characters = new List<Character>()
             {
-                new(1, 'e', 0),
-                new(1, 'n', 0),
-                new(1, 'a', 0),
-                new(1, 't', 0),
+                new('e'),
+                new('n'),
+                new('a'),
+                new('t'),
             };
-            
-            _user = new User(1, "email@email.nl", "Voornaam", "Achternaam", characters);
+
+            _user = new User(0, "email@email.nl", "Voornaam", "Achternaam", characters, false);
             _navigationStore = new NavigationStore();
+            _connection = new DatabaseConnection();
+            _exerciseStore = new ExerciseStore();
         }
-        
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            // dotnet ef migrations add InitialMigration --project TypingApp
-            
-            _navigationStore.CurrentViewModel = new StudentDashboardViewModel(_user, _navigationStore);
-            
-            MainWindow = new MainWindow()
+            // _navigationStore.CurrentViewModel = new GroupViewModel(_connection);
+
+            _navigationStore.CurrentViewModel = CreateLoginViewModel();
+
+            MainWindow = new MainWindow(_exerciseStore, _user)
             {
                 DataContext = new MainViewModel(_navigationStore)
             };
-            
+
             MainWindow.Show();
-            
+
             base.OnStartup(e);
+        }
+
+        private LoginViewModel? CreateLoginViewModel()
+        {
+            var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
+            var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
+            var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+
+            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel, teacherDashboardViewModel, _connection, _user);
+        }
+
+        private AdminDashboardViewModel CreateAdminDashboardViewModel()
+        {
+            return new AdminDashboardViewModel(_connection);
+        }
+
+        private RegisterViewModel CreateRegisterViewModel()
+        {
+            return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel), _connection);
+        }
+
+        private StudentDashboardViewModel CreateStudentDashboardViewModel()
+        {
+            var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
+            var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
+            var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            return new StudentDashboardViewModel(_user, _connection ,exerciseNavigationService, linkToGroupNavigationService, loginNavigationService);
+        }
+        private ExerciseViewModel CreateExerciseViewModel()
+        {
+            return new ExerciseViewModel(new NavigationService(_navigationStore, CreateStudentDashboardViewModel), _user, _exerciseStore);
+        }
+
+        private GroupViewModel CreateTeacherDashboardViewModel()
+        {
+            return new GroupViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _user, _connection);
+            //return new TeacherDashboardViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _user, _connection);
+        }
+
+        private AddGroupViewModel CreateAddGroupViewModel()
+        {
+            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+            var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            return new AddGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _user, _connection);
+        }
+
+        private LinkToGroupViewModel CreateLinkToGroupViewModel()
+        {
+            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+            var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+
+            return new LinkToGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _user, _connection);
         }
     }
 }

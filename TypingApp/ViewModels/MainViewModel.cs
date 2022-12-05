@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using TypingApp.Models;
+﻿using TypingApp.Commands;
 using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
@@ -7,7 +6,8 @@ namespace TypingApp.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private readonly NavigationStore _navigationStore;
-    public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+    public ViewModelBase? CurrentViewModel => _navigationStore.CurrentViewModel;
+    
     public MainViewModel(NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
