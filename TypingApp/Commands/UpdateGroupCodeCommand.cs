@@ -19,7 +19,6 @@ internal class UpdateGroupCodeCommand : CommandBase
         {
             _group.GroupCodeGeneratorMethod();
 
-            Console.WriteLine("Nieuwe code: "+ _group.GroupCode);
             var queryString3 = $"UPDATE Groups SET code='{_group.GroupCode}'WHERE id='{_group.GroupId}'";
             _connection.ExecuteSqlStatement2(queryString3);
             

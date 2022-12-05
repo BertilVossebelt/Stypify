@@ -1,6 +1,8 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 
@@ -19,7 +21,6 @@ namespace TypingApp.ViewModels
             set
             {
                 _SelectedItem = value;
-                Console.WriteLine(SelectedItem.GroupName);
                 Students.Clear();
                 getStudentsFromGroup();
                 OnPropertyChanged();
@@ -113,15 +114,13 @@ namespace TypingApp.ViewModels
 
         private void getStudentsFromGroup()
         {
-            Console.WriteLine(SelectedItem.Id);
             if (SelectedItem != null)
             {
-                var reader3 = _connection.ExecuteSqlStatement($"SELECT Users.first_name ,Users.preposition, Users.last_name FROM Users JOIN Group_Student ON Users.id = Group_Student.student_id WHERE Group_Student.group_id='{SelectedItem.Id}'");
+                var reader3 = _connection.ExecuteSqlStatement($"SELECT Users.first_name ,Users.preposition, Users.last_name FROM Users JOIN Group_Student ON Users.id = Group_Student.student_id WHERE Group_Student.group_id='{SelectedItem.GroupId}'");
                 if (reader3 != null)
                 {
                     while (reader3.Read())
                     {
-                        Console.WriteLine(reader3.GetString(0));
                         Students.Add(new Student($"{reader3.GetString(0)} {reader3.GetString(2)}", 0, 0));
                     }
                 }

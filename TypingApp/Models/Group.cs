@@ -13,8 +13,6 @@ namespace TypingApp.Models
         public Group(string _groupName, int amount, int id, string groupCode)
         {
             GroupName = _groupName;
-            AmountOfStudents = amount;
-            Id = id;
             GroupCode = groupCode;
         }
         

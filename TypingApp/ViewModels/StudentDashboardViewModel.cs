@@ -3,6 +3,7 @@ using TypingApp.Commands;
 using TypingApp.Services;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using TypingApp.Models;
 using Group = TypingApp.Models.Group;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 

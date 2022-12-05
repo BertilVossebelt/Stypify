@@ -42,10 +42,7 @@ namespace TypingApp.Views
             var textAsCharList = _exerciseStore.TextAsCharList;
 
             var charData = textAsCharList[_currentIndex];
-
-            Console.WriteLine(textAsCharList.Count + " " + _currentIndex + " = " +
-                              (textAsCharList.Count == _currentIndex));
-
+            
             if (charData.Char == keyChar)
             {
                 charData.Correct = true;
@@ -60,7 +57,6 @@ namespace TypingApp.Views
 
             if (textAsCharList.Count == _currentIndex)
             {
-                Console.WriteLine("New exercise");
                 var generateExerciseCommand = new GenerateExerciseCommand(_exerciseStore, _user.Characters);
                 generateExerciseCommand.Execute(this);
                 _completedExercises++;
