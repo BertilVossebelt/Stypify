@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,11 +6,10 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using TypingApp.Commands;
-using TypingApp.Stores;
-using NavigationService = TypingApp.Services.NavigationService;
+using TypingApp.Services;
 
 namespace TypingApp.ViewModels
 {
@@ -54,7 +53,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _firstName = value;
-                OnPropertyChanged(nameof(FirstName));
+                OnPropertyChanged();
             }
         }
 
@@ -67,7 +66,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _preposition = value;
-                OnPropertyChanged(nameof(Preposition));
+                OnPropertyChanged();
             }
         }
 
@@ -80,7 +79,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _lastName = value;
-                OnPropertyChanged(nameof(LastName));
+                OnPropertyChanged();
             }
         }
 
@@ -93,7 +92,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _password = value;
-                OnPropertyChanged(nameof(Password));
+                OnPropertyChanged();
             }
         }
 
@@ -106,7 +105,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _passwordConfirm = value;
-                OnPropertyChanged(nameof(PasswordConfirm));
+                OnPropertyChanged();
             }
         }
 

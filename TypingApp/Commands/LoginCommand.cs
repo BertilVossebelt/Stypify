@@ -16,7 +16,7 @@ namespace TypingApp.Commands
         private readonly User _user;
         private readonly NavigationService _studentDashboardNavigationService;
         private readonly NavigationService _adminDashboardNavigationService;
-        private NavigationService _teacherDashboardNavigationService;
+        private readonly NavigationService _teacherDashboardNavigationService;
 
         public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
@@ -33,92 +33,78 @@ namespace TypingApp.Commands
         public override void Execute(object? parameter)
         {
             var isValidUser = AuthenticateUser(new NetworkCredential(_loginViewModel.Email, _loginViewModel.Password));
-            if (!isValidUser) ShowIncorrectCredentialsMessage();
-
-            if (isStudentAccount())
+            if (!isValidUser)
             {
-                var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
-                navigateCommand.Execute(this);
+                ShowIncorrectCredentialsMessage();
+                return;
             }
 
-            if (isTeacherAccount())
-            {
-                var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
-                navigateCommand.Execute(this);
-            }
-
-            if (isAdminAccount())
-            {
-                var navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
-                navigateCommand.Execute(this);
-            }
+            var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
+            if (IsAdminAccount()) navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
+            if (IsTeacherAccount()) navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+            navigateCommand.Execute(this);
         }
 
+        private bool AuthenticateUser(NetworkCredential credential)
+        {
+            var command = new SqlCommand();
+            command.Connection = _connection.GetConnection();
+
+            command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
+            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
+            command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
+            var validUser = command.ExecuteScalar() != null;
+            
+            if (!validUser) return validUser;
+            
+            var userId = (int)command.ExecuteScalar();
+            _user.Id = userId;
+            return validUser;
+        }
+
+        public bool IsStudentAccount()
+        {
+            var command = new SqlCommand();
+            command.Connection = _connection.GetConnection();
+
+            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND student = 1";
+            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
+            var isStudentAccount = command.ExecuteScalar() != null;
+            _user.IsTeacher = false;
+            
+            return isStudentAccount;
+        }
+
+        private bool IsTeacherAccount()
+        {
+            var command = new SqlCommand();
+            command.Connection = _connection.GetConnection();
+
+            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND teacher = 1";
+            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
+            var isTeacherAccount = command.ExecuteScalar() != null;
+            _user.IsTeacher = true;
+            return isTeacherAccount;
+        }
+
+        private bool IsAdminAccount()
+        {
+            var command = new SqlCommand();
+            command.Connection = _connection.GetConnection();
+
+            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND admin = 1";
+            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
+            var isAdminAccount = command.ExecuteScalar() != null;
+
+            return isAdminAccount;
+        }
+        
         private static void ShowIncorrectCredentialsMessage()
         {
             const string message = "Email of wachtwoord incorrect.";
             const MessageBoxButton type = MessageBoxButton.OK;
             const MessageBoxImage icon = MessageBoxImage.Error;
             MessageBox.Show(message, "Error", type, icon);
-        }
-
-        public bool AuthenticateUser(NetworkCredential credential)
-        {
-            bool validUser;
-            SqlCommand command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
-            command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
-            validUser = command.ExecuteScalar() == null ? false : true;
-            if (validUser)
-            {
-                int userId = (int)command.ExecuteScalar();
-                Console.WriteLine(userId);
-                _user.Id = userId;
-            }
-
-            return validUser;
-        }
-
-        public bool isStudentAccount()
-        {
-            bool isStudentAccount;
-            SqlCommand command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND student = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            isStudentAccount = command.ExecuteScalar() == null ? false : true;
-            _user.IsTeacher = false;
-            return isStudentAccount;
-        }
-
-        public bool isTeacherAccount()
-        {
-            bool isTeacherAccount;
-            SqlCommand command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND teacher = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            isTeacherAccount = command.ExecuteScalar() == null ? false : true;
-            _user.IsTeacher = true;
-            return isTeacherAccount;
-        }
-
-        public bool isAdminAccount()
-        {
-            bool isAdminAccount;
-            SqlCommand command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND admin = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            isAdminAccount = command.ExecuteScalar() == null ? false : true;
-
-            return isAdminAccount;
         }
     }
 }

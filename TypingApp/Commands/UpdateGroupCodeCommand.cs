@@ -1,9 +1,9 @@
-﻿using TypingApp.Models;
+﻿using System;
+using TypingApp.Models;
 using TypingApp.ViewModels;
 
-namespace TypingApp.Commands
-{
-    internal class UpdateGroupCodeCommand : CommandBase
+namespace TypingApp.Commands;
+internal class UpdateGroupCodeCommand : CommandBase
     {
         private Group _group;
         private readonly DatabaseConnection _connection;
@@ -19,14 +19,13 @@ namespace TypingApp.Commands
         {
             _group.GroupCodeGeneratorMethod();
 
-            System.Console.WriteLine("Nieuwe code: "+ _group.GroupCode);
-            string QueryString3 = $"UPDATE Groups SET code='{_group.GroupCode}'WHERE id='{_group.GroupID}'";
-            _connection.ExecuteSqlStatement2(QueryString3);
+            var queryString3 = $"UPDATE Groups SET code='{_group.GroupCode}'WHERE id='{_group.GroupId}'";
+            _connection.ExecuteSqlStatement2(queryString3);
             
             _teacherDashboardViewModel.GetGroupsFromDatabase();
             _teacherDashboardViewModel.GroupCodeText = _teacherDashboardViewModel.GetGroupCodeFromDatabase(_teacherDashboardViewModel.GroupNumber);
         }
     }
 
-}
+
 

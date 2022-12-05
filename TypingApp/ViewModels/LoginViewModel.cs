@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Security;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using TypingApp.Commands;
 using TypingApp.Models;
-using TypingApp.Stores;
-using TypingApp.Views;
-using NavigationService = TypingApp.Services.NavigationService;
+using TypingApp.Services;
 
 namespace TypingApp.ViewModels
 {
@@ -29,7 +17,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _email = value;
-                OnPropertyChanged(nameof(Email));
+                OnPropertyChanged();
             }
         }
 
@@ -39,7 +27,7 @@ namespace TypingApp.ViewModels
             set
             {
                 _password = value;
-                OnPropertyChanged(nameof(Password));
+                OnPropertyChanged();
             }
         }
 

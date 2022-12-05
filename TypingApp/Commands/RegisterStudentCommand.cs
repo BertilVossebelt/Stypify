@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Net;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using TypingApp.Models;
-using TypingApp.Stores;
-using TypingApp.ViewModels;
+using System.Data.SqlClient;
 using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
+using System.Security;
+using System.Windows;
+using TypingApp.ViewModels;
 
 namespace TypingApp.Commands
 {
