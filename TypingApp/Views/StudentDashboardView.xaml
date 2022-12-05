@@ -41,7 +41,7 @@
             </StackPanel>
 
             <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto">
-                <ListBox x:Name="LessonListBox" ItemsSource="{Binding Groups}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+                <ListBox x:Name="LessonListBox" ItemsSource="{Binding Lessons}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
                      SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                      >
                     <ListBox.ItemsPanel>
@@ -69,8 +69,6 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </ScrollViewer>
-
-            <Button x:Name="MyButton" Content="Test" />
 
         </StackPanel>
 

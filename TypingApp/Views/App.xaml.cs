@@ -84,7 +84,7 @@ namespace TypingApp.Views
             var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
             var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
-            return new StudentDashboardViewModel(_user ,exerciseNavigationService, linkToGroupNavigationService, loginNavigationService);
+            return new StudentDashboardViewModel(_user, _connection ,exerciseNavigationService, linkToGroupNavigationService, loginNavigationService);
         }
         private ExerciseViewModel CreateExerciseViewModel()
         {
