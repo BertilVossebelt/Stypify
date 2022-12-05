@@ -46,7 +46,7 @@ namespace TypingApp.Views
         protected override void OnStartup(StartupEventArgs e)
         {
             // _navigationStore.CurrentViewModel = new GroupViewModel(_connection);
-            
+
             _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
             MainWindow = new MainWindow(_navigationStore, _exerciseStore, _user)
@@ -65,25 +65,26 @@ namespace TypingApp.Views
             var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
             var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
-            
+
             return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel, teacherDashboardViewModel, _connection, _user);
         }
-        
+
         private AdminDashboardViewModel CreateAdminDashboardViewModel()
         {
             return new AdminDashboardViewModel(_connection);
         }
-        
+
         private RegisterViewModel CreateRegisterViewModel()
         {
             return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel), _connection);
         }
-        
+
         private StudentDashboardViewModel CreateStudentDashboardViewModel()
         {
             var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
             var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
-            return new StudentDashboardViewModel(exerciseNavigationService, linkToGroupNavigationService);
+            var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            return new StudentDashboardViewModel(_user ,exerciseNavigationService, linkToGroupNavigationService, loginNavigationService);
         }
         private ExerciseViewModel CreateExerciseViewModel()
         {
@@ -92,7 +93,7 @@ namespace TypingApp.Views
 
         private GroupViewModel CreateTeacherDashboardViewModel()
         {
-            return new GroupViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel),_user, _connection);
+            return new GroupViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _user, _connection);
             //return new TeacherDashboardViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _user, _connection);
         }
 
