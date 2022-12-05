@@ -34,7 +34,7 @@
                                     </Style>
                                 </Button.Resources>
                             </Button>
-                            <TextBlock Text="Aantal gemaakte oefeningen: {aantal}" FontStyle="Italic" Margin="5"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding CompletedExercisesText}" FontStyle="Italic" Margin="5"  HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </StackPanel>
                     </Border>
                 </Grid>

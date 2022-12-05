@@ -20,6 +20,7 @@ public class StudentDashboardViewModel : ViewModelBase
     public ICommand LogOutButton { get; }
 
     public string WelcomeNameText { get; set; }
+    public string CompletedExercisesText { get; set; }
     public ObservableCollection<Group> Lessons
     {
         get => _Lessons;
@@ -34,7 +35,9 @@ public class StudentDashboardViewModel : ViewModelBase
     {
         _user = user;
         _connection = connection;
-        getName();
+
+        WelcomeNameText = GetName();
+        CompletedExercisesText = GetCompletedExercises();
         
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
         AddToGroupButton = new NavigateCommand(linkToGroupNavigationService);
@@ -46,7 +49,7 @@ public class StudentDashboardViewModel : ViewModelBase
     }
 
 
-    private void getName()
+    private string GetName()
     {
         var reader = _connection.ExecuteSqlStatement($"SELECT first_name, preposition, last_name FROM Users WHERE id='{_user.Id}'");
         if (reader != null)
@@ -62,11 +65,19 @@ public class StudentDashboardViewModel : ViewModelBase
                 {
                     preposition = "";
                 }
-
-                WelcomeNameText = ("Welkom " + reader.GetString(0) + " " + preposition + reader.GetString(2));
-            }
-            reader.Close();
+                
+                var WelkomString = ("Welkom " + reader.GetString(0) + " " + preposition + reader.GetString(2));
+                reader.Close();
+                return WelkomString;
+            }  
         }
+        reader.Close();
+        return "No name";
+    }
+
+    private string GetCompletedExercises()
+    {
+        return "Aantal gemaakte oefeningen: 0";
     }
 
 
