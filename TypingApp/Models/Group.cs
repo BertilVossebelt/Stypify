@@ -30,11 +30,12 @@ namespace TypingApp.Models
 
         public int GroupID { get { return _groupID; } set { _groupID = value; } }
 
-        public Group(string _groupName, int amount, int id)
+        public Group(string _groupName, int amount, int id, string groupCode)
         {
             GroupName = _groupName;
             AmountOfStudents = amount;
             Id = id;
+            GroupCode = groupCode;
         }
         
         public Group(DatabaseConnection connection)
