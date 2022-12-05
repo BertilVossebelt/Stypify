@@ -5,8 +5,8 @@ namespace TypingApp.Stores;
 
 public class NavigationStore
 {
-    private ViewModelBase _currentViewModel;
-    public ViewModelBase CurrentViewModel
+    private ViewModelBase? _currentViewModel;
+    public ViewModelBase? CurrentViewModel
     {
         get => _currentViewModel;
         set

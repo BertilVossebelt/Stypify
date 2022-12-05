@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Stores;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Group = TypingApp.Models.Group;
-using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels
 {

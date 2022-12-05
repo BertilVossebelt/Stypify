@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
 using TypingApp.Commands;
 using TypingApp.Models;
 
@@ -76,10 +69,10 @@ namespace TypingApp.ViewModels
 
 
             Groups = new ObservableCollection<Group>();
-            Groups.Add(new Group("dads", 10, 10)); //TODO moet nog gekoppeld worden
-            Groups.Add(new Group("dads", 10, 10));
-            Groups.Add(new Group("dads", 10, 10));
-            Groups.Add(new Group("dads", 10, 10));
+            Groups.Add(new Group("dads")); //TODO moet nog gekoppeld worden
+            Groups.Add(new Group("dads"));
+            Groups.Add(new Group("dads"));
+            Groups.Add(new Group("dads"));
             var reader2 = _connection.ExecuteSqlStatement("SELECT name, group_id  FROM Groups JOIN Group_Student ON Groups.id = Group_Student.group_id"); //TODO TESTEN
             
             if (reader2 != null)
@@ -96,7 +89,7 @@ namespace TypingApp.ViewModels
                     {
                         count = 0;
                         count++;
-                        Groups.Add(new Group(reader2.GetString(0), count, reader2.GetInt32(1)));
+                        Groups.Add(new Group(reader2.GetString(0)));
                     }
                     previousName = reader2.GetString(0);
                 }

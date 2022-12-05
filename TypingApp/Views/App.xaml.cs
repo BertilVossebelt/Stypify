@@ -49,9 +49,9 @@ namespace TypingApp.Views
             
             _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
-            MainWindow = new MainWindow(_navigationStore, _exerciseStore, _user)
+            MainWindow = new MainWindow(_exerciseStore, _user)
             {
-                DataContext = new MainViewModel(_navigationStore, _connection)
+                DataContext = new MainViewModel(_navigationStore)
             };
 
             MainWindow.Show();
@@ -59,7 +59,7 @@ namespace TypingApp.Views
             base.OnStartup(e);
         }
 
-        private LoginViewModel CreateLoginViewModel()
+        private LoginViewModel? CreateLoginViewModel()
         {
             var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
             var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);

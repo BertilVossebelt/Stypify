@@ -1,11 +1,11 @@
-﻿using System;
-using NavigationService = TypingApp.Services.NavigationService;
+﻿using TypingApp.Services;
+
 
 namespace TypingApp.Commands;
 
 public class NavigateCommand : CommandBase
 {
-    private readonly Services.NavigationService _navigationService;
+    private readonly NavigationService _navigationService;
     public NavigateCommand(NavigationService navigationService)
     {
         _navigationService = navigationService;

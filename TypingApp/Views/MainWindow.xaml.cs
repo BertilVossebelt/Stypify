@@ -15,17 +15,15 @@ namespace TypingApp.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private NavigationStore _navigationStore;
         private ExerciseStore _exerciseStore;
         private User _user;
         private int _completedExercises;
         
         private int _currentIndex { get; set; }
 
-        public MainWindow(NavigationStore currentViewModel, ExerciseStore exerciseStore, User user)
+        public MainWindow(ExerciseStore exerciseStore, User user)
         {
             _completedExercises = 0;
-            _navigationStore = currentViewModel;
             _exerciseStore = exerciseStore;
             _currentIndex = 0;
             _user = user;
