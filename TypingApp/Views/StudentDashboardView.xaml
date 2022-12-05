@@ -22,7 +22,7 @@
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="400" Height="150" Margin="20">
 
-                    <Border CornerRadius="10" BorderThickness="2" BorderBrush="#C194D1" Background="#EFDEFE">
+                    <Border CornerRadius="15" BorderThickness="2" BorderBrush="#C194D1" Background="#EFDEFE">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
                             <TextBlock FontSize="20" FontStyle="Italic" Margin="10" HorizontalAlignment="Center" Text="Gepersonaliseerde oefeningen" />
@@ -30,7 +30,7 @@
                             <Button Command="{Binding StartPracticeButton}" Foreground="White" Width="250" Height="30" BorderThickness="0" BorderBrush="Purple" Background="Purple" >Oefenen
                                 <Button.Resources>
                                     <Style TargetType="Border">
-                                        <Setter Property="CornerRadius" Value="10"></Setter>
+                                        <Setter Property="CornerRadius" Value="15"></Setter>
                                     </Style>
                                 </Button.Resources>
                             </Button>
