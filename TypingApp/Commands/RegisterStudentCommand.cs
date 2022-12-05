@@ -27,6 +27,18 @@ namespace TypingApp.Commands
             _connection = connection;
         }
 
+        public override bool CanExecute(object? parameter)
+        {
+            if (_registerViewModel.CanCreateAccount)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override void Execute(object? parameter)
         {
             string password = SecureStringToString(_registerViewModel.Password);
@@ -99,16 +111,14 @@ namespace TypingApp.Commands
 
         public bool PasswordConfirmCorrect(string password, string passwordConfirm)
         {
-            bool correct;
             if (password.Equals(passwordConfirm))
             {
-                correct = true;
+                return true;
             }
             else
             {
-                correct = false;
+                return false;
             }
-            return correct;
         }
 
         String SecureStringToString(SecureString value)
