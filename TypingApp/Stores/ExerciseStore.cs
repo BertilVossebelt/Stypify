@@ -11,7 +11,6 @@ public class ExerciseStore
     private readonly Lazy<Task> _initLazy;
     public event Action<List<Character>>? ExerciseCreated;
     public event Action<List<Character>>? ExerciseUpdated;
-
     public List<Character> TextAsCharList { get; private set; }
 
     public ExerciseStore()
@@ -35,7 +34,7 @@ public class ExerciseStore
         TextAsCharList = text.Select(c => new Character(c)).ToList();
         OnExerciseCreated();
     }
-
+    
     private void OnExerciseCreated()
     {
         ExerciseCreated?.Invoke(TextAsCharList);
@@ -51,5 +50,4 @@ public class ExerciseStore
     {
         ExerciseUpdated?.Invoke(TextAsCharList);
     }
-    
 }

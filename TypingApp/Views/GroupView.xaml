@@ -43,11 +43,8 @@
             <Label Content="Mijn groepen:" Foreground="Black" Margin="15,0,0,0" FontSize="24" />
             <Button Content="Groep Toevoegen" Command="{Binding AddGroupButton}" Width="100" Margin="1000,0,0,0" />
 
-
-
             <ListBox x:Name="GroupListBox" ItemsSource="{Binding Groups}" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-                     SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
-                     >
+                     SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>

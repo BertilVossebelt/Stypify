@@ -33,7 +33,12 @@ namespace TypingApp.Views
         private void SetEventListeners(object sender, RoutedEventArgs e)
         {
             var window = GetWindow(this);
-            if (window != null) window.TextInput += HandleTextInput;
+            if (window != null)
+            {
+                window.TextInput -= HandleTextInput;
+                window.TextInput += HandleTextInput;
+            }
+                
             _exerciseStore.ExerciseCreated += (List<Character> obj) => _currentIndex = 0;
         }
         
@@ -42,6 +47,12 @@ namespace TypingApp.Views
             var keyChar = (char)System.Text.Encoding.ASCII.GetBytes(e.Text)[0];
             var textAsCharList = _exerciseStore.TextAsCharList;
             var charData = textAsCharList[_currentIndex];
+            
+            Console.WriteLine(charData.Char);
+            Console.WriteLine(charData.Correct);
+            Console.WriteLine(charData.Wrong);
+            Console.WriteLine("--------------------------");
+
             
             if (charData.Char == keyChar)
             {

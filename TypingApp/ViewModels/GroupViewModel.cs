@@ -7,120 +7,115 @@ using TypingApp.Commands;
 using TypingApp.Models;
 using NavigationService = TypingApp.Services.NavigationService;
 
-namespace TypingApp.ViewModels
+namespace TypingApp.ViewModels;
+
+public class GroupViewModel : ViewModelBase
 {
-    public class GroupViewModel : ViewModelBase
+    private string _boundNumber;
+    private Group _selectedItem;
+    private ObservableCollection<Group> _groups;
+    private ObservableCollection<Student> _student;
+
+    public Group SelectedItem
     {
-        private ICommand AddGroupButton { get; }
-        private readonly User _user;
-        private string _boundNumber;
-        private Group _SelectedItem;
-
-        private Group SelectedItem
+        get { return _selectedItem; }
+        set
         {
-            get { return _SelectedItem; }
-            set
+            _selectedItem = value;
+            Students.Clear();
+            GetStudentsFromGroup();
+            OnPropertyChanged();
+        }
+    }
+
+    public string BoundNumber
+    {
+        get { return _boundNumber; }
+        set
+        {
+            if (_boundNumber != value)
             {
-                _SelectedItem = value;
-                Students.Clear();
-                GetStudentsFromGroup();
+                _boundNumber = value;
                 OnPropertyChanged();
             }
         }
+    }
 
-        private string BoundNumber
+    public ObservableCollection<Group> Groups
+    {
+        get => _groups;
+        set
         {
-            get { return _boundNumber; }
-            set
-            {
-                if (_boundNumber != value)
-                {
-                    _boundNumber = value;
-                    OnPropertyChanged();
-                }
-            }
+            _groups = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<Student> Students
+    {
+        get => _student;
+        set
+        {
+            _student = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ICommand AddGroupButton { get; }
+    public new event PropertyChangedEventHandler PropertyChanged;
+
+    public GroupViewModel(NavigationService addGroupNavigationService, User user,
+        DatabaseConnection connection)
+    {
+        BoundNumber = "Naam niet gevonden";
+        _connection = connection;
+
+        var reader = _connection.ExecuteSqlStatement(
+            $"SELECT first_name, preposition, last_name FROM Users WHERE id='{user.Id}'");
+        AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
+
+        while (reader.Read())
+        {
+            var preposition = " ";
+            if (!reader.IsDBNull(1)) preposition = reader.GetString(1) + " ";
+            BoundNumber = ("Welkom " + reader.GetString(0) + " " + preposition + reader.GetString(2));
         }
 
-        private ObservableCollection<Group> _groups;
+        reader.Close();
 
-        private ObservableCollection<Group> Groups
+        Groups = new ObservableCollection<Group>();
+        reader = _connection.ExecuteSqlStatement(
+            $"SELECT name, id, code  FROM Groups WHERE teacher_id='{user.Id}'"); //TODO TESTEN
         {
-            get => _groups;
-            set
-            {
-                _groups = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<Student> _student;
-
-        public ObservableCollection<Student> Students
-        {
-            get => _student;
-            set
-            {
-                _student = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public new event PropertyChangedEventHandler PropertyChanged;
-
-        public GroupViewModel(NavigationService addGroupNavigationService, User user, DatabaseConnection connection)
-        {
-            _user = user;
-            BoundNumber = "Naam niet gevonden";
-            _connection = connection;
-
-            var reader = _connection.ExecuteSqlStatement(
-                    $"SELECT first_name, preposition, last_name FROM Users WHERE id='{_user.Id}'");
-
-            AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
-
-            while (reader.Read())
-            {
-                var preposition = "";
-                if (!reader.IsDBNull(1)) preposition = reader.GetString(1) + " ";
-                BoundNumber = ("Welkom " + reader.GetString(0) + " " + preposition + reader.GetString(2));
-            }
-
-            reader.Close();
-
-            Groups = new ObservableCollection<Group>();
-            reader = _connection.ExecuteSqlStatement(
-                $"SELECT name, id, code  FROM Groups WHERE teacher_id='{_user.Id}'"); //TODO TESTEN
             while (reader.Read())
             {
                 var groupName = reader.GetString(0);
                 var id = reader.GetInt32(1);
                 var groupCode = reader.GetString(2);
-
+                
                 Groups.Add(new Group(groupName, 10, id, groupCode));
             }
 
             reader.Close();
-            Students = new ObservableCollection<Student>();
         }
+        Students = new ObservableCollection<Student>();
+    }
 
-        private new void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    private new void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private void GetStudentsFromGroup()
+    {
+        var reader = _connection.ExecuteSqlStatement(
+            $"SELECT Users.first_name ,Users.preposition, Users.last_name FROM Users JOIN Group_Student ON Users.id = Group_Student.student_id WHERE Group_Student.group_id='{SelectedItem.GroupId}'");
+        
+        while (reader.Read())
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Students.Add(new Student($"{reader.GetString(0)} {reader.GetString(2)}", 0, 0));
         }
 
-        private void GetStudentsFromGroup()
-        {
-            var reader = _connection.ExecuteSqlStatement(
-                "SELECT Users.first_name ,Users.preposition, Users.last_name " +
-                "FROM Users JOIN Group_Student ON Users.id = Group_Student.student_id " +
-                $"WHERE Group_Student.group_id='{SelectedItem.GroupId}'");
-
-            while (reader.Read())
-            {
-                Students.Add(new Student($"{reader.GetString(0)} {reader.GetString(2)}", 0, 0));
-            }
-
-            reader.Close();
-        }
+        reader.Close();
     }
 }
