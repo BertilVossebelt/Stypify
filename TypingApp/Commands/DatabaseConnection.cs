@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Renci.SshNet;
 using System.Data;
@@ -11,26 +7,28 @@ namespace TypingApp.Commands
 {
     public class DatabaseConnection
     {
-        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-
-        public SqlConnection connection;
+        private readonly SqlConnectionStringBuilder _builder = new();
+        private readonly SqlConnection? _connection;
 
         public DatabaseConnection()
         {
-            SshClient cSSH = new SshClient("145.44.233.157", "student", "UB22TypApp");
+            // Test
+            var cSsh = new SshClient("145.44.233.157", "student", "UB22TypApp");
+            cSsh.Connect();
 
-            cSSH.Connect();
-            ForwardedPortLocal forwardedPortLocal = new ForwardedPortLocal("127.0.0.1", 1433, "127.0.0.1", 1433);
-            cSSH.AddForwardedPort(forwardedPortLocal);
+            var forwardedPortLocal = new ForwardedPortLocal("127.0.0.1", 1433, "127.0.0.1", 1433);
+            cSsh.AddForwardedPort(forwardedPortLocal);
             forwardedPortLocal.Start();
+
             try
             {
-                builder.DataSource = "127.0.0.1"; //localhost
-                builder.UserID = "SA";
-                builder.Password = "<MSSQL22TypApp>";
-                builder.InitialCatalog = "typapp";
-                connection = new SqlConnection(builder.ConnectionString);
-                connection.Open();
+                _builder.DataSource = "127.0.0.1"; // localhost
+                _builder.UserID = "SA";
+                _builder.Password = "<MSSQL22TypApp>";
+                _builder.InitialCatalog = "typapp";
+
+                _connection = new SqlConnection(_builder.ConnectionString);
+                _connection.Open();
             }
             catch (SqlException e)
             {
@@ -40,18 +38,18 @@ namespace TypingApp.Commands
 
         public SqlDataReader ExecuteSqlStatement(string sqlQuery)
         {
-            var command = new SqlCommand(sqlQuery, connection);
+            var command = new SqlCommand(sqlQuery, _connection);
             var reader = command.ExecuteReader();
-            command.StatementCompleted += sqlCommand_StatementCompleted;
+            command.StatementCompleted += SqlCommand_StatementCompleted;
 
             return reader;
         }
-
-
-        public void ExecuteSqlStatement2(String sqlQuery)
+        
+        // TODO: "ExecuteSqlStatement>2<" not a great name.
+        public void ExecuteSqlStatement2(string sqlQuery)
         {
-            SqlCommand command = new SqlCommand(sqlQuery, connection);
-            command.StatementCompleted += sqlCommand_StatementCompleted;
+            var command = new SqlCommand(sqlQuery, _connection);
+            command.StatementCompleted += SqlCommand_StatementCompleted;
             int result = command.ExecuteNonQuery();
 
             // Check Error
@@ -59,14 +57,14 @@ namespace TypingApp.Commands
             else Console.WriteLine("gelukt " + result);
         }
 
-        static void sqlCommand_StatementCompleted(object sender, StatementCompletedEventArgs e)
+        private static void SqlCommand_StatementCompleted(object sender, StatementCompletedEventArgs e)
         {
             Console.WriteLine($"Records changed:{e.RecordCount}");
         }
 
-        public SqlConnection GetConnection()
+        public SqlConnection? GetConnection()
         {
-            return connection;
+            return _connection;
         }
     }
 }

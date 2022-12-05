@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using TypingApp.Models;
-using TypingApp.Stores;
 using TypingApp.ViewModels;
 using NavigationService = TypingApp.Services.NavigationService;
 
@@ -23,7 +18,9 @@ namespace TypingApp.Commands
         private readonly NavigationService _adminDashboardNavigationService;
         private NavigationService _teacherDashboardNavigationService;
 
-        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection, NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user)
+        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection,
+            NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
+            NavigationService teacherDashboardNavigationService, User user)
         {
             _loginViewModel = loginViewModel;
             _connection = connection;
@@ -36,31 +33,33 @@ namespace TypingApp.Commands
         public override void Execute(object? parameter)
         {
             var isValidUser = AuthenticateUser(new NetworkCredential(_loginViewModel.Email, _loginViewModel.Password));
-            if (isValidUser)
-            {
-                if (isStudentAccount())
-                {
-                    var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
-                    navigateCommand.Execute(this);
-                }
+            if (!isValidUser) ShowIncorrectCredentialsMessage();
 
-                if (isTeacherAccount())
-                {
-                    var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
-                    navigateCommand.Execute(this);
-                    
-                }
-
-                if (isAdminAccount())
-                {
-                    var navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
-                    navigateCommand.Execute(this);
-                }
-            }
-            else
+            if (isStudentAccount())
             {
-                MessageBox.Show("Email of wachtwoord incorrect.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
+                navigateCommand.Execute(this);
             }
+
+            if (isTeacherAccount())
+            {
+                var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+                navigateCommand.Execute(this);
+            }
+
+            if (isAdminAccount())
+            {
+                var navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
+                navigateCommand.Execute(this);
+            }
+        }
+
+        private static void ShowIncorrectCredentialsMessage()
+        {
+            const string message = "Email of wachtwoord incorrect.";
+            const MessageBoxButton type = MessageBoxButton.OK;
+            const MessageBoxImage icon = MessageBoxImage.Error;
+            MessageBox.Show(message, "Error", type, icon);
         }
 
         public bool AuthenticateUser(NetworkCredential credential)
@@ -68,13 +67,14 @@ namespace TypingApp.Commands
             bool validUser;
             SqlCommand command = new SqlCommand();
             command.Connection = _connection.GetConnection();
-            
+
             command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
             command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
             command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
             validUser = command.ExecuteScalar() == null ? false : true;
             if (validUser)
-            {   int userId = (int)command.ExecuteScalar();
+            {
+                int userId = (int)command.ExecuteScalar();
                 Console.WriteLine(userId);
                 _user.Id = userId;
             }
