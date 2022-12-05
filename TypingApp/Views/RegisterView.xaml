@@ -8,6 +8,10 @@
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         MinHeight="450" MinWidth="330">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
 
     <Grid>
         <Grid>
@@ -142,6 +146,16 @@
                     Height="30"
                     FontStyle="Italic"/>
 
+                <TextBlock
+                    Text="{Binding ErrorMessage}"
+                    Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Foreground="Red"
+                    FontFamily="Helvetica"
+                    FontWeight="Light"
+                    FontSize="17"
+                    HorizontalAlignment="Center"
+                    Margin="0,5,0,0"/>
+                
                 <Button 
                     x:Name="RegisterButton" 
                     Command="{Binding RegisterButton}"
@@ -155,7 +169,7 @@
                     Height="30"
                     Content="Registreren"
                     Margin="0,10,0,0">
-
+                    
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="15"></Setter>
