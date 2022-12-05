@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:TypingApp.ViewModels"
         xmlns:stores="clr-namespace:TypingApp.Stores"
+        xmlns:components="clr-namespace:TypingApp.Views.Components"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         MinHeight="400" MinWidth="330">
@@ -58,12 +59,12 @@
                     FontSize="17"
                     Margin="0,5,0,0"/>
 
-                <stores:BindablePasswordBox 
+                <components:BindablePasswordBox 
                     Password="{Binding Password, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
                     Width="200"
                     Height="30"
                     Margin="0,0,0,0">
-                </stores:BindablePasswordBox>
+                </components:BindablePasswordBox>
 
                 <Button x:Name="LoginButton"
                         Command="{Binding LoginButton}"
