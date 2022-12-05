@@ -33,7 +33,11 @@ namespace TypingApp.Commands
         public override void Execute(object? parameter)
         {
             var isValidUser = AuthenticateUser(new NetworkCredential(_loginViewModel.Email, _loginViewModel.Password));
-            if (!isValidUser) ShowIncorrectCredentialsMessage();
+            if (!isValidUser)
+            {
+                ShowIncorrectCredentialsMessage();
+                return;
+            }
 
             var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
             if (IsAdminAccount()) navigateCommand = new NavigateCommand(_adminDashboardNavigationService);

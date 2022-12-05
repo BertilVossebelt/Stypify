@@ -30,17 +30,17 @@ namespace TypingApp.Views
             InitializeComponent();
         }
 
-        private void TextInputListener(object sender, RoutedEventArgs e)
+        private void SetEventListeners(object sender, RoutedEventArgs e)
         {
             var window = GetWindow(this);
             if (window != null) window.TextInput += HandleTextInput;
+            _exerciseStore.ExerciseCreated += (List<Character> obj) => _currentIndex = 0;
         }
-
-        public void HandleTextInput(object sender, TextCompositionEventArgs e)
+        
+        private void HandleTextInput(object sender, TextCompositionEventArgs e)
         {
             var keyChar = (char)System.Text.Encoding.ASCII.GetBytes(e.Text)[0];
             var textAsCharList = _exerciseStore.TextAsCharList;
-
             var charData = textAsCharList[_currentIndex];
             
             if (charData.Char == keyChar)
