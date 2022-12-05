@@ -48,12 +48,6 @@ namespace TypingApp.Views
             var textAsCharList = _exerciseStore.TextAsCharList;
             var charData = textAsCharList[_currentIndex];
             
-            Console.WriteLine(charData.Char);
-            Console.WriteLine(charData.Correct);
-            Console.WriteLine(charData.Wrong);
-            Console.WriteLine("--------------------------");
-
-            
             if (charData.Char == keyChar)
             {
                 charData.Correct = true;
