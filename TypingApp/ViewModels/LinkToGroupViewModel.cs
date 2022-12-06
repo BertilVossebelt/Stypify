@@ -1,6 +1,8 @@
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
+using TypingApp.Services;
+using TypingApp.Services.Database;
 using Group = TypingApp.Models.Group;
 using NavigationService = TypingApp.Services.NavigationService;
 
@@ -25,7 +27,7 @@ namespace TypingApp.ViewModels
         }
 
 
-        public LinkToGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseConnection connection)
+        public LinkToGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseService connection)
         {
             _groupCodeGroup = new Group(connection);
 

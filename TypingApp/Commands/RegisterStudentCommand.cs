@@ -4,16 +4,18 @@ using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
+using TypingApp.Services;
+using TypingApp.Services.Database;
 using TypingApp.ViewModels;
 
 namespace TypingApp.Commands
 {
     public class RegisterStudentCommand : CommandBase
     {
-        private readonly DatabaseConnection _connection;
+        private readonly DatabaseService _connection;
         private readonly RegisterViewModel _registerViewModel;
 
-        public RegisterStudentCommand(RegisterViewModel registerViewModel, DatabaseConnection connection)
+        public RegisterStudentCommand(RegisterViewModel registerViewModel, DatabaseService connection)
         {
             _registerViewModel = registerViewModel;
             _connection = connection;

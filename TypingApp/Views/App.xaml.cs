@@ -14,6 +14,7 @@ using TypingApp.Services;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 using TypingApp.Commands;
+using TypingApp.Services.Database;
 
 namespace TypingApp.Views
 {
@@ -25,7 +26,7 @@ namespace TypingApp.Views
         private readonly User _user;
         private readonly ExerciseStore _exerciseStore;
         private readonly NavigationStore _navigationStore;
-        private readonly DatabaseConnection _connection;
+        private readonly DatabaseService _connection;
 
         public App()
         {
@@ -36,17 +37,20 @@ namespace TypingApp.Views
                 new('a'),
                 new('t'),
             };
-
-            _user = new User(0, "email@email.nl", "Voornaam", "Achternaam", characters, false);
+            
+            _user = new User(4, characters);
+            Console.WriteLine(_user.FirstName);
+            Console.WriteLine(_user.Preposition);
+            Console.WriteLine(_user.LastName);
+            Console.WriteLine(_user.Email);
+            
             _navigationStore = new NavigationStore();
-            _connection = new DatabaseConnection();
+            // _connection = new DatabaseService();
             _exerciseStore = new ExerciseStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // _navigationStore.CurrentViewModel = new GroupViewModel(_connection);
-
             _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
             MainWindow = new MainWindow(_exerciseStore, _user)

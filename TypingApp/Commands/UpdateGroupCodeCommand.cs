@@ -1,14 +1,16 @@
 ﻿using System;
 using TypingApp.Models;
+using TypingApp.Services;
+using TypingApp.Services.Database;
 using TypingApp.ViewModels;
 
 namespace TypingApp.Commands;
 internal class UpdateGroupCodeCommand : CommandBase
     {
         private Group _group;
-        private readonly DatabaseConnection _connection;
+        private readonly DatabaseService _connection;
         private readonly TeacherDashboardViewModel _teacherDashboardViewModel;
-        public UpdateGroupCodeCommand(Group CurrentGroup, DatabaseConnection connection,TeacherDashboardViewModel teacherDashboardViewModel)
+        public UpdateGroupCodeCommand(Group CurrentGroup, DatabaseService connection,TeacherDashboardViewModel teacherDashboardViewModel)
         {
             _group = CurrentGroup;
             _connection = connection;

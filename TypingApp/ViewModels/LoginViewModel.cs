@@ -3,6 +3,7 @@ using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Services.Database;
 
 namespace TypingApp.ViewModels
 {
@@ -37,7 +38,7 @@ namespace TypingApp.ViewModels
         public LoginViewModel(NavigationService registerNavigationService,
             NavigationService adminDashboardNavigationService, NavigationService studentDashboardNavigationService,
             NavigationService teacherDashboardNavigationService,
-            DatabaseConnection connection,
+            DatabaseService connection,
             User user)
         {
             

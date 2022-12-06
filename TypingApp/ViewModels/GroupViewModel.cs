@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
+using TypingApp.Services;
+using TypingApp.Services.Database;
 using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels;
@@ -65,7 +67,7 @@ public class GroupViewModel : ViewModelBase
     public new event PropertyChangedEventHandler PropertyChanged;
 
     public GroupViewModel(NavigationService addGroupNavigationService, User user,
-        DatabaseConnection connection)
+        DatabaseService connection)
     {
         BoundNumber = "Naam niet gevonden";
         _connection = connection;

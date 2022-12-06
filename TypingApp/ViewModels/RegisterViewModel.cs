@@ -10,6 +10,7 @@ using System.Security;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
+using TypingApp.Services.Database;
 
 namespace TypingApp.ViewModels
 {
@@ -114,7 +115,7 @@ namespace TypingApp.ViewModels
         public ICommand RegisterButton { get; }
         
         // Constructor
-        public RegisterViewModel(NavigationService loginNavigationService, DatabaseConnection connection) 
+        public RegisterViewModel(NavigationService loginNavigationService, DatabaseService connection) 
         {
             _connection = connection;
             GoToLoginButton = new NavigateCommand(loginNavigationService);

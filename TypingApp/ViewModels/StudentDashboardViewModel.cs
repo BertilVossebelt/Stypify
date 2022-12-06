@@ -4,6 +4,7 @@ using TypingApp.Services;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using TypingApp.Models;
+using TypingApp.Services.Database;
 using Group = TypingApp.Models.Group;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -12,7 +13,7 @@ namespace TypingApp.ViewModels;
 public class StudentDashboardViewModel : ViewModelBase
 {
     private User _user;
-    private DatabaseConnection _connection;
+    private DatabaseService _connection;
     private ObservableCollection<Group> _Lessons;
 
     public ICommand StartPracticeButton { get; }
@@ -31,7 +32,7 @@ public class StudentDashboardViewModel : ViewModelBase
         }
     }
     
-    public StudentDashboardViewModel(User user, DatabaseConnection connection ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
+    public StudentDashboardViewModel(User user, DatabaseService connection ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
     {
         _user = user;
         _connection = connection;

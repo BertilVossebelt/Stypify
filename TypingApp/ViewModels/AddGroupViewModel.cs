@@ -2,6 +2,7 @@
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Services.Database;
 
 namespace TypingApp.ViewModels;
 
@@ -27,7 +28,7 @@ public class AddGroupViewModel : ViewModelBase
         set{ _groupNameText = value; _group.GroupName = value; OnPropertyChanged(); }
     }
 
-    public AddGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseConnection connection)
+    public AddGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseService connection)
     {
         _group = new Group(connection);
         _group.GroupCodeGeneratorMethod();

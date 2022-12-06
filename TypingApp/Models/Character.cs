@@ -6,9 +6,7 @@ public class Character
     {
         Char = c;
     }
-
-    public uint User_id { get; set; }
-
+    
     public char Char { get; }
     
     public byte Accuracy { get; set; }

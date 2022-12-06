@@ -4,6 +4,8 @@ using System.Data;
 using System.Net;
 using System.Windows;
 using TypingApp.Models;
+using TypingApp.Services;
+using TypingApp.Services.Database;
 using TypingApp.ViewModels;
 using NavigationService = TypingApp.Services.NavigationService;
 
@@ -11,14 +13,14 @@ namespace TypingApp.Commands
 {
     public class LoginCommand : CommandBase
     {
-        private readonly DatabaseConnection _connection;
+        private readonly DatabaseService _connection;
         private readonly LoginViewModel _loginViewModel;
         private readonly User _user;
         private readonly NavigationService _studentDashboardNavigationService;
         private readonly NavigationService _adminDashboardNavigationService;
         private readonly NavigationService _teacherDashboardNavigationService;
 
-        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection,
+        public LoginCommand(LoginViewModel loginViewModel, DatabaseService connection,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
             NavigationService teacherDashboardNavigationService, User user)
         {
@@ -61,20 +63,7 @@ namespace TypingApp.Commands
             _user.Id = userId;
             return validUser;
         }
-
-        public bool IsStudentAccount()
-        {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND student = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            var isStudentAccount = command.ExecuteScalar() != null;
-            _user.IsTeacher = false;
-            
-            return isStudentAccount;
-        }
-
+        
         private bool IsTeacherAccount()
         {
             var command = new SqlCommand();

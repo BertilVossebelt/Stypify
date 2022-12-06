@@ -5,6 +5,7 @@ using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Services.Database;
 
 namespace TypingApp.ViewModels;
 
@@ -16,7 +17,7 @@ public class TeacherDashboardViewModel : ViewModelBase
 
     public readonly List<string[]> groupDataArray = new List<string[]>();
 
-    private readonly DatabaseConnection _connection;
+    private readonly DatabaseService _connection;
     private User _user;
     private Group CurrentGroup;
     private int _groupNumber;
@@ -31,7 +32,7 @@ public class TeacherDashboardViewModel : ViewModelBase
     public string GroupCodeText { get => _groupCodeText; set { _groupCodeText = value; OnPropertyChanged(); }}
     public int GroupID { get => _groupID; set { _groupID = value; OnPropertyChanged(); }}
 
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, User user, DatabaseConnection connection)
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, User user, DatabaseService connection)
     {
         _connection = connection;
         _user = user;
