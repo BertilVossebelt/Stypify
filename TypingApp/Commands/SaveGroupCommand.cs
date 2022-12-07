@@ -9,10 +9,10 @@ public class SaveGroupCommand : CommandBase
 {
     private readonly User _user;
     private Group _group;
-    private DatabaseConnection _connection;
+    private DatabaseService _connection;
     private NavigationService _teacherDashboardNavigationService;
 
-    public SaveGroupCommand(Group newGroup, User user,DatabaseConnection connection, NavigationService teacherDashboardNavigationService)
+    public SaveGroupCommand(Group newGroup, User user, DatabaseService connection, NavigationService teacherDashboardNavigationService)
     {
         _group = newGroup;
         _user = user;

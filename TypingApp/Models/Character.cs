@@ -6,13 +6,14 @@ public class Character
     {
         Char = c;
     }
-
-    public uint User_id { get; set; }
-
+    
     public char Char { get; }
     
     public byte Accuracy { get; set; }
     
+    public int TimeToType { get; set; }
+    
+    // Not in database
     public bool Wrong { get; set; }
     
     public bool Correct { get; set; }

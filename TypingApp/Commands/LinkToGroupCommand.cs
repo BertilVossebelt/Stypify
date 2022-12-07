@@ -9,12 +9,12 @@ namespace TypingApp.Commands
     internal class LinkToGroupSaveCommand : CommandBase
     {
         private readonly User _user;
-        private readonly DatabaseConnection _connection;
+        private readonly DatabaseService _connection;
         private readonly Group _code;
         private int _groupId;
         private readonly NavigationService _studentDashboardNavigationService;
 
-        public LinkToGroupSaveCommand(Group code, User user, DatabaseConnection connection,
+        public LinkToGroupSaveCommand(Group code, User user, DatabaseService connection,
             NavigationService studentDashboardNavigationService)
         {
             _code = code;
@@ -47,14 +47,13 @@ namespace TypingApp.Commands
         private bool CheckIfUserIsLinked(out SqlDataReader reader)
         {
             // Check if student is already linked to group.
-            var queryString2 = $"SELECT id FROM Group_Student WHERE group_id='{_groupId}' AND student_id='{_user.Id}';";
-            reader = _connection.ExecuteSqlStatement(queryString2);
+            var queryString = $"SELECT id FROM Group_Student WHERE group_id='{_groupId}' AND student_id='{_user.Id}';";
+            reader = _connection.ExecuteSqlStatement(queryString);
 
             // Check if student is already linked
             if (!reader.HasRows) return false;
             ShowAlreadyLinkedError();
             return true;
-
         }
 
         /*

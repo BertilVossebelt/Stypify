@@ -9,7 +9,6 @@
       Width="1200">
 
     <Grid>
-
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,640">
             <Button Command="{Binding BackButton}" Width="70" HorizontalAlignment="Left" Margin="10" >Terug</Button>
         </StackPanel>

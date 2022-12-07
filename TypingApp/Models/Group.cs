@@ -1,11 +1,12 @@
 using System;
 using TypingApp.Commands;
+using TypingApp.Services;
 
 namespace TypingApp.Models
 {
     public class Group
     {
-        private readonly DatabaseConnection? _connection;
+        private readonly DatabaseService? _connection;
 
         public string GroupName { get; set; }
         public string GroupCode { get; set; }
@@ -16,7 +17,7 @@ namespace TypingApp.Models
             GroupCode = groupCode;
         }
         
-        public Group(DatabaseConnection connection)
+        public Group(DatabaseService connection)
         {
             _connection = connection;
         }

@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TypingApp.Commands;
+using TypingApp.Services;
 
 namespace TypingApp.ViewModels;
 
 public class ViewModelBase : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
-    protected DatabaseConnection _connection { get; set; }
+    protected DatabaseService _connection { get; set; }
 
     public virtual void RaisePropertyChanged(string propertyName)
     {

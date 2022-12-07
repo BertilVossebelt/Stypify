@@ -1,6 +1,7 @@
 ﻿using System.Security;
 using System.Windows.Input;
 using TypingApp.Commands;
+using TypingApp.Services;
 
 namespace TypingApp.ViewModels
 {
@@ -93,7 +94,7 @@ namespace TypingApp.ViewModels
 
         public ICommand RegisterTeacherButton { get;}
 
-        public AdminDashboardViewModel(DatabaseConnection connection)
+        public AdminDashboardViewModel(DatabaseService connection)
         {
             _connection = connection;
             RegisterTeacherButton = new RegisterTeacherCommand(this, connection);

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Stores;
 
 namespace TypingApp.ViewModels
 {
@@ -37,14 +38,12 @@ namespace TypingApp.ViewModels
         public LoginViewModel(NavigationService registerNavigationService,
             NavigationService adminDashboardNavigationService, NavigationService studentDashboardNavigationService,
             NavigationService teacherDashboardNavigationService,
-            DatabaseConnection connection,
-            User user)
+            DatabaseService connection, UserStore userStore)
         {
-            
             _connection = connection;
             GoToRegisterButton = new NavigateCommand(registerNavigationService);
             LoginButton = new LoginCommand(this, _connection, studentDashboardNavigationService,
-                adminDashboardNavigationService, teacherDashboardNavigationService,user);
+                adminDashboardNavigationService, teacherDashboardNavigationService, userStore);
         }
     }
 }

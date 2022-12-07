@@ -4,6 +4,7 @@ using TypingApp.Services;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using TypingApp.Models;
+using TypingApp.Stores;
 using Group = TypingApp.Models.Group;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -11,8 +12,8 @@ namespace TypingApp.ViewModels;
 
 public class StudentDashboardViewModel : ViewModelBase
 {
-    private User _user;
-    private DatabaseConnection _connection;
+    private readonly UserStore _userStore;
+    private DatabaseService _connection;
     private ObservableCollection<Group> _Lessons;
 
     public ICommand StartPracticeButton { get; }
@@ -31,9 +32,9 @@ public class StudentDashboardViewModel : ViewModelBase
         }
     }
     
-    public StudentDashboardViewModel(User user, DatabaseConnection connection ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
+    public StudentDashboardViewModel(UserStore userStore, DatabaseService connection ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
     {
-        _user = user;
+        _userStore = userStore;
         _connection = connection;
 
         WelcomeNameText = GetName();
@@ -51,28 +52,7 @@ public class StudentDashboardViewModel : ViewModelBase
 
     private string GetName()
     {
-        var reader = _connection.ExecuteSqlStatement($"SELECT first_name, preposition, last_name FROM Users WHERE id='{_user.Id}'");
-        if (reader != null)
-        {
-            while (reader.Read())
-            {
-                string preposition = " ";
-                if (!reader.IsDBNull(1))
-                {
-                    preposition = reader.GetString(1) + " ";
-                }
-                else
-                {
-                    preposition = "";
-                }
-                
-                var WelkomString = ("Welkom " + reader.GetString(0) + " " + preposition + reader.GetString(2));
-                reader.Close();
-                return WelkomString;
-            }  
-        }
-        reader.Close();
-        return "No name";
+        return  "Welkom " + _userStore.Student.FirstName + " " + _userStore.Student.Preposition + _userStore.Student.LastName;
     }
 
     private string GetCompletedExercises()
