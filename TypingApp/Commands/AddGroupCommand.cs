@@ -1,6 +1,5 @@
 ﻿using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Services.Database;
 
 namespace TypingApp.Commands;
 

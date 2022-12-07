@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -6,7 +7,8 @@ using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Services.Database;
+using TypingApp.Services.DatabaseProviders;
+using TypingApp.Stores;
 using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels;
@@ -66,14 +68,14 @@ public class GroupViewModel : ViewModelBase
     public ICommand AddGroupButton { get; }
     public new event PropertyChangedEventHandler PropertyChanged;
 
-    public GroupViewModel(NavigationService addGroupNavigationService, User user,
+    public GroupViewModel(NavigationService addGroupNavigationService, UserStore userStore,
         DatabaseService connection)
     {
         BoundNumber = "Naam niet gevonden";
         _connection = connection;
 
         var reader = _connection.ExecuteSqlStatement(
-            $"SELECT first_name, preposition, last_name FROM Users WHERE id='{user.Id}'");
+            $"SELECT first_name, preposition, last_name FROM Users WHERE id='{userStore.User.Id}'");
         AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
 
         while (reader.Read())
@@ -87,7 +89,7 @@ public class GroupViewModel : ViewModelBase
 
         Groups = new ObservableCollection<Group>();
         reader = _connection.ExecuteSqlStatement(
-            $"SELECT name, id, code  FROM Groups WHERE teacher_id='{user.Id}'"); //TODO TESTEN
+            $"SELECT name, id, code  FROM Groups WHERE teacher_id='{userStore.User.Id}'"); //TODO TESTEN
         {
             while (reader.Read())
             {
@@ -110,14 +112,16 @@ public class GroupViewModel : ViewModelBase
 
     private void GetStudentsFromGroup()
     {
-        var reader = _connection.ExecuteSqlStatement(
-            $"SELECT Users.first_name ,Users.preposition, Users.last_name FROM Users JOIN Group_Student ON Users.id = Group_Student.student_id WHERE Group_Student.group_id='{SelectedItem.GroupId}'");
-        
-        while (reader.Read())
+        var student = new GroupProvider().GetStudents(SelectedItem.GroupId);
+            
+        var characters = new List<Character>()
         {
-            Students.Add(new Student($"{reader.GetString(0)} {reader.GetString(2)}", 0, 0));
-        }
+            new('e'),
+            new('n'),
+            new('a'),
+            new('t'),
+        };
 
-        reader.Close();
+        new Student(student, characters);
     }
 }

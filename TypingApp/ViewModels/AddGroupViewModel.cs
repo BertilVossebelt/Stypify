@@ -2,7 +2,7 @@
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Services.Database;
+using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
 
@@ -28,17 +28,17 @@ public class AddGroupViewModel : ViewModelBase
         set{ _groupNameText = value; _group.GroupName = value; OnPropertyChanged(); }
     }
 
-    public AddGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseService connection)
+    public AddGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, UserStore userStore, DatabaseService connection)
     {
         _group = new Group(connection);
         _group.GroupCodeGeneratorMethod();
 
         GroupCodeText = _group.GroupCode.ToString();
-        SaveButton = new SaveGroupCommand(_group, user, connection, teacherDashboardNavigationService);
+        SaveButton = new SaveGroupCommand(_group, userStore.User, connection, teacherDashboardNavigationService);
         
         var teacher = new NavigateCommand(teacherDashboardNavigationService);
         var student = new NavigateCommand(studentDashboardNavigationService);
-        BackButton = user.IsTeacher ? teacher : student;
+        BackButton = userStore.User.IsTeacher ? teacher : student;
         
         CancelButton = new CancelCommand(teacherDashboardNavigationService);
         NewGroupCodeButton = new NewGroupCodeCommand(_group, this);

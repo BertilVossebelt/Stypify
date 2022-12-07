@@ -16,17 +16,17 @@ namespace TypingApp.Views
     public partial class MainWindow : Window
     {
         private ExerciseStore _exerciseStore;
-        private User _user;
+        private UserStore _userStore;
         private int _completedExercises;
         
         private int _currentIndex { get; set; }
-
-        public MainWindow(ExerciseStore exerciseStore, User user)
+        
+        public MainWindow(ExerciseStore exerciseStore, UserStore userStore)
         {
             _completedExercises = 0;
             _exerciseStore = exerciseStore;
             _currentIndex = 0;
-            _user = user;
+            _userStore = userStore;
             InitializeComponent();
         }
 
@@ -44,6 +44,7 @@ namespace TypingApp.Views
         
         private void HandleTextInput(object sender, TextCompositionEventArgs e)
         {
+            if (_userStore.Student?.Characters == null) return;
             var keyChar = (char)System.Text.Encoding.ASCII.GetBytes(e.Text)[0];
             var textAsCharList = _exerciseStore.TextAsCharList;
             var charData = textAsCharList[_currentIndex];
@@ -62,7 +63,7 @@ namespace TypingApp.Views
 
             if (textAsCharList.Count == _currentIndex)
             {
-                var generateExerciseCommand = new GenerateExerciseCommand(_exerciseStore, _user.Characters);
+                var generateExerciseCommand = new GenerateExerciseCommand(_exerciseStore, _userStore.Student.Characters);
                 generateExerciseCommand.Execute(this);
                 _completedExercises++;
                 _currentIndex = 0;

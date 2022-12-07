@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
 using TypingApp.Services;
-using TypingApp.Services.Database;
 using TypingApp.ViewModels;
 
 namespace TypingApp.Commands;
@@ -23,6 +22,7 @@ public class RegisterTeacherCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
+        // TODO: Refactoren, te lange en ingewikkelde functie. Gebruik Providers!
         var password = SecureStringToString(_adminDashboardViewModel.Password);
         var passwordConfirm = SecureStringToString(_adminDashboardViewModel.PasswordConfirm);
 

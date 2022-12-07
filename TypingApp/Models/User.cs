@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TypingApp.Services.Database;
+using TypingApp.Services.DatabaseProviders;
 
 namespace TypingApp.Models;
 
@@ -11,29 +11,29 @@ public class User
     public string FirstName { get; set; }
     public string? Preposition { get; set; }
     public string LastName { get; set; }
-    public List<Character>? Characters { get; set; }
     public bool IsTeacher { get; set; }
 
-    public User(int id, string email, string firstName, string lastName, List<Character> characters, bool isTeacher)
+    public User(int id, string email, string firstName, string lastName, bool isTeacher)
     {
         Id = id;
         Email = email;
         FirstName = firstName;
         LastName = lastName;
-        Characters = characters;
         IsTeacher = isTeacher;
     }
 
-    public User(int id, List<Character> characters)
+    public User(IReadOnlyList<Dictionary<string, object>>? props)
     {
-        var user = new UserProvider().GetUserById(id);
+        Id = (int)props[0]["id"];
+        Email = (string)props[0]["email"];
+        FirstName = (string)props[0]["first_name"];
+        LastName = (string)props[0]["last_name"];
+        IsTeacher = (byte)props[0]["teacher"] == 1;
+        
+        if (props[0]["preposition"].ToString().Length > 0)
+        {
+            Preposition = (string)props[0]["preposition"];
+        }        
 
-        Id = id;
-        Email = (string)user[0]["email"];
-        FirstName = (string)user[0]["first_name"];
-        Preposition = (string)user[0]["preposition"];
-        LastName = (string)user[0]["last_name"];
-        IsTeacher = (byte)user[0]["teacher"] == 1;
-        Characters = characters;
     }
 }

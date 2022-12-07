@@ -43,7 +43,7 @@ public class DatabaseService
         return command.ExecuteReader();
     }
 
-    public List<Dictionary<string, object>> Select(string query)
+    public List<Dictionary<string, object>>? Select(string query)
     {
         var command = new SqlCommand(query, _connection);
         var result = command.ExecuteReader();

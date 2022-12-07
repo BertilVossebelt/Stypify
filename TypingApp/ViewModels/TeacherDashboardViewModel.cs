@@ -5,7 +5,7 @@ using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Services.Database;
+using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
 
@@ -18,7 +18,7 @@ public class TeacherDashboardViewModel : ViewModelBase
     public readonly List<string[]> groupDataArray = new List<string[]>();
 
     private readonly DatabaseService _connection;
-    private User _user;
+    private UserStore _userStore;
     private Group CurrentGroup;
     private int _groupNumber;
     private int _groupID;
@@ -32,10 +32,10 @@ public class TeacherDashboardViewModel : ViewModelBase
     public string GroupCodeText { get => _groupCodeText; set { _groupCodeText = value; OnPropertyChanged(); }}
     public int GroupID { get => _groupID; set { _groupID = value; OnPropertyChanged(); }}
 
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, User user, DatabaseService connection)
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, UserStore userStore, DatabaseService connection)
     {
         _connection = connection;
-        _user = user;
+        _userStore = userStore;
         _groupBoxVisibility = Visibility.Hidden;
         _groupNumber = 0;
         CurrentGroup = new Group(connection);
@@ -48,7 +48,8 @@ public class TeacherDashboardViewModel : ViewModelBase
 
     public void GetGroupsFromDatabase()
     {
-        var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_user.Id}'";
+        // TODO: Gebruik providers, of liever nog, gebruik de UserStore!
+        var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_userStore.User.Id}'";
         var reader = _connection.ExecuteSqlStatement(queryString3);
 
         if (reader.HasRows)

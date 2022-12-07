@@ -11,6 +11,9 @@ public class Character
     
     public byte Accuracy { get; set; }
     
+    public int TimeToType { get; set; }
+    
+    // Not in database
     public bool Wrong { get; set; }
     
     public bool Correct { get; set; }

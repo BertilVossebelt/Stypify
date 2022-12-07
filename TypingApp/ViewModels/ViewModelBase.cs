@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using TypingApp.Commands;
 using TypingApp.Services;
-using TypingApp.Services.Database;
 
 namespace TypingApp.ViewModels;
 

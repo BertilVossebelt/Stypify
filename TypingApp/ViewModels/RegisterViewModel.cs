@@ -10,7 +10,6 @@ using System.Security;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
-using TypingApp.Services.Database;
 
 namespace TypingApp.ViewModels
 {

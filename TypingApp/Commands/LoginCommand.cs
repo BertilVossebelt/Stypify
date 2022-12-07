@@ -5,7 +5,8 @@ using System.Net;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Services.Database;
+using TypingApp.Services.DatabaseProviders;
+using TypingApp.Stores;
 using TypingApp.ViewModels;
 using NavigationService = TypingApp.Services.NavigationService;
 
@@ -15,21 +16,22 @@ namespace TypingApp.Commands
     {
         private readonly DatabaseService _connection;
         private readonly LoginViewModel _loginViewModel;
-        private readonly User _user;
+        private readonly UserStore _userStore;
         private readonly NavigationService _studentDashboardNavigationService;
         private readonly NavigationService _adminDashboardNavigationService;
         private readonly NavigationService _teacherDashboardNavigationService;
 
+        private int _userId { get; set; }
         public LoginCommand(LoginViewModel loginViewModel, DatabaseService connection,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
-            NavigationService teacherDashboardNavigationService, User user)
+            NavigationService teacherDashboardNavigationService, UserStore userStore)
         {
             _loginViewModel = loginViewModel;
             _connection = connection;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
             _teacherDashboardNavigationService = teacherDashboardNavigationService;
-            _user = user;
+            _userStore = userStore;
         }
 
         public override void Execute(object? parameter)
@@ -44,48 +46,37 @@ namespace TypingApp.Commands
             var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
             if (IsAdminAccount()) navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
             if (IsTeacherAccount()) navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+            
+            // Add a Student model to the UserStore.
+            // TODO: Change UserProvider to a StudentProvider once that table exists in the DB.
+            var student = new UserProvider().GetById(_userId);
+            _userStore.CreateStudent(student);
+            
             navigateCommand.Execute(this);
         }
 
         private bool AuthenticateUser(NetworkCredential credential)
         {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
-            command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
-            var validUser = command.ExecuteScalar() != null;
+            var userProvider = new UserProvider();
+            var validUser = userProvider.WeirdThing(credential.UserName, credential.Password);
             
             if (!validUser) return validUser;
             
-            var userId = (int)command.ExecuteScalar();
-            _user.Id = userId;
+            _userId = userProvider.WeirdThingAgainId(credential.UserName, credential.Password);
             return validUser;
         }
         
         private bool IsTeacherAccount()
         {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
+            var userProvider = new UserProvider();
+            return userProvider.WeirdThingTeacher(_loginViewModel.Email);
 
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND teacher = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            var isTeacherAccount = command.ExecuteScalar() != null;
-            _user.IsTeacher = true;
-            return isTeacherAccount;
         }
 
         private bool IsAdminAccount()
         {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND admin = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            var isAdminAccount = command.ExecuteScalar() != null;
-
-            return isAdminAccount;
+            var userProvider = new UserProvider();
+            return userProvider.WeirdThingAdmin(_loginViewModel.Email);
         }
         
         private static void ShowIncorrectCredentialsMessage()

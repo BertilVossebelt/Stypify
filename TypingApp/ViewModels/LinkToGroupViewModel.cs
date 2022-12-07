@@ -2,41 +2,42 @@ using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Services.Database;
+using TypingApp.Stores;
 using Group = TypingApp.Models.Group;
 using NavigationService = TypingApp.Services.NavigationService;
 
-namespace TypingApp.ViewModels
+namespace TypingApp.ViewModels;
+
+public class LinkToGroupViewModel : ViewModelBase
 {
-    public class LinkToGroupViewModel : ViewModelBase
+    public ICommand LinkToGroupSaveButton { get; }
+    public ICommand BackButton { get; }
+    private Group _groupCodeGroup { get; set; }
+
+    private string _groupNameText { get; set; }
+
+    public string GroupNameText
     {
-        public ICommand LinkToGroupSaveButton { get; }
-        public ICommand BackButton { get; }
-        private Group _groupCodeGroup { get; set; }
-        
-        private string _groupNameText { get; set; }
-        public string GroupNameText
+        get => _groupNameText;
+        set
         {
-            get => _groupNameText;
-            set
-            {
-                _groupNameText = value;
-                _groupCodeGroup.GroupCode = value;
-                OnPropertyChanged();
-            }
+            _groupNameText = value;
+            _groupCodeGroup.GroupCode = value;
+            OnPropertyChanged();
         }
+    }
 
 
-        public LinkToGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseService connection)
-        {
-            _groupCodeGroup = new Group(connection);
+    public LinkToGroupViewModel(NavigationService studentDashboardNavigationService,
+        NavigationService teacherDashboardNavigationService, UserStore userStore, DatabaseService connection)
+    {
+        _groupCodeGroup = new Group(connection);
 
-            var teacher = new NavigateCommand(teacherDashboardNavigationService);
-            var student = new NavigateCommand(studentDashboardNavigationService);
-            BackButton = user.IsTeacher ? student : teacher;
+        var teacher = new NavigateCommand(teacherDashboardNavigationService);
+        var student = new NavigateCommand(studentDashboardNavigationService);
+        BackButton = userStore.User.IsTeacher ? student : teacher;
 
-            LinkToGroupSaveButton = new LinkToGroupSaveCommand(_groupCodeGroup, user, connection, studentDashboardNavigationService);
-        }
-
+        LinkToGroupSaveButton =
+            new LinkToGroupSaveCommand(_groupCodeGroup, userStore.User, connection, studentDashboardNavigationService);
     }
 }
