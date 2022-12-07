@@ -1,93 +1,127 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Windows;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
+using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels;
 
 public class TeacherDashboardViewModel : ViewModelBase
 {
-    public ICommand AddGroupButton { get; }
-    public ICommand NextGroupButton { get; }
-    public ICommand NewGroupCodeButton { get; }
+    private string _boundNumber;
+    private Group _selectedItem;
+    private ObservableCollection<Group> _groups;
+    private ObservableCollection<Student> _student;
 
-    public readonly List<string[]> groupDataArray = new List<string[]>();
-
-    private readonly DatabaseService _connection;
-    private UserStore _userStore;
-    private Group CurrentGroup;
-    private int _groupNumber;
-    private int _groupID;
-    private string _groupNameText;
-    private string _groupCodeText;
-    private Visibility _groupBoxVisibility;
-
-    public Visibility GroupBoxVisibility { get => _groupBoxVisibility; set { _groupBoxVisibility = value; }}
-    public int GroupNumber { get => _groupNumber; set { _groupNumber = value; OnPropertyChanged(); }}
-    public string GroupNameText { get => _groupNameText; set { _groupNameText = value; OnPropertyChanged(); }}
-    public string GroupCodeText { get => _groupCodeText; set { _groupCodeText = value; OnPropertyChanged(); }}
-    public int GroupID { get => _groupID; set { _groupID = value; OnPropertyChanged(); }}
-
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, UserStore userStore, DatabaseService connection)
+    public Group SelectedItem
     {
-        _connection = connection;
-        _userStore = userStore;
-        _groupBoxVisibility = Visibility.Hidden;
-        _groupNumber = 0;
-        CurrentGroup = new Group(connection);
-        GetGroupsFromDatabase();
-        
-        AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
-        NextGroupButton = new NextGroupCommand(this);
-        NewGroupCodeButton = new UpdateGroupCodeCommand(CurrentGroup, connection,this);
+        get { return _selectedItem; }
+        set
+        {
+            _selectedItem = value;
+            Students.Clear();
+            GetStudentsFromGroup();
+            OnPropertyChanged();
+        }
     }
 
-    public void GetGroupsFromDatabase()
+    public string BoundNumber
     {
-        // TODO: Gebruik providers, of liever nog, gebruik de UserStore!
-        var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_userStore.User.Id}'";
-        var reader = _connection.ExecuteSqlStatement(queryString3);
-
-        if (reader.HasRows)
+        get { return _boundNumber; }
+        set
         {
-            groupDataArray.Clear();
+            if (_boundNumber != value)
+            {
+                _boundNumber = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public ObservableCollection<Group> Groups
+    {
+        get => _groups;
+        set
+        {
+            _groups = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableCollection<Student> Students
+    {
+        get => _student;
+        set
+        {
+            _student = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ICommand AddGroupButton { get; }
+    public new event PropertyChangedEventHandler PropertyChanged;
+
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, UserStore userStore,
+        DatabaseService connection)
+    {
+        BoundNumber = "Naam niet gevonden";
+        _connection = connection;
+
+        var reader = _connection.ExecuteSqlStatement(
+            $"SELECT first_name, preposition, last_name FROM Users WHERE id='{userStore.User.Id}'");
+        AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
+
+        while (reader.Read())
+        {
+            var preposition = " ";
+            if (!reader.IsDBNull(1)) preposition = reader.GetString(1) + " ";
+            BoundNumber = ("Welkom " + reader.GetString(0) + " " + preposition + reader.GetString(2));
+        }
+
+        reader.Close();
+
+        Groups = new ObservableCollection<Group>();
+        reader = _connection.ExecuteSqlStatement(
+            $"SELECT name, id, code  FROM Groups WHERE teacher_id='{userStore.User.Id}'"); //TODO TESTEN
+        {
             while (reader.Read())
             {
-                string[] groupNameCodeArray = { $"{reader["id"]}", $"{reader["name"]}", $"{reader["code"]}" };
-                groupDataArray.Add(groupNameCodeArray);
+                var groupName = reader.GetString(0);
+                var id = reader.GetInt32(1);
+                var groupCode = reader.GetString(2);
+                
+                Groups.Add(new Group(groupName, 10, id, groupCode));
             }
+
             reader.Close();
-            
-            GroupNameText = GetGroupNameFromDatabase(GroupNumber);
-            GroupCodeText = GetGroupCodeFromDatabase(GroupNumber);
-            GroupID = GetGroupIdFromDatabase(GroupNumber);
-        
-            _groupBoxVisibility = Visibility.Visible;
         }
-        reader.Close();
+        Students = new ObservableCollection<Student>();
     }
 
-    public int GetGroupIdFromDatabase(int groupNumber)
+    private new void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        var groupNameCodeArray = groupDataArray[groupNumber];
-        int groupID = Int32.Parse(groupNameCodeArray[0]);
-        CurrentGroup.GroupId = groupID;
-        return groupID;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-    public string GetGroupNameFromDatabase(int groupNumber)
+
+    private void GetStudentsFromGroup()
     {
-        string[] GroupNameCodeArray = groupDataArray[groupNumber];
-        string groupName = GroupNameCodeArray[1];
-        return groupName;
-    }
-    public string GetGroupCodeFromDatabase(int groupNumber)
-    {
-        string[] testArray2 = groupDataArray[groupNumber];
-        string groupCode = testArray2[2];
-        return groupCode;
+        var student = new GroupProvider().GetStudents(SelectedItem.GroupId);
+            
+        var characters = new List<Character>()
+        {
+            new('e'),
+            new('n'),
+            new('a'),
+            new('t'),
+        };
+
+        new Student(student, characters);
     }
 }

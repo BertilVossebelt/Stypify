@@ -5,7 +5,7 @@ using TypingApp.Services;
 
 namespace TypingApp.Commands;
 
-public class SaveGroupCommand : CommandBase
+public class CreateGroupCommand : CommandBase
 {
     private readonly User _user;
     private Group _group;
