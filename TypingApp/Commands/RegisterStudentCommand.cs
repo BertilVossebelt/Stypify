@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
-using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.ViewModels;
 
@@ -45,7 +42,7 @@ namespace TypingApp.Commands
                 {
                     new StudentProvider().Create(_registerViewModel.Email, _registerViewModel.Password,
                         _registerViewModel.Preposition, _registerViewModel.FirstName, _registerViewModel.LastName);
-                    
+
                     MessageBox.Show("Account succesvol aangemaakt", "Account aangemaakt", MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }

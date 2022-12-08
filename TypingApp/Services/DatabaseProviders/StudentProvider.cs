@@ -11,19 +11,19 @@ public class StudentProvider : BaseProvider
     public override Dictionary<string, object>? GetById(int id)
     {
         var query = $"SELECT * FROM [Users] WHERE id = {id} AND teacher = false AND admin = false";
-        return DbInterface?.Select(query)[0];
+        return DbInterface?.Select(query)?[0];
     }
     
     public Dictionary<string, object>? GetByEmail(string email)
     {
-        var query = $"SELECT * FROM [Users] WHERE email= {email}";
-        return DbInterface?.Select(query)[0];
+        var query = $"SELECT * FROM [Users] WHERE email= '{email}'";
+        return DbInterface?.Select(query)?[0];
     }
     
     public int Create(string email, SecureString password, string? preposition, string firstName, string lastName)
     {
-        SqlCommand command = new SqlCommand();
-        command.Connection = DbInterface.GetConnection();
+        var command = new SqlCommand();
+        command.Connection = DbInterface?.GetConnection();
 
         command.CommandText =
             "INSERT INTO [Users] (teacher, student, email, password, first_name, preposition, last_name, admin)" +

@@ -52,7 +52,8 @@
                 <TextBlock Grid.Row="0" FontSize="20">Nieuwe oefening</TextBlock>
                 <Border Grid.Row="2" BorderBrush="#fff" CornerRadius="15" BorderThickness="15">
                     <StackPanel Background="#fff">
-                        <TextBox MinHeight="350"
+                        <TextBox Text="{Binding ExerciseText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 MinHeight="350"
                                  MaxHeight="450"
                                  FontSize="15" 
                                  BorderThickness="0"
@@ -77,7 +78,10 @@
                 
                 <Border Grid.Column="0" BorderBrush="#fff" CornerRadius="15" BorderThickness="10">
                     <StackPanel Background="#fff">
-                        <TextBox Height="20" BorderThickness="0" FontSize="15"/>
+                        <TextBox Text="{Binding ExerciseName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="20" 
+                                 BorderThickness="0" 
+                                 FontSize="15"/>
                     </StackPanel>
                 </Border>
                 

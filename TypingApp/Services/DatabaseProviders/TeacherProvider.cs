@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 
 namespace TypingApp.Services.DatabaseProviders;
 
@@ -18,11 +16,10 @@ public class TeacherProvider : BaseProvider
         return DbInterface?.Select(query);
     }
     
-    // TODO: Refactor
     public Dictionary<string, object>? GetByEmail(string email)
     {
-        var query = $"SELECT * FROM [Groups] WHERE email=@email";
-        return DbInterface?.Select(query)[0];
+        var query = $"SELECT * FROM [Groups] WHERE {email}";
+        return DbInterface?.Select(query)?[0];
     }
 
 }
