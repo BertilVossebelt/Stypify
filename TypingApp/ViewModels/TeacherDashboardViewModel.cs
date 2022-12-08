@@ -73,10 +73,14 @@ public class TeacherDashboardViewModel : ViewModelBase
     {
         BoundNumber = "Naam niet gevonden";
         _connection = connection;
-
-        var reader = _connection.ExecuteSqlStatement(
-            $"SELECT first_name, preposition, last_name FROM Users WHERE id='{userStore.User.Id}'");
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
+        Students = new ObservableCollection<Student>();
+        Groups = new ObservableCollection<Group>();
+        Groups.Add(new Group("DummyGroep", 2, 1, "test"));
+
+        /*var reader = _connection.ExecuteSqlStatement(
+            $"SELECT first_name, preposition, last_name FROM Users WHERE id='{userStore.User.Id}'");
+        
 
         while (reader.Read())
         {
@@ -87,7 +91,7 @@ public class TeacherDashboardViewModel : ViewModelBase
 
         reader.Close();
 
-        Groups = new ObservableCollection<Group>();
+
         reader = _connection.ExecuteSqlStatement(
             $"SELECT name, id, code  FROM Groups WHERE teacher_id='{userStore.User.Id}'"); //TODO TESTEN
         {
@@ -96,13 +100,13 @@ public class TeacherDashboardViewModel : ViewModelBase
                 var groupName = reader.GetString(0);
                 var id = reader.GetInt32(1);
                 var groupCode = reader.GetString(2);
-                
+
                 Groups.Add(new Group(groupName, 10, id, groupCode));
             }
 
             reader.Close();
-        }
-        Students = new ObservableCollection<Student>();
+        }*/
+        
     }
 
     private new void OnPropertyChanged([CallerMemberName] string? propertyName = null)

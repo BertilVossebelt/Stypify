@@ -18,11 +18,21 @@ namespace TypingApp.Views
     /// <summary>
     /// Interaction logic for GroupView.xaml
     /// </summary>
-    public partial class GroupView : UserControl
+    public partial class TeacherDashboardView : UserControl
     {
-        public GroupView()
+        public TeacherDashboardView()
         {
             InitializeComponent();
+        }
+
+        private void GoRight(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer.PageRight();
+        }
+
+        private void GoLeft(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer.PageLeft();
         }
     }
 }
