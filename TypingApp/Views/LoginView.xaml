@@ -23,12 +23,13 @@
             <StackPanel Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Image></Image>
                 <TextBlock 
-                    Text ="Logo"
-                    FontSize="80"
+                    Text ="Stypify"
+                    FontSize="55"
                     FontFamily="Helvetica"
                     FontWeight="DemiBold"
                     FontStyle="Italic"
-                    Margin="0,0,0,60"/>
+                    Margin="0,0,0,30"
+                    Foreground="#FFD07FCD"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
@@ -38,19 +39,17 @@
                     FontWeight="Light"
                     FontSize="17"/>
 
-                <TextBox 
-                    x:Name="EmailLoginBox"
-                    Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Padding="3"
-                    FontFamily="Helvetica"
-                    FontWeight="Light"
-                    FontSize="17"
-                    Foreground="Gray"
-                    BorderThickness="1"
-                    Width="200"
-                    Height="30"
-                    FontStyle="Italic"
-                    Margin="0,0,0,0"/>
+                <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Padding="3"
+                         FontFamily="Helvetica"
+                         FontWeight="Light"
+                         FontSize="17"
+                         Foreground="Gray"
+                         BorderThickness="1"
+                         Width="250"
+                         Height="30"
+                         FontStyle="Italic"
+                         Margin="0,0,0,0"/>
 
                 <TextBlock
                     Text="Wachtwoord"
@@ -61,7 +60,7 @@
 
                 <components:BindablePasswordBox 
                     Password="{Binding Password, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
-                    Width="200"
+                    Width="250"
                     Height="30"
                     Margin="0,0,0,0">
                 </components:BindablePasswordBox>
@@ -74,7 +73,7 @@
                         Foreground="White"
                         BorderThickness="1"
                         BorderBrush="Black"
-                        Width="200"
+                        Width="250"
                         Height="30"
                         Content="Inloggen"
                         Margin="0,10,0,0">

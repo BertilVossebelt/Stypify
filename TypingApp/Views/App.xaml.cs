@@ -1,4 +1,5 @@
 using System.Windows;
+using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Stores;
@@ -61,6 +62,7 @@ namespace TypingApp.Views
             var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
             var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            
             return new StudentDashboardViewModel(_userStore, exerciseNavigationService, linkToGroupNavigationService, loginNavigationService);
         }
         private ExerciseViewModel CreateExerciseViewModel()
@@ -70,13 +72,17 @@ namespace TypingApp.Views
 
         private TeacherDashboardViewModel CreateTeacherDashboardViewModel()
         {
-            return new TeacherDashboardViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _userStore);
+            var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
+            var createAddGroupViewModel = new NavigationService(_navigationStore, CreateAddGroupViewModel);
+            
+            return new TeacherDashboardViewModel(createAddGroupViewModel, createExerciseViewModel, _userStore);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()
         {
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            
             return new AddGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _userStore);
         }
 
@@ -86,6 +92,13 @@ namespace TypingApp.Views
             var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
 
             return new LinkToGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _userStore);
+        }
+        
+        private CreateExerciseViewModel CreateCreateExerciseViewModel()
+        {
+            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+            
+            return new CreateExerciseViewModel(teacherDashboardViewModel);
         }
     }
 }
