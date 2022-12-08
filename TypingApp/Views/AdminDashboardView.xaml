@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:stores="clr-namespace:TypingApp.Stores"
+             xmlns:components="clr-namespace:TypingApp.Views.Components"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -143,7 +144,7 @@
                     FontFamily="Helvetica"
                     FontWeight="Light"
                     FontSize="17"/>
-                <stores:BindablePasswordBox
+                <components:BindablePasswordBox
                     x:Name="PasswordRegisterBox"
                     FontFamily="Helvetica"
                     FontWeight="Light"
@@ -159,7 +160,7 @@
                     FontFamily="Helvetica"
                     FontWeight="Light"
                     FontSize="17"/>
-                <stores:BindablePasswordBox
+                <components:BindablePasswordBox
                     x:Name="PasswordConfirmBox"
                     FontFamily="Helvetica"
                     FontWeight="Light"

@@ -41,19 +41,9 @@ namespace TypingApp.Commands
 
         public override void Execute(object? parameter)
         {
-            string password = SecureStringToString(_registerViewModel.Password);
-            string passwordConfirm = SecureStringToString(_registerViewModel.PasswordConfirm);
-
-            if (!PasswordConfirmCorrect(password, passwordConfirm))
+            if (DoesAccountExist())
             {
-                MessageBox.Show("De twee wachtwoorden moeten gelijk zijn.", "Wachtwoorden niet gelijk",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            } 
-            else if (DoesAccountExist())
-            {
-                
-                MessageBox.Show("Er bestaat al een account met dit emailadres.", "Bestaand account",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+               ShowAccountAlreadyExistsError();
             }
             else
             {
@@ -69,9 +59,9 @@ namespace TypingApp.Commands
                     command.Parameters.Add("@teacher", SqlDbType.TinyInt).Value = 0;
                     command.Parameters.Add("@student", SqlDbType.TinyInt).Value = 1;
                     command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _registerViewModel.Email;
-                    command.Parameters.Add("@password", SqlDbType.NVarChar).Value = password;
+                    command.Parameters.Add("@password", SqlDbType.NVarChar).Value = _registerViewModel.Password;
 
-                    if (!string.IsNullOrEmpty(_registerViewModel.Preposition))
+                    if (!string.IsNullOrWhiteSpace(_registerViewModel.Preposition))
                     {
                         command.Parameters.Add("@preposition", SqlDbType.NVarChar).Value = _registerViewModel.Preposition;
                     }
@@ -96,7 +86,8 @@ namespace TypingApp.Commands
             }
         }
 
-        public bool DoesAccountExist()
+        // Check of het account al bestaat.
+        private bool DoesAccountExist()
         {
             bool doesAccountExist;
             SqlCommand command = new SqlCommand();
@@ -108,31 +99,20 @@ namespace TypingApp.Commands
 
             return doesAccountExist;
         }
-
-        public bool PasswordConfirmCorrect(string password, string passwordConfirm)
+        
+        // Laat een error message zien als het account al bestaat.
+        private void ShowAccountAlreadyExistsError()
         {
-            if (password.Equals(passwordConfirm))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            const string message = "Er bestaat al een account met dit emailadres.";
+            const MessageBoxButton type = MessageBoxButton.OK;
+            const MessageBoxImage icon = MessageBoxImage.Error;
+            
+            MessageBox.Show(message, "Bestaand account", type, icon);
         }
-
-        String SecureStringToString(SecureString value)
+        
+        private string HashPassword(SecureString password)
         {
-            IntPtr valuePtr = IntPtr.Zero;
-            try
-            {
-                valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);
-                return Marshal.PtrToStringUni(valuePtr);
-            }
-            finally
-            {
-                Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
-            }
+            return "test";
         }
     }
 }

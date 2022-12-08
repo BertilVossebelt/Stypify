@@ -16,7 +16,7 @@ namespace TypingApp.Commands
         private readonly User _user;
         private readonly NavigationService _studentDashboardNavigationService;
         private readonly NavigationService _adminDashboardNavigationService;
-        private NavigationService _teacherDashboardNavigationService;
+        private readonly NavigationService _teacherDashboardNavigationService;
 
         public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,

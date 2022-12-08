@@ -45,4 +45,18 @@
       <Content Include="obj\.gitignore.txt" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="Views\Components\BindablePasswordBox.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\Components\BindablePasswordBox.xaml.cs">
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
 </Project>
