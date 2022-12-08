@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Stores;

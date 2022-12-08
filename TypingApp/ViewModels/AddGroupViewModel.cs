@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
@@ -41,6 +41,7 @@ public class AddGroupViewModel : ViewModelBase
     public AddGroupViewModel(NavigationService studentDashboardNavigationService,
         NavigationService teacherDashboardNavigationService, UserStore userStore)
     {
+<<<<<<< us12_bertil
         var x  = new GroupCodeService().GenerateCode();
         _group = new Group(0, GroupName, x);
         

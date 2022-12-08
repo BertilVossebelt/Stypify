@@ -24,5 +24,15 @@ namespace TypingApp.Views
         {
             InitializeComponent();
         }
+
+        private void GoRight(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer.PageRight();
+        }
+
+        private void GoLeft(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer.PageLeft();
+        }
     }
 }
