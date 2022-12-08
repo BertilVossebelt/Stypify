@@ -10,6 +10,7 @@ namespace TypingApp.Models
         public int GroupId { get; set; }
         public string GroupName { get; set; }
         public string GroupCode { get; set; }
+        public int AmountOfStudents { get; set; } = 0;
 
         public Group(int groupId, string groupName, string groupCode)
         {

@@ -165,7 +165,7 @@
                                                 </Border.Background>
                                             </Border>
                                             
-                                            <Label x:Name="StudentAmountLabel" Content="{Binding Path=GroupCode}"
+                                            <Label x:Name="StudentAmountLabel" Content="{Binding Path=AmountOfStudents}"
                                                    Foreground="White" FontSize="11" HorizontalAlignment="Left"
                                                    VerticalAlignment="Bottom" Margin="10,0,0,15" FontStyle="Italic"
                                                    FontWeight="Medium" FontStretch="Normal" />

@@ -62,7 +62,12 @@ public class StudentDashboardViewModel : ViewModelBase
 
     private string GetName()
     {
-        return  "Welkom " + _userStore.Student?.FirstName + " " + _userStore.Student?.Preposition + _userStore.Student?.LastName;
+        if (_userStore.Student != null)
+        {
+            return $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
+        }
+        else return "Error, student = Null";
+
     }
 
     private string GetCompletedExercises()
