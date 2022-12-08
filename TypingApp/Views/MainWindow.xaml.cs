@@ -15,39 +15,39 @@ namespace TypingApp.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private NavigationStore _navigationStore;
         private ExerciseStore _exerciseStore;
         private User _user;
         private int _completedExercises;
         
         private int _currentIndex { get; set; }
 
-        public MainWindow(NavigationStore currentViewModel, ExerciseStore exerciseStore, User user)
+        public MainWindow(ExerciseStore exerciseStore, User user)
         {
             _completedExercises = 0;
-            _navigationStore = currentViewModel;
             _exerciseStore = exerciseStore;
             _currentIndex = 0;
             _user = user;
             InitializeComponent();
         }
 
-        private void TextInputListener(object sender, RoutedEventArgs e)
+        private void SetEventListeners(object sender, RoutedEventArgs e)
         {
             var window = GetWindow(this);
-            if (window != null) window.TextInput += HandleTextInput;
+            if (window != null)
+            {
+                window.TextInput -= HandleTextInput;
+                window.TextInput += HandleTextInput;
+            }
+                
+            _exerciseStore.ExerciseCreated += (List<Character> obj) => _currentIndex = 0;
         }
-
-        public void HandleTextInput(object sender, TextCompositionEventArgs e)
+        
+        private void HandleTextInput(object sender, TextCompositionEventArgs e)
         {
             var keyChar = (char)System.Text.Encoding.ASCII.GetBytes(e.Text)[0];
             var textAsCharList = _exerciseStore.TextAsCharList;
-
             var charData = textAsCharList[_currentIndex];
-
-            Console.WriteLine(textAsCharList.Count + " " + _currentIndex + " = " +
-                              (textAsCharList.Count == _currentIndex));
-
+            
             if (charData.Char == keyChar)
             {
                 charData.Correct = true;
@@ -62,7 +62,6 @@ namespace TypingApp.Views
 
             if (textAsCharList.Count == _currentIndex)
             {
-                Console.WriteLine("New exercise");
                 var generateExerciseCommand = new GenerateExerciseCommand(_exerciseStore, _user.Characters);
                 generateExerciseCommand.Execute(this);
                 _completedExercises++;

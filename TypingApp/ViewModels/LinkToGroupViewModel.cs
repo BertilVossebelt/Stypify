@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
-using TypingApp.Services;
-using TypingApp.Stores;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Group = TypingApp.Models.Group;
 using NavigationService = TypingApp.Services.NavigationService;
 
@@ -40,7 +31,7 @@ namespace TypingApp.ViewModels
 
             var teacher = new NavigateCommand(teacherDashboardNavigationService);
             var student = new NavigateCommand(studentDashboardNavigationService);
-            BackButton = user.IsTeacher ? teacher : student;
+            BackButton = user.IsTeacher ? student : teacher;
 
             LinkToGroupSaveButton = new LinkToGroupSaveCommand(_groupCodeGroup, user, connection, studentDashboardNavigationService);
         }

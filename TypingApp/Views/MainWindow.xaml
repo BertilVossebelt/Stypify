@@ -31,7 +31,7 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModels:ExerciseViewModel}">
-                <views:ExerciseView Loaded="TextInputListener"/>
+                <views:ExerciseView Loaded="SetEventListeners"/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModels:AdminDashboardViewModel}">
