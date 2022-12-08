@@ -28,7 +28,7 @@ public class ExerciseViewModel : ViewModelBase
         exerciseStore.ExerciseCreated += OnExerciseChanged;
         exerciseStore.ExerciseUpdated += OnExerciseChanged;
 
-        if (userStore.Student.Characters != null)
+        if (userStore.Student?.Characters != null)
         {
             var generateExerciseCommand = new GenerateExerciseCommand(exerciseStore, userStore.Student.Characters);
             generateExerciseCommand.Execute(this);

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+using System;
+using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
@@ -8,40 +9,47 @@ namespace TypingApp.ViewModels;
 
 public class AddGroupViewModel : ViewModelBase
 {
+    private string _groupCode;
+    private string _groupName;
+    private Group _group;
+
     public ICommand BackButton { get; }
     public ICommand CancelButton { get; }
-    public ICommand SaveButton { get; }
-    public ICommand NewGroupCodeButton { get; }
-    private Group _group;
-    private string? _groupCodeText;
-    private string? _groupNameText;
+    public ICommand SaveButton { get; set; }
 
-    public string GroupCodeText
+    public string GroupCode
     {
-        get => _groupCodeText;
-        set { _groupCodeText = value; OnPropertyChanged(); }
+        get => _groupCode;
+        set
+        {
+            _groupCode = value;
+            OnPropertyChanged();
+        }
     }
 
-    public string GroupNameText
+    public string GroupName
     {
-        get => _groupNameText;
-        set{ _groupNameText = value; _group.GroupName = value; OnPropertyChanged(); }
+        get => _groupName;
+        set
+        {
+            _groupName = value; 
+            _group.GroupName = value;
+            OnPropertyChanged();
+        }
     }
-
-    public AddGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, UserStore userStore, DatabaseService connection)
+    
+    public AddGroupViewModel(NavigationService studentDashboardNavigationService,
+        NavigationService teacherDashboardNavigationService, UserStore userStore)
     {
-        _group = new Group(connection);
-        _group.GroupCodeGeneratorMethod();
-
-        GroupCodeText = _group.GroupCode.ToString();
-        SaveButton = new CreateGroupCommand(_group, userStore.User, connection, teacherDashboardNavigationService);
+<<<<<<< us12_bertil
+        var x  = new GroupCodeService().GenerateCode();
+        _group = new Group(0, GroupName, x);
         
-        var teacher = new NavigateCommand(teacherDashboardNavigationService);
         var student = new NavigateCommand(studentDashboardNavigationService);
-        BackButton = userStore.User.IsTeacher ? teacher : student;
+        var teacher = new NavigateCommand(teacherDashboardNavigationService);
         
+        BackButton = userStore.Teacher == null ? student : teacher;
         CancelButton = new CancelCommand(teacherDashboardNavigationService);
-        // Groupcode has currently no way to be updated
-        //NewGroupCodeButton = new NewGroupCodeCommand(_group, this);
+        SaveButton = new CreateGroupCommand(userStore, teacherDashboardNavigationService, _group);
     }
 }

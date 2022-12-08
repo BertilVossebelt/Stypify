@@ -14,12 +14,9 @@ namespace TypingApp.ViewModels;
 public class StudentDashboardViewModel : ViewModelBase
 {
     private readonly UserStore _userStore;
-    private DatabaseService _connection;
-    private ObservableCollection<Lesson> _Lessons;
+    private ObservableCollection<Lesson> _lessons;
     private bool _isFilterChecked;
-
     
-
     public ICommand StartPracticeButton { get; }
     public ICommand AddToGroupButton { get; }
     public ICommand LogOutButton { get; }
@@ -28,14 +25,13 @@ public class StudentDashboardViewModel : ViewModelBase
     public string CompletedExercisesText { get; set; }
     public ObservableCollection<Lesson> Lessons
     {
-        get => _Lessons;
+        get => _lessons;
         set
         {
-            _Lessons = value;
+            _lessons = value;
             OnPropertyChanged();
         }
     }
-
     public bool IsFilterChecked 
     {
         get => _isFilterChecked;
@@ -46,10 +42,10 @@ public class StudentDashboardViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    public StudentDashboardViewModel(UserStore userStore, DatabaseService connection ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
+    
+    public StudentDashboardViewModel(UserStore userStore ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
     {
         _userStore = userStore;
-        _connection = connection;
 
         WelcomeNameText = GetName();
         CompletedExercisesText = GetCompletedExercises();
@@ -61,13 +57,12 @@ public class StudentDashboardViewModel : ViewModelBase
         Lessons = new ObservableCollection<Lesson>();
         //Dummy Lessons (uses Group model for now) 
         getLessons();
-
     }
 
 
     private string GetName()
     {
-        return  "Welkom " + _userStore.Student.FirstName + " " + _userStore.Student.Preposition + _userStore.Student.LastName;
+        return  "Welkom " + _userStore.Student?.FirstName + " " + _userStore.Student?.Preposition + _userStore.Student?.LastName;
     }
 
     private string GetCompletedExercises()

@@ -10,34 +10,41 @@ namespace TypingApp.ViewModels;
 
 public class LinkToGroupViewModel : ViewModelBase
 {
+    private string _groupCode { get; set; }
+    private string _groupName { get; set; }
+
     public ICommand LinkToGroupSaveButton { get; }
     public ICommand BackButton { get; }
-    private Group _groupCodeGroup { get; set; }
 
-    private string _groupNameText { get; set; }
-
-    public string GroupNameText
+    public string GroupName
     {
-        get => _groupNameText;
+        get => _groupName;
         set
         {
-            _groupNameText = value;
-            _groupCodeGroup.GroupCode = value;
+            _groupName = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public string GroupCode
+    {
+        get => _groupCode;
+        set
+        {
+            _groupCode = value;
             OnPropertyChanged();
         }
     }
 
 
     public LinkToGroupViewModel(NavigationService studentDashboardNavigationService,
-        NavigationService teacherDashboardNavigationService, UserStore userStore, DatabaseService connection)
+        NavigationService teacherDashboardNavigationService, UserStore userStore)
     {
-        _groupCodeGroup = new Group(connection);
-
         var teacher = new NavigateCommand(teacherDashboardNavigationService);
         var student = new NavigateCommand(studentDashboardNavigationService);
-        BackButton = userStore.User.IsTeacher ? teacher : student;
+        BackButton = userStore.Teacher == null ? student : teacher;
 
         LinkToGroupSaveButton =
-            new LinkToGroupSaveCommand(_groupCodeGroup, userStore.User, connection, studentDashboardNavigationService);
+            new LinkToGroupSaveCommand(this, userStore, studentDashboardNavigationService);
     }
 }

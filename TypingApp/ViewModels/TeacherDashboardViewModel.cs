@@ -15,14 +15,15 @@ namespace TypingApp.ViewModels;
 
 public class TeacherDashboardViewModel : ViewModelBase
 {
-    private string _boundNumber;
+    private readonly UserStore _userStore;
+    private string _welcomeMessage;
     private Group _selectedItem;
     private ObservableCollection<Group> _groups;
-    private ObservableCollection<Student> _student;
+    private ObservableCollection<Student> _students;
 
     public Group SelectedItem
     {
-        get { return _selectedItem; }
+        get => _selectedItem;
         set
         {
             _selectedItem = value;
@@ -32,16 +33,14 @@ public class TeacherDashboardViewModel : ViewModelBase
         }
     }
 
-    public string BoundNumber
+    public string WelcomeMessage
     {
-        get { return _boundNumber; }
+        get => _welcomeMessage;
         set
         {
-            if (_boundNumber != value)
-            {
-                _boundNumber = value;
-                OnPropertyChanged();
-            }
+            if (_welcomeMessage == value) return;
+            _welcomeMessage = value;
+            OnPropertyChanged();
         }
     }
 
@@ -57,10 +56,10 @@ public class TeacherDashboardViewModel : ViewModelBase
 
     public ObservableCollection<Student> Students
     {
-        get => _student;
+        get => _students;
         set
         {
-            _student = value;
+            _students = value;
             OnPropertyChanged();
         }
     }
@@ -68,45 +67,30 @@ public class TeacherDashboardViewModel : ViewModelBase
     public ICommand AddGroupButton { get; }
     public new event PropertyChangedEventHandler PropertyChanged;
 
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, UserStore userStore,
-        DatabaseService connection)
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, UserStore userStore)
     {
-        BoundNumber = "Naam niet gevonden";
-        _connection = connection;
+        _userStore = userStore;
+
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
-        Students = new ObservableCollection<Student>();
         Groups = new ObservableCollection<Group>();
+        Students = new ObservableCollection<Student>();
         Groups.Add(new Group("DummyGroep", 2, 1, "test"));
 
-        /*var reader = _connection.ExecuteSqlStatement(
-            $"SELECT first_name, preposition, last_name FROM Users WHERE id='{userStore.User.Id}'");
-        
 
-        while (reader.Read())
+        if (_userStore.Teacher != null)
         {
-            var preposition = " ";
-            if (!reader.IsDBNull(1)) preposition = reader.GetString(1) + " ";
-            BoundNumber = ("Welkom " + reader.GetString(0) + " " + preposition + reader.GetString(2));
-        }
+            WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName}" +
+                             $" {_userStore.Teacher.Preposition}" +
+                             $" {_userStore.Teacher.LastName}";
 
-        reader.Close();
-
-
-        reader = _connection.ExecuteSqlStatement(
-            $"SELECT name, id, code  FROM Groups WHERE teacher_id='{userStore.User.Id}'"); //TODO TESTEN
-        {
-            while (reader.Read())
+            var teacherProvider = new TeacherProvider();
+            var groups = teacherProvider.GetGroups(_userStore.Teacher.Id);
+            
+            if (groups != null)
             {
-                var groupName = reader.GetString(0);
-                var id = reader.GetInt32(1);
-                var groupCode = reader.GetString(2);
-
-                Groups.Add(new Group(groupName, 10, id, groupCode));
+                foreach (var group in groups) Groups.Add(new Group(group));
             }
-
-            reader.Close();
-        }*/
-        
+        }
     }
 
     private new void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -116,8 +100,10 @@ public class TeacherDashboardViewModel : ViewModelBase
 
     private void GetStudentsFromGroup()
     {
-        var student = new GroupProvider().GetStudents(SelectedItem.GroupId);
-            
+        var students = new GroupProvider().GetStudents(SelectedItem.GroupId);
+        if (students == null) return;
+
+        // TODO: Should be queried from database instead
         var characters = new List<Character>()
         {
             new('e'),
@@ -126,6 +112,9 @@ public class TeacherDashboardViewModel : ViewModelBase
             new('t'),
         };
 
-        new Student(student, characters);
+        foreach (var student in students)
+        {
+            Students.Add(new Student(student, characters));
+        }
     }
 }

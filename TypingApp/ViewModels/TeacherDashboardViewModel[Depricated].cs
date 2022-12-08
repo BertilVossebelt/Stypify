@@ -9,7 +9,7 @@ using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
 
-public class TeacherDashboardViewModel : ViewModelBase
+public class TeacherDashboardViewModelDepricated : ViewModelBase
 {
     public ICommand AddGroupButton { get; }
     public ICommand NextGroupButton { get; }
@@ -32,49 +32,49 @@ public class TeacherDashboardViewModel : ViewModelBase
     public string GroupCodeText { get => _groupCodeText; set { _groupCodeText = value; OnPropertyChanged(); }}
     public int GroupID { get => _groupID; set { _groupID = value; OnPropertyChanged(); }}
 
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, UserStore userStore, DatabaseService connection)
+    public TeacherDashboardViewModelDepricated(NavigationService addGroupNavigationService, UserStore userStore, DatabaseService connection)
     {
         _connection = connection;
         _userStore = userStore;
         _groupBoxVisibility = Visibility.Hidden;
         _groupNumber = 0;
-        CurrentGroup = new Group(connection);
+        // CurrentGroup = new Group(connection);
         GetGroupsFromDatabase();
         
-        AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
-        NextGroupButton = new NextGroupCommand(this);
-        NewGroupCodeButton = new UpdateGroupCodeCommand(CurrentGroup, connection,this);
+        // AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
+        // NextGroupButton = new NextGroupCommand(this);
+        // NewGroupCodeButton = new UpdateGroupCodeCommand(CurrentGroup, connection,this);
     }
 
     public void GetGroupsFromDatabase()
     {
         // TODO: Gebruik providers, of liever nog, gebruik de UserStore!
-        var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_userStore.User.Id}'";
-        var reader = _connection.ExecuteSqlStatement(queryString3);
+        // var queryString3 = $"SELECT id, name, code FROM Groups WHERE teacher_id='{_userStore.User.Id}'";
+        // var reader = _connection.ExecuteSqlStatement(queryString3);
 
-        if (reader.HasRows)
-        {
-            groupDataArray.Clear();
-            while (reader.Read())
-            {
-                string[] groupNameCodeArray = { $"{reader["id"]}", $"{reader["name"]}", $"{reader["code"]}" };
-                groupDataArray.Add(groupNameCodeArray);
-            }
-            reader.Close();
+        // if (reader.HasRows)
+        // {
+            // groupDataArray.Clear();
+            // while (reader.Read())
+            // {
+                // string[] groupNameCodeArray = { $"{reader["id"]}", $"{reader["name"]}", $"{reader["code"]}" };
+                // groupDataArray.Add(groupNameCodeArray);
+            // }
+            // reader.Close();
             
-            GroupNameText = GetGroupNameFromDatabase(GroupNumber);
-            GroupCodeText = GetGroupCodeFromDatabase(GroupNumber);
-            GroupID = GetGroupIdFromDatabase(GroupNumber);
+            // GroupNameText = GetGroupNameFromDatabase(GroupNumber);
+            // GroupCodeText = GetGroupCodeFromDatabase(GroupNumber);
+            // GroupID = GetGroupIdFromDatabase(GroupNumber);
         
-            _groupBoxVisibility = Visibility.Visible;
-        }
-        reader.Close();
+            // _groupBoxVisibility = Visibility.Visible;
+        // }
+        // reader.Close();
     }
 
     public int GetGroupIdFromDatabase(int groupNumber)
     {
         var groupNameCodeArray = groupDataArray[groupNumber];
-        var groupID = Int32.Parse(groupNameCodeArray[0]);
+        var groupID = int.Parse(groupNameCodeArray[0]);
         CurrentGroup.GroupId = groupID;
         return groupID;
     }

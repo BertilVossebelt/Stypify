@@ -4,12 +4,12 @@ namespace TypingApp.Services.DatabaseProviders;
 
 public abstract class BaseProvider
 {
-    protected static DatabaseService? DbConnection;
+    protected static DatabaseService? DbInterface;
 
     protected BaseProvider()
     {
-        DbConnection ??= new DatabaseService();
+        DbInterface ??= new DatabaseService();
     }
     
-    public abstract IEnumerable<Dictionary<string, object>>? GetById(int id);
+    public abstract Dictionary<string, object>? GetById(int id);
 }

@@ -15,8 +15,23 @@
             <Button Command="{Binding BackButton}" Width="70" HorizontalAlignment="Left" Margin="10" >Terug</Button>
         </StackPanel>
 
-        <TextBox x:Name="Group_InputBox" Text="{Binding GroupNameText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="326" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="0,332,0,0" Height="44"/>
-        <Label Content="Koppel aan groep met groepcode:" HorizontalAlignment="Left" Margin="437,309,0,0" VerticalAlignment="Top"/>
-        <Button Content="Koppel" Command="{Binding LinkToGroupSaveButton}" HorizontalAlignment="Left" Margin="437,422,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding GroupCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 HorizontalAlignment="Center" 
+                 TextWrapping="Wrap" 
+                 VerticalAlignment="Top" Width="326" 
+                 HorizontalContentAlignment="Center" 
+                 VerticalContentAlignment="Center" 
+                 Margin="0,332,0,0" 
+                 Height="44"/>
+        
+        <Label Content="Koppel aan groep met groepcode:" 
+               HorizontalAlignment="Left" 
+               Margin="437,309,0,0" 
+               VerticalAlignment="Top"/>
+        
+        <Button Content="Koppel" Command="{Binding LinkToGroupSaveButton}" 
+                HorizontalAlignment="Left" 
+                Margin="437,422,0,0" 
+                VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

@@ -8,37 +8,20 @@ namespace TypingApp.Stores;
 
 public class UserStore
 {
-    public event Action<User>? UserCreated;
-    public event Action<User>? StudentCreated;
-    public event Action<User>? UserUpdated;
-    public event Action<User>? StudentUpdated;
+    public event Action<Student>? StudentCreated;
+    public event Action<Student>? StudentUpdated;
+    
+    public event Action<Teacher>? TeacherCreated;
+    public event Action<Teacher>? TeacherUpdated;
+    
+    public event Action<Admin>? AdminCreated;
+    public event Action<Admin>? AdminUpdated;
     
     public Student? Student { get; private set; }
-    public User? User { get; private set; }
+    public Teacher? Teacher { get; private set; }
+    public Admin? Admin { get; private set; }
     
-    public void CreateUser(List<Dictionary<string, object>>? props)
-    {
-        User = new User(props);
-        OnUserCreated();
-    }
-    
-    private void OnUserCreated()
-    {
-        if (User != null) UserCreated?.Invoke(User);
-    }
-    
-    public void UpdateUser(List<Dictionary<string, object>>? props)
-    {
-        User = new User(props);
-        OnUserUpdated();
-    }
-
-    private void OnUserUpdated()
-    {
-        if (User != null) UserUpdated?.Invoke(User);
-    }
-    
-    public void CreateStudent(List<Dictionary<string, object>>? props)
+    public void CreateStudent(Dictionary<string, object>? props)
     {
         var characters = new List<Character>
         {
@@ -49,16 +32,20 @@ public class UserStore
         };
         
         Student = new Student(props, characters);
-        User = new User(props);
         OnStudentCreated();
     }
     
+    /*
+     * =================
+     * Student methods
+     * =================
+     */
     private void OnStudentCreated()
     {
-        if (User != null) StudentCreated?.Invoke(User);
+        if (Student != null) StudentCreated?.Invoke(Student);
     }
     
-    public void UpdateStudent(List<Dictionary<string, object>>? props)
+    public void UpdateStudent(Dictionary<string, object>? props)
     {
         var characters = new List<Character>
         {
@@ -69,12 +56,67 @@ public class UserStore
         };
 
         Student = new Student(props, characters);
-        User = new User(props);
         OnStudentUpdated();
     }
 
     private void OnStudentUpdated()
     {
-        if (User != null) StudentUpdated?.Invoke(User);
+        if (Student != null) StudentUpdated?.Invoke(Student);
+    }
+
+    /*
+     * =================
+     * Teacher methods
+     * =================
+     */
+
+    public void CreateTeacher(Dictionary<string, object>? props)
+    {
+        Teacher = new Teacher(props);
+        OnTeacherCreated();
+    }
+    
+    private void OnTeacherCreated()
+    {
+        if (Teacher != null) TeacherCreated?.Invoke(Teacher);
+    }
+    
+    public void UpdateTeacher(Dictionary<string, object>? props)
+    {
+        Teacher = new Teacher(props);
+        OnTeacherUpdated();
+    }
+
+    private void OnTeacherUpdated()
+    {
+        if (Teacher != null) TeacherUpdated?.Invoke(Teacher);
+    }
+    
+    /*
+     * =================
+     * Admin methods
+     * =================
+     */
+
+    public void CreateAdmin(Dictionary<string, object>? props)
+    {
+        Admin = new Admin(props);
+        OnAdminCreated();
+    }
+    
+    private void OnAdminCreated()
+    {
+        if (Admin != null) AdminCreated?.Invoke(Admin);
+    }
+    
+    public void UpdateAdmin(Dictionary<string, object>? props)
+    {
+        Admin = new Admin(props);
+        OnAdminUpdated();
+    }
+
+    private void OnAdminUpdated()
+    {
+        if (Admin != null) AdminUpdated?.Invoke(Admin);
     }
 }

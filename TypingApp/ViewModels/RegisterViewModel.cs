@@ -114,11 +114,10 @@ namespace TypingApp.ViewModels
         public ICommand RegisterButton { get; }
         
         // Constructor
-        public RegisterViewModel(NavigationService loginNavigationService, DatabaseService connection) 
+        public RegisterViewModel(NavigationService loginNavigationService) 
         {
-            _connection = connection;
             GoToLoginButton = new NavigateCommand(loginNavigationService);
-            RegisterButton = new RegisterStudentCommand(this, connection);
+            RegisterButton = new RegisterStudentCommand(this);
 
             _propertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
         }
@@ -145,6 +144,7 @@ namespace TypingApp.ViewModels
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         private readonly Dictionary<string, List<string>> _propertyNameToErrorsDictionary;
+        
         public bool HasErrors => _propertyNameToErrorsDictionary.Any();
         
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
