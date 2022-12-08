@@ -74,8 +74,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
         Groups = new ObservableCollection<Group>();
         Students = new ObservableCollection<Student>();
-        Groups.Add(new Group("DummyGroep", 2, 1, "test"));
-
+        Groups.Add(new Group(1, "DummyGroep", "ASDASD"));
 
         if (_userStore.Teacher != null)
         {
