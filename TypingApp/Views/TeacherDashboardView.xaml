@@ -31,7 +31,14 @@
 
     <Grid>
         <StackPanel>
-            <WrapPanel Height="40" Background="#f7e1ff">
+            <WrapPanel Height="40" Background="#f7e1ff" FlowDirection="RightToLeft">
+                <Button Content="Uitloggen"
+                        Command="{Binding LogOutButton}"
+                        VerticalAlignment="Center" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent" 
+                        Margin="10">
+                </Button>
                 <Button Command="{Binding CreateExercise}"
                         Content="Oefening toevoegen"
                         HorizontalAlignment="Right"
