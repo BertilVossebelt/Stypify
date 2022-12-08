@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,15 @@ public class UserStore
 {
     public event Action<Student>? StudentCreated;
     public event Action<Student>? StudentUpdated;
+    public event Action<Student>? StudentDeleted;
     
     public event Action<Teacher>? TeacherCreated;
     public event Action<Teacher>? TeacherUpdated;
+    public event Action<Teacher>? TeacherDeleted;
     
     public event Action<Admin>? AdminCreated;
     public event Action<Admin>? AdminUpdated;
+    public event Action<Admin>? AdminDeleted;
     
     public Student? Student { get; private set; }
     public Teacher? Teacher { get; private set; }
@@ -64,6 +68,16 @@ public class UserStore
         if (Student != null) StudentUpdated?.Invoke(Student);
     }
 
+    public void DeleteStudent()
+    {
+        Student = null;
+        OnStudentDeleted();
+    }
+    private void OnStudentDeleted()
+    {
+        StudentDeleted?.Invoke(Student);
+    }
+
     /*
      * =================
      * Teacher methods
@@ -90,6 +104,15 @@ public class UserStore
     private void OnTeacherUpdated()
     {
         if (Teacher != null) TeacherUpdated?.Invoke(Teacher);
+    }
+    public void DeleteTeacher()
+    {
+        Teacher = null;
+        OnTeacherDeleted();
+    }
+    private void OnTeacherDeleted()
+    {
+        TeacherDeleted?.Invoke(Teacher);
     }
     
     /*
@@ -118,5 +141,16 @@ public class UserStore
     private void OnAdminUpdated()
     {
         if (Admin != null) AdminUpdated?.Invoke(Admin);
+    }
+
+    public void DeleteAdmin()
+    {
+        Admin = null;
+
+    }
+    
+    private void OnAdminDeleted()
+    {
+        AdminDeleted?.Invoke(Admin);
     }
 }

@@ -48,7 +48,8 @@ namespace TypingApp.Views
 
         private AdminDashboardViewModel CreateAdminDashboardViewModel()
         {
-            return new AdminDashboardViewModel();
+            var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            return new AdminDashboardViewModel(_userStore, loginNavigationService);
         }
 
         private RegisterViewModel CreateRegisterViewModel()
@@ -70,7 +71,9 @@ namespace TypingApp.Views
 
         private TeacherDashboardViewModel CreateTeacherDashboardViewModel()
         {
-            return new TeacherDashboardViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _userStore);
+            var createGroupNavigationService = new NavigationService(_navigationStore, CreateAddGroupViewModel);
+            var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            return new TeacherDashboardViewModel(createGroupNavigationService, loginNavigationService, _userStore);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()

@@ -65,13 +65,15 @@ public class TeacherDashboardViewModel : ViewModelBase
     }
 
     public ICommand AddGroupButton { get; }
+    public ICommand LogOutButton { get;  }
     public new event PropertyChangedEventHandler PropertyChanged;
 
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, UserStore userStore)
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, NavigationService loginNavigationService, UserStore userStore)
     {
         _userStore = userStore;
 
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
+        LogOutButton = new LogOutCommand(userStore, loginNavigationService);
         Groups = new ObservableCollection<Group>();
         Students = new ObservableCollection<Student>();
         Groups.Add(new Group(1, "DummyGroep", "ASDASD"));
