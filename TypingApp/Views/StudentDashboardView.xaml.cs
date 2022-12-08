@@ -8,4 +8,17 @@ public partial class StudentDashboardView : UserControl
     {
         InitializeComponent();
     }
+
+
+    private void GoRight(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ScrollViewer.PageRight();
+    }
+
+    private void GoLeft(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ScrollViewer.PageLeft();
+    }
+
 }
+

@@ -12,7 +12,7 @@ public class CreateGroupCommand : CommandBase
     private DatabaseService _connection;
     private NavigationService _teacherDashboardNavigationService;
 
-    public SaveGroupCommand(Group newGroup, User user, DatabaseService connection, NavigationService teacherDashboardNavigationService)
+    public CreateGroupCommand(Group newGroup, User user, DatabaseService connection, NavigationService teacherDashboardNavigationService)
     {
         _group = newGroup;
         _user = user;

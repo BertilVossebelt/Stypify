@@ -7,6 +7,7 @@ using TypingApp.Models;
 using TypingApp.Stores;
 using Group = TypingApp.Models.Group;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using TypingApp.Views;
 
 namespace TypingApp.ViewModels;
 
@@ -14,7 +15,10 @@ public class StudentDashboardViewModel : ViewModelBase
 {
     private readonly UserStore _userStore;
     private DatabaseService _connection;
-    private ObservableCollection<Group> _Lessons;
+    private ObservableCollection<Lesson> _Lessons;
+    private bool _isFilterChecked;
+
+    
 
     public ICommand StartPracticeButton { get; }
     public ICommand AddToGroupButton { get; }
@@ -22,7 +26,7 @@ public class StudentDashboardViewModel : ViewModelBase
 
     public string WelcomeNameText { get; set; }
     public string CompletedExercisesText { get; set; }
-    public ObservableCollection<Group> Lessons
+    public ObservableCollection<Lesson> Lessons
     {
         get => _Lessons;
         set
@@ -31,7 +35,17 @@ public class StudentDashboardViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    
+
+    public bool IsFilterChecked 
+    {
+        get => _isFilterChecked;
+        set
+        {
+            _isFilterChecked = value;
+            FilterCompletedLessons(IsFilterChecked);
+            OnPropertyChanged();
+        }
+    }
     public StudentDashboardViewModel(UserStore userStore, DatabaseService connection ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
     {
         _userStore = userStore;
@@ -44,9 +58,10 @@ public class StudentDashboardViewModel : ViewModelBase
         AddToGroupButton = new NavigateCommand(linkToGroupNavigationService);
         LogOutButton = new NavigateCommand(loginNavigationService);
 
-        Lessons = new ObservableCollection<Group>();
-        Lessons.Add(new Group("TestGroup1", 10, 1, "TeStCoDe"));
-        
+        Lessons = new ObservableCollection<Lesson>();
+        //Dummy Lessons (uses Group model for now) 
+        getLessons();
+
     }
 
 
@@ -58,6 +73,42 @@ public class StudentDashboardViewModel : ViewModelBase
     private string GetCompletedExercises()
     {
         return "Aantal gemaakte oefeningen: 0";
+    }
+
+    
+
+    private void getLessons()
+    {
+        //TODO: get lessons from database
+        Lessons.Clear(); Lessons.Add(new Lesson("Lesson","Teacher 1",1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+    }
+    private void getNonCompletedLessons()
+    {
+        //TODO: get lessons that are not completed from database
+        Lessons.Clear(); Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
+    }
+
+    private void FilterCompletedLessons(bool isChecked)
+    {
+        if (isChecked) { getNonCompletedLessons(); }
+        else getLessons();
     }
 
 

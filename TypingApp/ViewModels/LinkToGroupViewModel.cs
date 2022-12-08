@@ -35,7 +35,7 @@ public class LinkToGroupViewModel : ViewModelBase
 
         var teacher = new NavigateCommand(teacherDashboardNavigationService);
         var student = new NavigateCommand(studentDashboardNavigationService);
-        BackButton = userStore.User.IsTeacher ? student : teacher;
+        BackButton = userStore.User.IsTeacher ? teacher : student;
 
         LinkToGroupSaveButton =
             new LinkToGroupSaveCommand(_groupCodeGroup, userStore.User, connection, studentDashboardNavigationService);

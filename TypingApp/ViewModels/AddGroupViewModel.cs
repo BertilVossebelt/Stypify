@@ -34,13 +34,14 @@ public class AddGroupViewModel : ViewModelBase
         _group.GroupCodeGeneratorMethod();
 
         GroupCodeText = _group.GroupCode.ToString();
-        SaveButton = new SaveGroupCommand(_group, userStore.User, connection, teacherDashboardNavigationService);
+        SaveButton = new CreateGroupCommand(_group, userStore.User, connection, teacherDashboardNavigationService);
         
         var teacher = new NavigateCommand(teacherDashboardNavigationService);
         var student = new NavigateCommand(studentDashboardNavigationService);
         BackButton = userStore.User.IsTeacher ? teacher : student;
         
         CancelButton = new CancelCommand(teacherDashboardNavigationService);
-        NewGroupCodeButton = new NewGroupCodeCommand(_group, this);
+        // Groupcode has currently no way to be updated
+        //NewGroupCodeButton = new NewGroupCodeCommand(_group, this);
     }
 }

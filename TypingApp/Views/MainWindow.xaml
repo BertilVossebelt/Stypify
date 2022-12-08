@@ -41,15 +41,11 @@
             <DataTemplate DataType="{x:Type viewModels:AddGroupViewModel}">
                 <views:AddGroupView />
             </DataTemplate>
-            
+
             <DataTemplate DataType="{x:Type viewModels:LinkToGroupViewModel}">
                 <views:LinkToGroupView />
             </DataTemplate>
-            
-            <DataTemplate DataType="{x:Type viewModels:GroupViewModel}">
-                <views:GroupView />
-            </DataTemplate>
-            
+
             <DataTemplate DataType="{x:Type viewModels:CreateNewExerciseViewModel}">
                 <views:CreateNewExerciseView />
             </DataTemplate>

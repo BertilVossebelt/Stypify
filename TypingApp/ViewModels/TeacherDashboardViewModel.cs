@@ -76,7 +76,7 @@ public class TeacherDashboardViewModel : ViewModelBase
 
         var reader = _connection.ExecuteSqlStatement(
             $"SELECT first_name, preposition, last_name FROM Users WHERE id='{userStore.User.Id}'");
-        AddGroupButton = new AddGroupCommand(connection, addGroupNavigationService);
+        AddGroupButton = new NavigateCommand(addGroupNavigationService);
 
         while (reader.Read())
         {

@@ -71,9 +71,9 @@ namespace TypingApp.Views
             return new ExerciseViewModel(new NavigationService(_navigationStore, CreateStudentDashboardViewModel), _userStore, _exerciseStore);
         }
 
-        private GroupViewModel CreateTeacherDashboardViewModel()
+        private TeacherDashboardViewModel CreateTeacherDashboardViewModel()
         {
-            return new GroupViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _userStore, _connection);
+            return new TeacherDashboardViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _userStore, _connection);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()
