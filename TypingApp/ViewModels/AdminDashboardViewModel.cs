@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
+using TypingApp.Stores;
 
 namespace TypingApp.ViewModels
 {
@@ -93,10 +94,12 @@ namespace TypingApp.ViewModels
         }
 
         public ICommand RegisterTeacherButton { get;}
+        public ICommand LogOutButton { get;}
 
-        public AdminDashboardViewModel()
+        public AdminDashboardViewModel(UserStore userStore, NavigationService loginNavigationService)
         {
             RegisterTeacherButton = new RegisterTeacherCommand(this);
+            LogOutButton = new LogOutCommand(userStore, loginNavigationService);
         }
     }
 }

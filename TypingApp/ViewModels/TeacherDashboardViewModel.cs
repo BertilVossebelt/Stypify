@@ -23,6 +23,8 @@ public class TeacherDashboardViewModel : ViewModelBase
 
     public ICommand AddGroupButton { get; }
     public ICommand CreateExercise { get; }
+    public ICommand LogOutButton { get;  }
+
 
     public Group SelectedItem
     {
@@ -69,13 +71,14 @@ public class TeacherDashboardViewModel : ViewModelBase
 
     public new event PropertyChangedEventHandler PropertyChanged;
 
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, NavigationService createExerciseNavigationService, UserStore userStore)
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, NavigationService createExerciseNavigationService, NavigationService loginNavigationService, UserStore userStore)
     {
         _userStore = userStore;
 
         CreateExercise = new NavigateCommand(createExerciseNavigationService);
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
-        
+        LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+
         Groups = new ObservableCollection<Group>();
         Students = new ObservableCollection<Student>();
         Groups.Add(new Group(1, "DummyGroep", "ASDASD"));
