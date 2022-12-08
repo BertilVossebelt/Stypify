@@ -153,6 +153,8 @@
                     Foreground="Red"
                     FontFamily="Helvetica"
                     FontWeight="Light"
+                    MaxWidth="250"
+                    TextWrapping="WrapWithOverflow"
                     FontSize="17"
                     HorizontalAlignment="Center"
                     Margin="0,5,0,0"/>
