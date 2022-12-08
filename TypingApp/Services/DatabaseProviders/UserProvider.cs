@@ -6,16 +6,17 @@ namespace TypingApp.Services.DatabaseProviders;
 
 public class UserProvider : BaseProvider
 {
-    public override List<Dictionary<string, object>>? GetById(int id)
+    public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM users WHERE id = {id}";
-        return DbConnection?.Select(query);
+        var query = $"SELECT * FROM [Users] WHERE id = {id}";
+        return DbInterface?.Select(query)?[0];
     }
 
+    // TODO: Refactor all weird thing functions
     public bool WeirdThing(string username, string password)
     {
         var command = new SqlCommand();
-        command.Connection = DbConnection.GetConnection();
+        command.Connection = DbInterface?.GetConnection();
 
         command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = username;
@@ -25,7 +26,7 @@ public class UserProvider : BaseProvider
     public int WeirdThingAgainId(string username, string password)
     {
         var command = new SqlCommand();
-        command.Connection = DbConnection.GetConnection();
+        command.Connection = DbInterface?.GetConnection();
 
         command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = username;
@@ -36,7 +37,7 @@ public class UserProvider : BaseProvider
     public bool WeirdThingAdmin(string email)
     {
         var command = new SqlCommand();
-        command.Connection = DbConnection.GetConnection();
+        command.Connection = DbInterface.GetConnection();
 
         command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND admin = 1";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
@@ -46,7 +47,7 @@ public class UserProvider : BaseProvider
     public bool WeirdThingTeacher(string email)
     {
         var command = new SqlCommand();
-        command.Connection = DbConnection.GetConnection();
+        command.Connection = DbInterface.GetConnection();
 
         command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND teacher = 1";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;

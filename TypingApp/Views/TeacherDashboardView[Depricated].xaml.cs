@@ -2,10 +2,10 @@
 
 namespace TypingApp.Views;
 
-public partial class TeacherDashboardView : UserControl
+public partial class TeacherDashboardViewDepricated: UserControl
 {
-    public TeacherDashboardView()
+    public TeacherDashboardViewDepricated()
     {
-        InitializeComponent();
+        // InitializeComponent();
     }
 }

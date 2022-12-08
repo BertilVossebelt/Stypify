@@ -14,7 +14,6 @@ namespace TypingApp.Commands
 {
     public class LoginCommand : CommandBase
     {
-        private readonly DatabaseService _connection;
         private readonly LoginViewModel _loginViewModel;
         private readonly UserStore _userStore;
         private readonly NavigationService _studentDashboardNavigationService;
@@ -22,12 +21,12 @@ namespace TypingApp.Commands
         private readonly NavigationService _teacherDashboardNavigationService;
 
         private int _userId { get; set; }
-        public LoginCommand(LoginViewModel loginViewModel, DatabaseService connection,
+
+        public LoginCommand(LoginViewModel loginViewModel,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
             NavigationService teacherDashboardNavigationService, UserStore userStore)
         {
             _loginViewModel = loginViewModel;
-            _connection = connection;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
             _teacherDashboardNavigationService = teacherDashboardNavigationService;
@@ -42,15 +41,25 @@ namespace TypingApp.Commands
                 ShowIncorrectCredentialsMessage();
                 return;
             }
-
-            var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
-            if (IsAdminAccount()) navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
-            if (IsTeacherAccount()) navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
             
-            // Add a Student model to the UserStore.
-            // TODO: Change UserProvider to a StudentProvider once that table exists in the DB.
-            var student = new UserProvider().GetById(_userId);
-            _userStore.CreateStudent(student);
+            var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
+            var user = new UserProvider().GetById(_userId);
+            if (user == null) return;
+
+            if ((byte)user["teacher"] == 1)
+            {
+                _userStore.CreateTeacher(user);
+                navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+            }
+            else if ((byte)user["admin"] == 1)
+            {
+                _userStore.CreateAdmin(user);
+                navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
+            }
+            else
+            {
+                _userStore.CreateStudent(user);
+            }
             
             navigateCommand.Execute(this);
         }
@@ -59,18 +68,17 @@ namespace TypingApp.Commands
         {
             var userProvider = new UserProvider();
             var validUser = userProvider.WeirdThing(credential.UserName, credential.Password);
-            
+
             if (!validUser) return validUser;
-            
+
             _userId = userProvider.WeirdThingAgainId(credential.UserName, credential.Password);
             return validUser;
         }
-        
+
         private bool IsTeacherAccount()
         {
             var userProvider = new UserProvider();
             return userProvider.WeirdThingTeacher(_loginViewModel.Email);
-
         }
 
         private bool IsAdminAccount()
@@ -78,7 +86,7 @@ namespace TypingApp.Commands
             var userProvider = new UserProvider();
             return userProvider.WeirdThingAdmin(_loginViewModel.Email);
         }
-        
+
         private static void ShowIncorrectCredentialsMessage()
         {
             const string message = "Email of wachtwoord incorrect.";

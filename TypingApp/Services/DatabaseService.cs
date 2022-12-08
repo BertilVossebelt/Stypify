@@ -46,24 +46,49 @@ public class DatabaseService
     public List<Dictionary<string, object>>? Select(string query)
     {
         var command = new SqlCommand(query, _connection);
-        var result = command.ExecuteReader();
-        var list = new List<Dictionary<string, object>>();
+        var reader = command.ExecuteReader();
         
-        while (result.Read())
+        Console.WriteLine("??");
+        if (!reader.HasRows)
+        {
+            reader.Close();
+            return null;
+        }
+
+        var list = new List<Dictionary<string, object>>();
+        while (reader.Read())
         {
             var dict = new Dictionary<string, object>();
+            for (var i = 0; i < reader.FieldCount; i++)
+            {
+                dict.Add(reader.GetName(i), reader[i]);
+            }
+
+            list.Add(dict);
+        }
+
+        reader.Close();
+        return list;
+    }
+
+    public Dictionary<string, object>? Insert(string query)
+    {
+        var command = new SqlCommand(query, _connection);
+        var result = command.ExecuteReader();
+        var dict = new Dictionary<string, object>();
+
+        while (result.Read())
+        {
             for (var i = 0; i < result.FieldCount; i++)
             {
                 dict.Add(result.GetName(i), result[i]);
             }
-            
-            list.Add(dict);
         }
 
         result.Close();
-        return list;
+        return dict;
     }
-    
+
     public SqlDataReader ExecuteSqlStatement(string sqlQuery)
     {
         var command = new SqlCommand(sqlQuery, _connection);

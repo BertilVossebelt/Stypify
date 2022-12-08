@@ -94,10 +94,9 @@ namespace TypingApp.ViewModels
 
         public ICommand RegisterTeacherButton { get;}
 
-        public AdminDashboardViewModel(DatabaseService connection)
+        public AdminDashboardViewModel()
         {
-            _connection = connection;
-            RegisterTeacherButton = new RegisterTeacherCommand(this, connection);
+            RegisterTeacherButton = new RegisterTeacherCommand(this);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TypingApp.Views.GroupView"
+﻿<UserControl x:Class="TypingApp.Views.TeacherDashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -34,7 +34,15 @@
 
         <StackPanel>
             <Border BorderBrush="Black" BorderThickness="1" Height="45" Background="#FFF7E1FF" Padding="0,0,0,0"/>
-            <Label x:Name="WelkomLabel" Content="{Binding BoundNumber, Mode=TwoWay}" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Stretch" FontSize="36" Foreground="#FFD07FCD" FontFamily="Monotype Corsiva" Height="50"/>
+            <Label Content="{Binding Welcome, Mode=TwoWay}" 
+                   HorizontalAlignment="Left" 
+                   Margin="35,10,0,0" 
+                   VerticalAlignment="Stretch" 
+                   FontSize="36" 
+                   Foreground="#FFD07FCD" 
+                   Height="50"
+                   FontStyle="Italic"/>
+            
             <Rectangle Height="2" Margin="25,10,25,2" >
                 <Rectangle.Fill>
                     <SolidColorBrush Color="Black" Opacity="0.45"/>

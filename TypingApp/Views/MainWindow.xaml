@@ -46,10 +46,6 @@
                 <views:LinkToGroupView />
             </DataTemplate>
             
-            <DataTemplate DataType="{x:Type viewModels:GroupViewModel}">
-                <views:GroupView />
-            </DataTemplate>
-            
             <DataTemplate DataType="{x:Type viewModels:CreateNewExerciseViewModel}">
                 <views:CreateNewExerciseView />
             </DataTemplate>
