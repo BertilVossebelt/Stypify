@@ -46,8 +46,8 @@
                 <views:LinkToGroupView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewModels:CreateNewExerciseViewModel}">
-                <views:CreateNewExerciseView />
+            <DataTemplate DataType="{x:Type viewModels:CreateExerciseViewModel}">
+                <views:CreateExerciseView />
             </DataTemplate>
         </Grid.Resources>
         

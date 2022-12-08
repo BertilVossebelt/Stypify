@@ -21,6 +21,11 @@ public class TeacherDashboardViewModel : ViewModelBase
     private ObservableCollection<Group> _groups;
     private ObservableCollection<Student> _students;
 
+    public ICommand AddGroupButton { get; }
+    public ICommand CreateExercise { get; }
+    public ICommand LogOutButton { get;  }
+
+
     public Group SelectedItem
     {
         get => _selectedItem;
@@ -64,26 +69,24 @@ public class TeacherDashboardViewModel : ViewModelBase
         }
     }
 
-    public ICommand AddGroupButton { get; }
-    public ICommand LogOutButton { get;  }
     public new event PropertyChangedEventHandler PropertyChanged;
 
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, NavigationService loginNavigationService, UserStore userStore)
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, NavigationService createExerciseNavigationService, NavigationService loginNavigationService, UserStore userStore)
     {
         _userStore = userStore;
 
+        CreateExercise = new NavigateCommand(createExerciseNavigationService);
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+
         Groups = new ObservableCollection<Group>();
         Students = new ObservableCollection<Student>();
         Groups.Add(new Group(1, "DummyGroep", "ASDASD"));
 
         if (_userStore.Teacher != null)
         {
-            WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName}" +
-                             $" {_userStore.Teacher.Preposition}" +
-                             $" {_userStore.Teacher.LastName}";
-
+            WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName} {_userStore.Teacher.Preposition} {_userStore.Teacher.LastName}";
+            
             var teacherProvider = new TeacherProvider();
             var groups = teacherProvider.GetGroups(_userStore.Teacher.Id);
             
