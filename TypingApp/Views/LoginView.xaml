@@ -17,7 +17,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="2" 
+            <Border Grid.Row="1" 
                     Background="#f7e1ff"/>
 
             <StackPanel Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center">
