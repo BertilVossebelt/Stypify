@@ -15,6 +15,4 @@ public class ExerciseProvider : BaseProvider
         var query = $"INSERT INTO [Exercise] (teacher_id, name, text) VALUES ({teacherId}, '{exerciseName}', '{exerciseText}')";
         return DbInterface?.Insert(query);
     }
-    
-    
 }
