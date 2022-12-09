@@ -47,8 +47,7 @@ public class DatabaseService
     {
         var command = new SqlCommand(query, _connection);
         var reader = command.ExecuteReader();
-        
-        Console.WriteLine("??");
+
         if (!reader.HasRows)
         {
             reader.Close();
@@ -66,54 +65,40 @@ public class DatabaseService
 
             list.Add(dict);
         }
-
+        
         reader.Close();
         return list;
     }
 
     public Dictionary<string, object>? Insert(string query)
     {
+        query += "; SELECT SCOPE_IDENTITY()";
         var command = new SqlCommand(query, _connection);
-        var result = command.ExecuteReader();
+        var id = command.ExecuteScalar();
         var dict = new Dictionary<string, object>();
+        
+        // Get table from query
+        var pFrom  = query.IndexOf("INSERT INTO [", StringComparison.OrdinalIgnoreCase) + "INSERT INTO [".Length;
+        var pTo  = query.LastIndexOf("] (", StringComparison.OrdinalIgnoreCase);
+        var table = query.Substring(pFrom, pTo - pFrom);
 
-        while (result.Read())
+        // Get inserted record
+        query = $"SELECT * FROM [{table}] WHERE id = '{id}'"; 
+        command = new SqlCommand(query, _connection);
+        var reader = command.ExecuteReader();
+        
+        while (reader.Read())
         {
-            for (var i = 0; i < result.FieldCount; i++)
+            for (var i = 0; i < reader.FieldCount; i++)
             {
-                dict.Add(result.GetName(i), result[i]);
+                dict.Add(reader.GetName(i), reader[i]);
             }
         }
-
-        result.Close();
+    
+        reader.Close();
         return dict;
     }
-
-    public SqlDataReader ExecuteSqlStatement(string sqlQuery)
-    {
-        var command = new SqlCommand(sqlQuery, _connection);
-        var reader = command.ExecuteReader();
-        command.StatementCompleted += SqlCommand_StatementCompleted;
-
-        return reader;
-    }
-
-    public void ExecuteSqlStatement2(string sqlQuery)
-    {
-        var command = new SqlCommand(sqlQuery, _connection);
-        command.StatementCompleted += SqlCommand_StatementCompleted;
-        int result = command.ExecuteNonQuery();
-
-        // Check Error
-        if (result < 0) Console.WriteLine("Error inserting data into Database!");
-        else Console.WriteLine("gelukt " + result);
-    }
-
-    private static void SqlCommand_StatementCompleted(object sender, StatementCompletedEventArgs e)
-    {
-        Console.WriteLine($"Records changed:{e.RecordCount}");
-    }
-
+    
     public SqlConnection? GetConnection()
     {
         return _connection;

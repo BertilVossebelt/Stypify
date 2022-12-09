@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using TypingApp.Commands;
+using TypingApp.Stores;
 using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels;
@@ -32,9 +33,9 @@ public class CreateExerciseViewModel : ViewModelBase
         }
     }
 
-    public CreateExerciseViewModel(NavigationService teacherDashboardNavigationService)
+    public CreateExerciseViewModel(NavigationService teacherDashboardNavigationService, UserStore userStore)
     {
-        SaveButton = new CreateExerciseCommand(this);
+        SaveButton = new CreateExerciseCommand(this, teacherDashboardNavigationService, userStore);
         CancelButton = new CancelCommand(teacherDashboardNavigationService);
     }
 }
