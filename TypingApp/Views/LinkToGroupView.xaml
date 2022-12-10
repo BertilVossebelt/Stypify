@@ -1,37 +1,57 @@
 ﻿<UserControl x:Class="TypingApp.Views.LinkToGroupView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:TypingApp"
-      mc:Ignorable="d"
-      Height="700" 
-      Width="1200">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:TypingApp"
+             mc:Ignorable="d"
+             MinHeight="700"
+             MinWidth="1200">
 
-    
-    
     <Grid>
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-            <Button Command="{Binding BackButton}" Width="70" HorizontalAlignment="Left" Margin="10" >Terug</Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Background="#EFDEFE">
+            <Button Command="{Binding BackButton}" Width="70" 
+                    HorizontalAlignment="Left" 
+                    Margin="10"
+                    BorderThickness="0"
+                    Background="Transparent">Terug</Button>
         </StackPanel>
 
-        <TextBox Text="{Binding GroupCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                 HorizontalAlignment="Center" 
-                 TextWrapping="Wrap" 
-                 VerticalAlignment="Top" Width="326" 
-                 HorizontalContentAlignment="Center" 
-                 VerticalContentAlignment="Center" 
-                 Margin="0,332,0,0" 
-                 Height="44"/>
-        
-        <Label Content="Koppel aan groep met groepcode:" 
-               HorizontalAlignment="Left" 
-               Margin="437,309,0,0" 
-               VerticalAlignment="Top"/>
-        
-        <Button Content="Koppel" Command="{Binding LinkToGroupSaveButton}" 
-                HorizontalAlignment="Left" 
-                Margin="437,422,0,0" 
-                VerticalAlignment="Top"/>
+        <StackPanel Grid.Row="1"></StackPanel>
+        <StackPanel Grid.Row="2">
+            <TextBlock Text="Koppel aan groep met groepcode:" HorizontalAlignment="Center"/>
+            
+            <TextBox Text="{Binding GroupCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalAlignment="Center"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Top" 
+                     Width="250"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Height="30"
+                     Margin="20"/>
+            
+            <Button Command="{Binding LinkToGroupSaveButton}" Foreground="White" Width="250" Height="30"
+                    BorderThickness="0" BorderBrush="Purple" Background="Purple">
+                Koppel
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"></Setter>
+                    </Style>
+                </Button.Resources>
+                <Button.BitmapEffect>
+                    <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0"
+                                            ShadowDepth="4" Opacity="1" />
+                </Button.BitmapEffect>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="3"></StackPanel>
     </Grid>
 </UserControl>

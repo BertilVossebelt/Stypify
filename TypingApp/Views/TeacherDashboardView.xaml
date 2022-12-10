@@ -31,24 +31,40 @@
 
     <Grid>
         <StackPanel>
-            <WrapPanel Height="40" Background="#f7e1ff" FlowDirection="RightToLeft">
-                <Button Content="Uitloggen"
-                        Command="{Binding LogOutButton}"
-                        VerticalAlignment="Center" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent" 
-                        Margin="10">
-                </Button>
-                <Button Command="{Binding CreateExercise}"
-                        Content="Oefening toevoegen"
-                        HorizontalAlignment="Right"
-                        Margin="10"
-                        Width="120"
-                        Height="20"
-                        Background="#00000000"
-                        BorderBrush="#00000000">
-                </Button>
-            </WrapPanel>
+            <StackPanel Background="#EFDEFE">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Text="Stypify"
+                               FontSize="18"
+                               Width="100"
+                               Padding="2"
+                               FontStyle="Italic"
+                               FontWeight="Bold"
+                               Margin="5"
+                               HorizontalAlignment="Left"
+                               Foreground="#FFD07FCD" />
+
+                    <Button Grid.Column="2" Content="Uitloggen" Margin="10" Command="{Binding LogOutButton}"
+                            VerticalAlignment="Top"
+                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
+                    <Button Grid.Column="1" Command="{Binding MyLessonsButton}"
+                            Content="Mijn lessen"
+                            HorizontalAlignment="Right"
+                            Margin="10"
+                            Width="80"
+                            Height="20"
+                            Background="#00000000"
+                            BorderBrush="#00000000">
+                    </Button>
+
+                </Grid>
+            </StackPanel>
+
 
             <Label Content="{Binding WelcomeMessage, Mode=TwoWay}"
                    HorizontalAlignment="Left"
@@ -57,12 +73,13 @@
                    FontSize="36"
                    Foreground="#FFD07FCD"
                    Height="50"
-                   FontStyle="Italic" 
-                   FontWeight="Bold"/>
+                   FontStyle="Italic"
+                   FontWeight="Bold" />
 
 
             <DockPanel LastChildFill="True" Height="250">
-                <Button DockPanel.Dock="Left" BorderThickness="0" BorderBrush="Purple" Background="Purple" Click="GoLeft">
+                <Button DockPanel.Dock="Left" BorderThickness="0" BorderBrush="Purple" Background="Purple"
+                        Click="GoLeft">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="10"></Setter>
@@ -116,10 +133,10 @@
 
                 <DockPanel Height="55" DockPanel.Dock="Top">
                     <TextBlock DockPanel.Dock="Left" Text="Mijn Groepen" VerticalAlignment="Center" FontSize="25" />
-                    
+
                     <Button Command="{Binding AddGroupButton}"
                             DockPanel.Dock="Right"
-                            Foreground="White" 
+                            Foreground="White"
                             Width="250"
                             Height="35"
                             BorderThickness="0"
@@ -127,9 +144,10 @@
                             FontSize="18"
                             HorizontalAlignment="Right">
                         <Button.BitmapEffect>
-                            <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4" Opacity="1" />
+                            <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4"
+                                                    Opacity="1" />
                         </Button.BitmapEffect>
-                        Groep Toevoegen
+                        Groep toevoegen
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="18"></Setter>
@@ -164,12 +182,13 @@
                                                     <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
                                                 </Border.Background>
                                             </Border>
-                                            
-                                            <Label x:Name="StudentAmountLabel" Content="{Binding Path=AmountOfStudents}"
+
+                                            <Label x:Name="StudentAmountLabel"
+                                                   Content="{Binding Path=AmountOfStudents}"
                                                    Foreground="White" FontSize="11" HorizontalAlignment="Left"
                                                    VerticalAlignment="Bottom" Margin="10,0,0,15" FontStyle="Italic"
                                                    FontWeight="Medium" FontStretch="Normal" />
-                                            
+
                                             <Label x:Name="GroupNameLabel" Content="{Binding Path=GroupName}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                                    HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
@@ -203,10 +222,10 @@
 
             <StackPanel Margin="15,15,15,0">
 
-                    <StackPanel Height="30" Orientation="Horizontal" Margin="0,2,0,2">
-                        <Label Content="Naam" FontSize="15" />
-                        <Label Content="Aantal Oefeningen" FontSize="15" Margin="150,0,0,0" />
-                    </StackPanel>
+                <StackPanel Height="30" Orientation="Horizontal" Margin="0,2,0,2">
+                    <Label Content="Naam" FontSize="15" />
+                    <Label Content="Aantal Oefeningen" FontSize="15" Margin="150,0,0,0" />
+                </StackPanel>
 
                 <ItemsControl ItemsSource="{Binding Students}">
                     <ItemsControl.ItemTemplate>

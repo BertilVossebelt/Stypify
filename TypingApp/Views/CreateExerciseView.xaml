@@ -91,12 +91,12 @@
                         Grid.Column="2"
                         Foreground="White" 
                         Width="115"
-                        Height="35"
+                        Height="31"
                         BorderThickness="0"
                         Background="Purple"
                         FontSize="18">
                     <Button.BitmapEffect>
-                        <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="3" Opacity="1" />
+                        <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4" Opacity="1" />
                     </Button.BitmapEffect>
                     Opslaan
                     <Button.Resources>
@@ -110,13 +110,13 @@
                         Grid.Column="3" 
                         Foreground="White"
                         Width="115"
-                        Height="35"
+                        Height="31"
                         BorderThickness="0"
                         Background="#9C9C9C"
                         FontSize="18">
                     Cancel
                     <Button.BitmapEffect>
-                        <DropShadowBitmapEffect Color="#9C9C9C" Direction="300" Softness="0" ShadowDepth="3" Opacity="1" />
+                        <DropShadowBitmapEffect Color="#9C9C9C" Direction="300" Softness="0" ShadowDepth="4" Opacity="1" />
                     </Button.BitmapEffect>
                     <Button.Resources>
                         <Style TargetType="Border">

@@ -27,12 +27,29 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel>
-            <StackPanel Background="#EFDEFE" Orientation="Horizontal" HorizontalAlignment="Stretch"
-                        FlowDirection="RightToLeft">
-                <Button Content="Uitloggen" Margin="10" Command="{Binding LogOutButton}" VerticalAlignment="Top"
+            <StackPanel Background="#EFDEFE">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                                Text="Stypify"
+                                FontSize="18"
+                                Width="100"
+                                Padding="2"
+                                FontStyle="Italic"
+                                FontWeight="Bold"
+                                Margin="5"
+                                HorizontalAlignment="Left"
+                                Foreground="#FFD07FCD" />
+
+                <Button Grid.Column="2" Content="Uitloggen" Margin="10" Command="{Binding LogOutButton}" VerticalAlignment="Top"
                         Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
-                <Button Content="Nieuwe Groep" Margin="10" Command="{Binding AddToGroupButton}" VerticalAlignment="Top"
+                <Button Grid.Column="1" Content="Nieuwe Groep" Margin="10" Command="{Binding AddToGroupButton}" VerticalAlignment="Top"
                         Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
+                </Grid>
             </StackPanel>
 
             <StackPanel Height="275">
@@ -55,8 +72,7 @@
                                     </Style>
                                 </Button.Resources>
                                 <Button.BitmapEffect>
-                                    <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0"
-                                                            ShadowDepth="3" Opacity="1" />
+                                    <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4" Opacity="1" />
                                 </Button.BitmapEffect>
                             </Button>
                             <TextBlock Text="{Binding CompletedExercisesText}" FontStyle="Italic" Margin="5"

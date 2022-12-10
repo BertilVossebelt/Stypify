@@ -21,10 +21,26 @@
             <ColumnDefinition Width="50" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="#f7e1ff">
-            <Button Command="{Binding BackButton}" Width="70" HorizontalAlignment="Left" Margin="10">Terug</Button>
-        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="#EFDEFE">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Command="{Binding BackButton}"
+                        Content="Terug" 
+                        Width="60" 
+                        Margin="10" 
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Background="Transparent" 
+                        BorderBrush="Transparent" 
+                        BorderThickness="0" />
 
+            </Grid>
+        </StackPanel>
+        
         <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Margin="0, 20, 0, 0" Text="Mijn lessen" FontSize="30"></TextBlock>
             <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Height="200">
@@ -136,7 +152,29 @@
                   VerticalAlignment="Bottom" />
         </StackPanel>
         <TextBlock Grid.Row="3" Grid.Column="1" Margin="0, 5, 0, 10" Text="Mijn oefeningen" FontSize="30"></TextBlock>
+        <Button Grid.Row="3" Grid.Column="1" Command="{Binding CreateExerciseButton}"
+                DockPanel.Dock="Right"
+                Foreground="White"
+                Width="250"
+                Height="35"
+                BorderThickness="0"
+                Background="Purple"
+                FontSize="18"
+                HorizontalAlignment="Right">
+            <Button.BitmapEffect>
+                <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4"
+                                        Opacity="1" />
+            </Button.BitmapEffect>
+            Oefening toevoegen
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="18"></Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
 
+        
+        
         <WrapPanel Grid.Row="4" Grid.Column="1">
             <Border BorderThickness="1"
                     BorderBrush="#C194D1"

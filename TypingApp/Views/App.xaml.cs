@@ -40,7 +40,7 @@ namespace TypingApp.Views
             base.OnStartup(e);
         }
 
-        private LoginViewModel? CreateLoginViewModel()
+        private LoginViewModel CreateLoginViewModel()
         {
             var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
             var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
@@ -80,12 +80,20 @@ namespace TypingApp.Views
 
         private TeacherDashboardViewModel CreateTeacherDashboardViewModel()
         {
-            var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
+            var myLessonsViewModel = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
             var createAddGroupViewModel = new NavigationService(_navigationStore, CreateAddGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
 
-            return new TeacherDashboardViewModel(createAddGroupViewModel, createExerciseViewModel,
+            return new TeacherDashboardViewModel(createAddGroupViewModel, myLessonsViewModel,
                 loginNavigationService, _userStore);
+        }
+
+        private MyLessonsViewModel CreateMyLessonsViewModel()
+        {
+            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+            var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
+            
+            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()
@@ -106,9 +114,9 @@ namespace TypingApp.Views
 
         private CreateExerciseViewModel CreateCreateExerciseViewModel()
         {
-            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+            var myLessonsNavigationService = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
 
-            return new CreateExerciseViewModel(teacherDashboardViewModel, _userStore);
+            return new CreateExerciseViewModel(myLessonsNavigationService, _userStore);
         }
     }
 }
