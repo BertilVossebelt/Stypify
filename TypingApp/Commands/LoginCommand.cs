@@ -2,6 +2,8 @@
 using System.Data.SqlClient;
 using System.Data;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services;
@@ -35,7 +37,8 @@ namespace TypingApp.Commands
 
         public override void Execute(object? parameter)
         {
-            var isValidUser = AuthenticateUser(new NetworkCredential(_loginViewModel.Email, _loginViewModel.Password));
+            string password = SecureStringToString(_loginViewModel.Password);
+            var isValidUser = AuthenticateUser(new NetworkCredential(_loginViewModel.Email, password));
             if (!isValidUser)
             {
                 ShowIncorrectCredentialsMessage();
@@ -67,11 +70,11 @@ namespace TypingApp.Commands
         private bool AuthenticateUser(NetworkCredential credential)
         {
             var userProvider = new UserProvider();
-            var validUser = userProvider.WeirdThing(credential.UserName, credential.Password);
+            var validUser = userProvider.VerifyUser(credential.UserName, credential.Password);
 
             if (!validUser) return validUser;
-
-            _userId = userProvider.WeirdThingAgainId(credential.UserName, credential.Password);
+            
+            _userId = userProvider.WeirdThingAgainId(credential.UserName);
             return validUser;
         }
 
@@ -93,6 +96,21 @@ namespace TypingApp.Commands
             const MessageBoxButton type = MessageBoxButton.OK;
             const MessageBoxImage icon = MessageBoxImage.Error;
             MessageBox.Show(message, "Error", type, icon);
+        }
+        
+        // Convert de SecureString naar een string. (kan even niet anders)
+        private static string? SecureStringToString(SecureString value)
+        {
+            var valuePtr = IntPtr.Zero;
+            try
+            {
+                valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);
+                return Marshal.PtrToStringUni(valuePtr);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
+            }
         }
     }
 }

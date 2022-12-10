@@ -1,6 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml;
+using TypingApp.Models;
 
 namespace TypingApp.Services.DatabaseProviders;
 
@@ -13,24 +18,37 @@ public class UserProvider : BaseProvider
     }
 
     // TODO: Refactor all weird thing functions
-    public bool WeirdThing(string username, string password)
+    public bool VerifyUser(string email, string password)
     {
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
 
-        command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
-        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = username;
-        command.Parameters.Add("@password", SqlDbType.NVarChar).Value = password;
-        return command.ExecuteScalar() != null;
+        command.CommandText = "SELECT * FROM [Users] WHERE email=@email";
+        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
+        
+        using (SqlDataReader reader = command.ExecuteReader())
+        {
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    byte[] hashedpassword = (byte[])reader["hashedpassword"];
+                    byte[] salt = (byte[])reader["salt"];
+                    PasswordHash hash = new PasswordHash(hashedpassword);
+                    return (hash.Verify(password, salt));
+                }
+            }
+            return false;
+        }
     }
-    public int WeirdThingAgainId(string username, string password)
+    
+    public int WeirdThingAgainId(string email)
     {
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
 
-        command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
-        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = username;
-        command.Parameters.Add("@password", SqlDbType.NVarChar).Value = password;
+        command.CommandText = "SELECT id FROM [Users] WHERE email=@email";
+        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
         return (int)command.ExecuteScalar();
     }
 

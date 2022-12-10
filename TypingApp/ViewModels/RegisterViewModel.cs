@@ -114,11 +114,10 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
     public ICommand RegisterButton { get; }
 
     // Constructor
-    public RegisterViewModel(NavigationService loginNavigationService, DatabaseConnection connection)
+    public RegisterViewModel(NavigationService loginNavigationService)
     {
-        _connection = connection;
         GoToLoginButton = new NavigateCommand(loginNavigationService);
-        RegisterButton = new RegisterStudentCommand(this, connection);
+        RegisterButton = new RegisterStudentCommand(this);
 
         _propertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
     }

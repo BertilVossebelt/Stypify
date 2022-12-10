@@ -120,7 +120,7 @@
                     FontFamily="Helvetica"
                     FontWeight="Light"
                     FontSize="17"/>
-                <components:BindablePasswordBox 
+                <components:BindablePasswordBox
                     x:Name="PasswordRegisterBox"
                     FontFamily="Helvetica"
                     FontWeight="Light"

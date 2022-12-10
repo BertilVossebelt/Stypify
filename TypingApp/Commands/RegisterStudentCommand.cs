@@ -3,7 +3,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Windows;
+using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.ViewModels;
@@ -19,35 +21,32 @@ namespace TypingApp.Commands
             _registerViewModel = registerViewModel;
         }
 
+        // Check of het registercommando uitgevoerd mag worden.
         public override bool CanExecute(object? parameter)
         {
             return _registerViewModel.CanCreateAccount;
         }
 
+        // Voer het registercommando uit.
         public override void Execute(object? parameter)
         {
-            var password = SecureStringToString(_registerViewModel.Password);
-            var passwordConfirm = SecureStringToString(_registerViewModel.PasswordConfirm);
-
-            if (!PasswordConfirmCorrect(password, passwordConfirm))
+            if (DoesAccountExist())
             {
-                MessageBox.Show("De twee wachtwoorden moeten gelijk zijn.", "Wachtwoorden niet gelijk",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (DoesAccountExist())
-            {
-                MessageBox.Show("Er bestaat al een account met dit emailadres.", "Bestaand account",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowAccountAlreadyExistsError();
             }
             else
             {
                 try
                 {
-                    new StudentProvider().Create(_registerViewModel.Email, _registerViewModel.Password,
-                        _registerViewModel.Preposition, _registerViewModel.FirstName, _registerViewModel.LastName);
+                    string password = SecureStringToString(_registerViewModel.Password);
+                    PasswordHash hash = new PasswordHash(password);
+                    byte[] hashedPassword = hash.ToArray();
+                    byte[] salt = hash.Salt;
                     
-                    MessageBox.Show("Account succesvol aangemaakt", "Account aangemaakt", MessageBoxButton.OK,
-                        MessageBoxImage.Information);
+                    new StudentProvider().Create(_registerViewModel.Email, hashedPassword, salt,
+                        _registerViewModel.Preposition, _registerViewModel.FirstName, _registerViewModel.LastName);
+
+                    ShowAccountSuccesfullyCreatedMessage();
                 }
                 catch (Exception ex)
                 {
@@ -56,17 +55,34 @@ namespace TypingApp.Commands
             }
         }
 
+        // Check of het account al bestaat.
         private bool DoesAccountExist()
         {
             var student = new StudentProvider().GetByEmail(_registerViewModel.Email);
             return student != null;
         }
 
-        private static bool PasswordConfirmCorrect(string? password, string? passwordConfirm)
+        // Laat een error message zien als het account al bestaat.
+        private void ShowAccountAlreadyExistsError()
         {
-            return password != null && password.Equals(passwordConfirm);
+            const string message = "Er bestaat al een account met dit emailadres.";
+            const MessageBoxButton type = MessageBoxButton.OK;
+            const MessageBoxImage icon = MessageBoxImage.Error;
+
+            MessageBox.Show(message, "Bestaand account", type, icon);
         }
 
+        // Laat een error message zien als het account al bestaat.
+        private void ShowAccountSuccesfullyCreatedMessage()
+        {
+            const string message = "Account succesvol aangemaakt.";
+            const MessageBoxButton type = MessageBoxButton.OK;
+            const MessageBoxImage icon = MessageBoxImage.Information;
+
+            MessageBox.Show(message, "Account aangemaakt", type, icon);
+        }
+        
+        // Convert de SecureString naar een string. (kan even niet anders)
         private static string? SecureStringToString(SecureString value)
         {
             var valuePtr = IntPtr.Zero;
