@@ -40,4 +40,9 @@ public class GroupProvider : BaseProvider
         var query = $"INSERT INTO Group_Student (group_id,student_id) VALUES ({groupId} , {studentId})";
         return DbInterface?.Select(query)?[0];
     }
+    public void UpdateGroupCode(int groupId, String groupCode)
+    {
+        var query = $"UPDATE Groups SET code = {groupCode} WHERE id = {groupId}; ";
+        DbInterface?.VoidExecuteRaw(query);
+    }
 }

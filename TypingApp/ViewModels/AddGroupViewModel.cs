@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
@@ -7,7 +8,7 @@ using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
 
-public class AddGroupViewModel : ViewModelBase
+public class AddGroupViewModel : ViewModelBase , INotifyPropertyChanged
 {
     private string _groupCode;
     private string _groupName;

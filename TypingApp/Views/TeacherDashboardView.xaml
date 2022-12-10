@@ -219,7 +219,15 @@
             </DockPanel>
 
             <!--  HIER IMPLEMENTEREN VAN LESSEN (er moet dan boven en onder ook nog wat aangepast/verwijderd/aangemaakt worden) -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Nog geen groep geselecteerd', TargetNullValue= 'Nog geen groep geselecteerd' not}"  Margin="21,0,0,0" FontSize="25" />
+                <TextBlock Text = "{Binding SelectedItem.GroupCode ,FallbackValue='Geen Code' ,TargetNullValue= 'Geen Code'}" VerticalAlignment="Bottom" FontStyle="Italic"/>
+                <Button Command="{Binding UpdateGroupsCodeButton}" Height="15" VerticalAlignment="Bottom" Width="15">
+                    
+                </Button>
 
+            </StackPanel>
+            
             <StackPanel Margin="15,15,15,0">
 
                 <StackPanel Height="30" Orientation="Horizontal" Margin="0,2,0,2">

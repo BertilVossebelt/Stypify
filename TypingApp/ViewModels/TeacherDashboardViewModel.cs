@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
@@ -13,7 +14,7 @@ using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels;
 
-public class TeacherDashboardViewModel : ViewModelBase
+public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
 {
     private readonly UserStore _userStore;
     private string _welcomeMessage;
@@ -25,6 +26,10 @@ public class TeacherDashboardViewModel : ViewModelBase
     public ICommand MyLessonsButton { get; }
     public ICommand LogOutButton { get;  }
 
+    public ICommand UpdateGroupsCodeButton { get; set; }
+
+
+
 
     public Group SelectedItem
     {
@@ -32,9 +37,11 @@ public class TeacherDashboardViewModel : ViewModelBase
         set
         {
             _selectedItem = value;
+            
             Students.Clear();
             GetStudentsFromGroup();
             OnPropertyChanged();
+         
         }
     }
 
@@ -78,6 +85,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         MyLessonsButton = new NavigateCommand(myLessonsNavigationService);
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+        UpdateGroupsCodeButton = new UpdateGroupsCodeCommand(this);
 
         Groups = new ObservableCollection<Group>();
         Students = new ObservableCollection<Student>();
@@ -86,7 +94,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         if (_userStore.Teacher != null)
         {
             WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName} {_userStore.Teacher.Preposition} {_userStore.Teacher.LastName}";
-            
+
             var teacherProvider = new TeacherProvider();
             var groups = teacherProvider.GetGroups(_userStore.Teacher.Id);
             
@@ -120,5 +128,5 @@ public class TeacherDashboardViewModel : ViewModelBase
         {
             Students.Add(new Student(student, characters));
         }
-    }
+    } 
 }
