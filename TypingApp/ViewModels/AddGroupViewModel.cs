@@ -11,7 +11,6 @@ public class AddGroupViewModel : ViewModelBase
 {
     private string _groupCode;
     private string _groupName;
-    private Group _group;
 
     public ICommand BackButton { get; }
     public ICommand CancelButton { get; }
@@ -33,22 +32,20 @@ public class AddGroupViewModel : ViewModelBase
         set
         {
             _groupName = value; 
-            _group.GroupName = value;
             OnPropertyChanged();
         }
     }
     
     public AddGroupViewModel(NavigationService studentDashboardNavigationService,
         NavigationService teacherDashboardNavigationService, UserStore userStore)
-    {
-        var x  = new GroupCodeService().GenerateCode();
-        _group = new Group(0, GroupName, x);
+    { 
+        GroupCode  = new GroupCodeService().GenerateCode();
         
         var student = new NavigateCommand(studentDashboardNavigationService);
         var teacher = new NavigateCommand(teacherDashboardNavigationService);
         
         BackButton = userStore.Teacher == null ? student : teacher;
         CancelButton = new CancelCommand(teacherDashboardNavigationService);
-        SaveButton = new CreateGroupCommand(userStore, teacherDashboardNavigationService, _group);
+        SaveButton = new CreateGroupCommand(userStore, teacherDashboardNavigationService, this);
     }
 }

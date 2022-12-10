@@ -84,8 +84,7 @@ namespace TypingApp.Views
             var createAddGroupViewModel = new NavigationService(_navigationStore, CreateAddGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
 
-            return new TeacherDashboardViewModel(createAddGroupViewModel, myLessonsViewModel,
-                loginNavigationService, _userStore);
+            return new TeacherDashboardViewModel(createAddGroupViewModel, myLessonsViewModel, loginNavigationService, _userStore);
         }
 
         private MyLessonsViewModel CreateMyLessonsViewModel()
@@ -93,7 +92,7 @@ namespace TypingApp.Views
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
             
-            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel);
+            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel, _userStore);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()

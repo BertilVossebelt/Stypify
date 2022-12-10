@@ -13,7 +13,6 @@ public class GroupProvider : BaseProvider
 
     public Dictionary<string, object>? GetByCode(string groupCode)
     {
-        Console.WriteLine(groupCode);
         var query = $"SELECT * FROM [Groups] WHERE code = '{groupCode}';";
         return DbInterface?.Select(query)?[0];
     }

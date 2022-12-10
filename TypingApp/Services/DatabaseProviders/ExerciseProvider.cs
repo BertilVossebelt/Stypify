@@ -15,4 +15,10 @@ public class ExerciseProvider : BaseProvider
         var query = $"INSERT INTO [Exercise] (teacher_id, name, text) VALUES ({teacherId}, '{exerciseName}', '{exerciseText}')";
         return DbInterface?.Insert(query);
     }
+    
+    public  List<Dictionary<string, object>>? GetAll(int teacherId)
+    {
+        var query = $"SELECT * FROM [Exercise] WHERE teacher_id = '{teacherId}'";
+        return DbInterface?.Select(query);
+    }
 }

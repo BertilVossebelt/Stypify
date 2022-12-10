@@ -47,8 +47,7 @@
                     </Style>
                 </Button.Resources>
                 <Button.BitmapEffect>
-                    <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0"
-                                            ShadowDepth="4" Opacity="1" />
+                    <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4" Opacity="1" />
                 </Button.BitmapEffect>
             </Button>
         </StackPanel>

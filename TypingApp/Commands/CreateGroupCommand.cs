@@ -4,6 +4,7 @@ using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
+using TypingApp.ViewModels;
 
 namespace TypingApp.Commands;
 
@@ -11,20 +12,20 @@ public class CreateGroupCommand : CommandBase
 {
     private NavigationService _teacherDashboardNavigationService;
     private readonly UserStore _userStore;
-    private readonly Group _group;
+    private readonly AddGroupViewModel _addGroupViewModel;
 
     public CreateGroupCommand(UserStore userStore, NavigationService teacherDashboardNavigationService,
-        Group group)
+        AddGroupViewModel addGroupViewModel)
     {
         _userStore = userStore;
         _teacherDashboardNavigationService = teacherDashboardNavigationService;
-        _group = group;
+        _addGroupViewModel = addGroupViewModel;
 
     }
 
     public override void Execute(object? parameter)
     {
-        if (_group.GroupName is "" or null)
+        if (_addGroupViewModel.GroupName is "" or null)
         {
             MessageBox.Show("Je moet een naam invullen", "Geen naam", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
@@ -36,7 +37,7 @@ public class CreateGroupCommand : CommandBase
         if(_userStore.Teacher == null) return;
 
         //Save here to database
-        new GroupProvider().Create(_userStore.Teacher.Id, _group.GroupName, _group.GroupCode);
+        new GroupProvider().Create(_userStore.Teacher.Id, _addGroupViewModel.GroupName, _addGroupViewModel.GroupCode);
         
         var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
         navigateCommand.Execute(this);
