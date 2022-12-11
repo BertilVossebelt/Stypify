@@ -82,7 +82,7 @@ namespace TypingApp.Commands
             MessageBox.Show(message, "Account aangemaakt", type, icon);
         }
         
-        // Convert de SecureString naar een string. (kan even niet anders)
+        // Convert de SecureString naar een string. (kan niet anders op dit moment)
         private static string? SecureStringToString(SecureString value)
         {
             var valuePtr = IntPtr.Zero;
