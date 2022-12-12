@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using TypingApp.Models;
 using TypingApp.Stores;
 using Group = TypingApp.Models.Group;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+//using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using TypingApp.Views;
 
 namespace TypingApp.ViewModels;

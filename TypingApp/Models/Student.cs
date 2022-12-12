@@ -17,16 +17,16 @@ public class Student : User
         Characters = characters;
     }
 
-    public Student(int id, string email, string firstName, string lastName, bool isAdmin, bool isTeacher, uint accuracy,
-        uint amountOfExercises, List<Character> characters) : base(id, email, firstName, lastName, isTeacher, isAdmin)
+    public Student(int id, string email, string firstName, string preposition, string lastName, bool isAdmin, bool isTeacher, uint accuracy,
+        uint amountOfExercises, List<Character> characters) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
     {
         Accuracy = accuracy;
         AmountOfExercises = amountOfExercises;
         Characters = characters;
     }
     
-    public Student(int id, string email, string firstName, string lastName, bool isTeacher, bool isAdmin, uint accuracy,
-        uint amountOfExercises) : base(id, email, firstName, lastName, isTeacher, isAdmin)
+    public Student(int id, string email, string firstName, string preposition, string lastName, bool isTeacher, bool isAdmin, uint accuracy,
+        uint amountOfExercises) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
     {
         Accuracy = accuracy;
         AmountOfExercises = amountOfExercises;

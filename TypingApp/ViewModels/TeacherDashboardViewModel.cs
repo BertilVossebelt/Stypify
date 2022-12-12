@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
@@ -13,17 +14,21 @@ using NavigationService = TypingApp.Services.NavigationService;
 
 namespace TypingApp.ViewModels;
 
-public class TeacherDashboardViewModel : ViewModelBase
+public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
 {
     private readonly UserStore _userStore;
     private string _welcomeMessage;
     private Group _selectedItem;
     private ObservableCollection<Group> _groups;
-    private ObservableCollection<Student> _students;
+    private ObservableCollection<User> _students;
 
     public ICommand AddGroupButton { get; }
     public ICommand MyLessonsButton { get; }
     public ICommand LogOutButton { get;  }
+
+    public ICommand UpdateGroupsCodeButton { get; set; }
+
+
 
 
     public Group SelectedItem
@@ -32,9 +37,11 @@ public class TeacherDashboardViewModel : ViewModelBase
         set
         {
             _selectedItem = value;
+            
             Students.Clear();
             GetStudentsFromGroup();
             OnPropertyChanged();
+         
         }
     }
 
@@ -59,7 +66,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         }
     }
 
-    public ObservableCollection<Student> Students
+    public ObservableCollection<User> Students
     {
         get => _students;
         set
@@ -78,22 +85,36 @@ public class TeacherDashboardViewModel : ViewModelBase
         MyLessonsButton = new NavigateCommand(myLessonsNavigationService);
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+        UpdateGroupsCodeButton = new UpdateGroupsCodeCommand(this);
 
         Groups = new ObservableCollection<Group>();
-        Students = new ObservableCollection<Student>();
+        Students = new ObservableCollection<User>();
+        Students.Add(new User(1, "test", "test", "'n", "test", false, false));
         Groups.Add(new Group(1, "DummyGroep", "ASDASD"));
 
         if (_userStore.Teacher != null)
         {
             WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName} {_userStore.Teacher.Preposition} {_userStore.Teacher.LastName}";
-            
+
             var teacherProvider = new TeacherProvider();
+            var groupProvider = new GroupProvider();
+
             var groups = teacherProvider.GetGroups(_userStore.Teacher.Id);
             
+            //var groupProvider = new GroupProvider();
+            // var groups = groupProvider.GetGroupsV2(_userStore.Teacher.Id);
+
+
             if (groups != null)
             {
-                foreach (var group in groups) Groups.Add(new Group(group));
+                foreach (var group in groups) 
+                {
+                    Groups.Add(new Group(group)); 
+                } //
+
             }
+
+
         }
     }
 
@@ -104,8 +125,10 @@ public class TeacherDashboardViewModel : ViewModelBase
 
     private void GetStudentsFromGroup()
     {
-        var students = new GroupProvider().GetStudents(SelectedItem.GroupId);
-        if (students == null) return;
+        var tupleResult = new GroupProvider().GetStudents(SelectedItem.GroupId);
+        Students = tupleResult.Item1;
+        _selectedItem.AmountOfStudents = tupleResult.Item2;
+        if (Students == null) return;
 
         // TODO: Should be queried from database instead
         var characters = new List<Character>()
@@ -115,10 +138,7 @@ public class TeacherDashboardViewModel : ViewModelBase
             new('a'),
             new('t'),
         };
-
-        foreach (var student in students)
-        {
-            Students.Add(new Student(student, characters));
-        }
-    }
+     
+        Students = Students;
+    } 
 }

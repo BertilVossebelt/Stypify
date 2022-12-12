@@ -34,5 +34,11 @@ namespace TypingApp.Views
         {
             ScrollViewer.PageLeft();
         }
+        /*void button_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("tset");
+            SelectedItem.RefreshCode();
+            OnPropertyChanged();
+        }*/
     }
 }
