@@ -48,7 +48,6 @@ public class DatabaseService
         var command = new SqlCommand(query, _connection);
         var reader = command.ExecuteReader();
         
-        Console.WriteLine("??");
         if (!reader.HasRows)
         {
             reader.Close();
