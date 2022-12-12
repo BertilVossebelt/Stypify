@@ -97,8 +97,8 @@
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
                        Margin="150,0,0,150" />
-        
-            <Button Command="{Binding NewGroupCodeButton}"
+
+        <Button Command="{Binding UpdateGroupCodeButton}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Height="9"
