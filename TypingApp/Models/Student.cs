@@ -5,8 +5,8 @@ namespace TypingApp.Models;
 
 public class Student : User
 {
-    public uint Accuracy { get; set; }
-    public uint AmountOfExercises { get; set; }
+    public int Accuracy { get; set; }
+    public int AmountOfExercises { get; set; }
     public List<Character>? Characters { get; set; }
 
     // TODO: Accuracy, AmountOfExercises and Characters should be queried from database with a StudentProvider.
@@ -17,19 +17,25 @@ public class Student : User
         Characters = characters;
     }
 
-    public Student(int id, string email, string firstName, string preposition, string lastName, bool isAdmin, bool isTeacher, uint accuracy,
-        uint amountOfExercises, List<Character> characters) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
+    public Student(int id, string email, string firstName, string preposition, string lastName, bool isAdmin, bool isTeacher, int accuracy,
+        int amountOfExercises, List<Character> characters) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
     {
         Accuracy = accuracy;
         AmountOfExercises = amountOfExercises;
         Characters = characters;
     }
     
-    public Student(int id, string email, string firstName, string preposition, string lastName, bool isTeacher, bool isAdmin, uint accuracy,
-        uint amountOfExercises) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
+    public Student(int id, string email, string firstName, string preposition, string lastName, bool isTeacher, bool isAdmin, int accuracy,
+        int amountOfExercises) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
     {
         Accuracy = accuracy;
         AmountOfExercises = amountOfExercises;
     }
-    
+    public Student(int id, string email, string firstName, string preposition, string lastName, bool isTeacher, bool isAdmin,
+        int amountOfExercises) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
+    {
+
+        AmountOfExercises = amountOfExercises;
+    }
+
 }

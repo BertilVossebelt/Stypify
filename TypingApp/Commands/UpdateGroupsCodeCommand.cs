@@ -16,22 +16,31 @@ namespace TypingApp.Commands
         public int id;
         public string code;
         public TeacherDashboardViewModel dashs;
+        public AddGroupViewModel viewmodel;
 
         public UpdateGroupsCodeCommand(TeacherDashboardViewModel dash)
         {
             dashs = dash;
         }
-        public UpdateGroupsCodeCommand()
+        public UpdateGroupsCodeCommand(AddGroupViewModel dash)
         {
-
+            viewmodel = dash;
         }
         public override void Execute(object? parameter)
         {
-            if (dashs.SelectedItem is not null) 
+            if (dashs != null)
             {
-                dashs.SelectedItem.RefreshCode();
-                dashs.SelectedItem = dashs.SelectedItem;
+                if (dashs.SelectedItem is not null)
+                {
+                    dashs.SelectedItem.RefreshCode();
+                    dashs.SelectedItem = dashs.SelectedItem;
+                }
             }
+            else
+            {
+                viewmodel.GroupCode = new GroupCodeService().GenerateCode();
+            }
+            
             
         }
         /*public override (int id, string code)

@@ -21,7 +21,7 @@ public class GroupProvider : BaseProvider
     public int GetGroupCount(int groupsId)
     {
        /* var query = $"SELECT COUNT(Groups.id) FROM Groups JOIN Group_Student ON Groups.id = Group_Student.group_id WHERE teacher_id = {teacherId} GROUP BY Groups.id HAVING COUNT(Groups.id) > 1";*/
-        var query = $"SELECT COUNT(Groups.id) FROM Groups JOIN Group_Student ON Groups.id = Group_Student.group_id WHERE Groups.id = {groupsId} GROUP BY Groups.id HAVING COUNT(Groups.id) > 1";
+        var query = $"SELECT COUNT(group_id) FROM Group_Student WHERE group_id = {groupsId} GROUP BY group_id HAVING COUNT(group_id) > 1";
         var reader2 = DbInterface?.ExecuteRaw(query);
         var count =0;
         if (reader2 != null)
@@ -84,33 +84,43 @@ public class GroupProvider : BaseProvider
 
 
 
-    public Tuple<ObservableCollection<User>,int> ? GetStudents(int groupId)
+    public Tuple<ObservableCollection<Student>,int> ? GetStudents(int groupId)
     {
-        var query = $"SELECT * FROM [Users] JOIN Group_Student ON Users.id = Group_Student.student_id WHERE Group_Student.group_id = {groupId}";
+        var query = $"SELECT s.id, s.email, s.first_name, s.preposition, s.last_name, s.teacher, s.admin, completed_excercises FROM [Users] s JOIN Group_Student g ON s.id = g.student_id LEFT JOIN Student t ON g.student_id = t.student_id WHERE g.group_id = {groupId}";
         var reader = DbInterface?.ExecuteRaw(query);
-        ObservableCollection<User> users = new ObservableCollection<User>();
+        ObservableCollection<Student> students = new ObservableCollection<Student>();
         string preposition;
+        int amounOfExercices;
         int count = 0;
 
         while (reader.Read())
         {
-           
-                count++;
-                if (!reader.IsDBNull(5))
-                {
-                    preposition = (string)reader[5];
-                }
-                else
-                {
-                    preposition = "";
-                }
-                var user =new User((int)reader[0], (string)reader[2], (string)reader[4], preposition, (string)reader[6], Convert.ToBoolean(reader[1]), Convert.ToBoolean(reader[7]));
-                users.Add(user);
+            count++;
+            if (!reader.IsDBNull(3))
+            {
+                preposition = (string)reader[3];
+            }
+            else
+            {
+                preposition = "";
+            }
+
+            if (!reader.IsDBNull(7))
+            {
+                amounOfExercices = (int)reader[7];
+            }
+            else
+            {
+                amounOfExercices = 0;
+            }
+
+            var student =new Student((int)reader[0], (string)reader[1], (string)reader[2], preposition, (string)reader[4], Convert.ToBoolean(reader[5]), Convert.ToBoolean(reader[6]), amounOfExercices);
+                students.Add(student);
                 
             
         }
         reader.Close();
-        return  Tuple.Create(users,count);
+        return  Tuple.Create(students,count);
     }
     
     public List<Dictionary<string, object>>? GetStudent(int groupId, int studentId)

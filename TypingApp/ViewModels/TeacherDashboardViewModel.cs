@@ -20,7 +20,7 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
     private string _welcomeMessage;
     private Group _selectedItem;
     private ObservableCollection<Group> _groups;
-    private ObservableCollection<User> _students;
+    private ObservableCollection<Student> _students;
 
     public ICommand AddGroupButton { get; }
     public ICommand MyLessonsButton { get; }
@@ -66,7 +66,7 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<User> Students
+    public ObservableCollection<Student> Students
     {
         get => _students;
         set
@@ -88,8 +88,8 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
         UpdateGroupsCodeButton = new UpdateGroupsCodeCommand(this);
 
         Groups = new ObservableCollection<Group>();
-        Students = new ObservableCollection<User>();
-        Students.Add(new User(1, "test", "test", "'n", "test", false, false));
+        Students = new ObservableCollection<Student>();
+        Students.Add(new Student(1, "test", "test", "'n", "test", false, false, 10));
         Groups.Add(new Group(1, "DummyGroep", "ASDASD"));
 
         if (_userStore.Teacher != null)
