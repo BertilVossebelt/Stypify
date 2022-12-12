@@ -194,8 +194,8 @@
         <WrapPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center">
             
             <ScrollViewer VerticalScrollBarVisibility="Visible" 
-                          Height="400"
-                          >
+                          Height="250" HorizontalScrollBarVisibility="Hidden">
+                
                 <ListBox ItemsSource="{Binding Exercises}"
                          SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
                          SelectionMode="Single" 
@@ -203,11 +203,10 @@
                          Background="Transparent"
                          ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
                          SelectedIndex="2"
-                         HorizontalContentAlignment="Stretch"
-                         >
+                         HorizontalContentAlignment="Stretch">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="4"/>
+                            <UniformGrid Columns="3"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 
@@ -218,24 +217,21 @@
                                         BorderBrush="Purple"
                                         CornerRadius="7"
                                         Height="100"
-                                        VerticalAlignment="Top"            
-                                        >
+                                        VerticalAlignment="Top"
+                                        Padding="10">
                                 <Border.Background>
                                     <SolidColorBrush Color="#EFDEFE"/>
                                 </Border.Background>
                                 
-                                <StackPanel Width="300"  >
-                                    <TextBlock Text="Naam" 
+                                <StackPanel Width="300">
+                                    <TextBlock Text="{Binding Path=Name}" 
                                                Margin="0, 0, 0 , 7" 
-                                               FontSize="20" 
-                                               />
-                                    <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
-                                               />
+                                               FontSize="20" />
+                                    <TextBlock Text="{Binding Path=Text}"/>
                                     <TextBlock Text="Aantal karakters: 35" 
                                                Margin="0, 7, 0 , 0" 
                                                HorizontalAlignment="Right"
-                                               FontStyle="Italic"
-                                               />
+                                               FontStyle="Italic"/>
                                 </StackPanel>
                             </Border>
                             <DataTemplate.Triggers>
@@ -249,13 +245,11 @@
                                     <Setter 
                                              TargetName="ExerciseBorderItem"
                                              Property="BorderBrush" 
-                                             Value="Purple" 
-                                             />
+                                             Value="Purple" />
                                     <Setter
                                         TargetName="ExerciseBorderItem" 
                                         Property="BorderThickness"
-                                        Value="6" 
-                                        />
+                                        Value="6" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>

@@ -16,13 +16,14 @@ public class StudentDashboardViewModel : ViewModelBase
     private readonly UserStore _userStore;
     private ObservableCollection<Lesson> _lessons;
     private bool _isFilterChecked;
-    
+
     public ICommand StartPracticeButton { get; }
     public ICommand AddToGroupButton { get; }
     public ICommand LogOutButton { get; }
 
     public string WelcomeNameText { get; set; }
     public string CompletedExercisesText { get; set; }
+
     public ObservableCollection<Lesson> Lessons
     {
         get => _lessons;
@@ -32,7 +33,8 @@ public class StudentDashboardViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    public bool IsFilterChecked 
+
+    public bool IsFilterChecked
     {
         get => _isFilterChecked;
         set
@@ -42,14 +44,15 @@ public class StudentDashboardViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    
-    public StudentDashboardViewModel(UserStore userStore ,NavigationService exerciseNavigationService, NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
+
+    public StudentDashboardViewModel(UserStore userStore, NavigationService exerciseNavigationService,
+        NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
     {
         _userStore = userStore;
 
         WelcomeNameText = GetName();
         CompletedExercisesText = GetCompletedExercises();
-        
+
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
         AddToGroupButton = new NavigateCommand(linkToGroupNavigationService);
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
@@ -62,12 +65,16 @@ public class StudentDashboardViewModel : ViewModelBase
 
     private string GetName()
     {
-        if (_userStore.Student != null)
+        if (_userStore.Student?.Preposition != null)
         {
             return $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
         }
-        else return "Error, student = Null";
 
+        if(_userStore.Student?.Preposition == null) {
+            return $"Welkom {_userStore.Student?.FirstName} {_userStore.Student?.LastName}";
+        }
+
+        return "Error, student = Null";
     }
 
     private string GetCompletedExercises()
@@ -75,25 +82,30 @@ public class StudentDashboardViewModel : ViewModelBase
         return "Aantal gemaakte oefeningen: 0";
     }
 
-    
 
     private void getLessons()
     {
         //TODO: get lessons from database
-        Lessons.Clear(); Lessons.Add(new Lesson("Lesson","Teacher 1",1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Clear();
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
+        Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
     }
+
     private void getNonCompletedLessons()
     {
         //TODO: get lessons that are not completed from database
-        Lessons.Clear(); Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
+        Lessons.Clear();
+        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
     }
 
     private void FilterCompletedLessons(bool isChecked)
     {
-        if (isChecked) { getNonCompletedLessons(); }
+        if (isChecked)
+        {
+            getNonCompletedLessons();
+        }
         else getLessons();
     }
-
-
 }

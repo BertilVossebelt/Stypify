@@ -73,22 +73,7 @@ public class MyLessonsViewModel : ViewModelBase
         // Populate Exercises
         if (userStore.Teacher == null) return;
         var exercises = new ExerciseProvider().GetAll(userStore.Teacher.Id);
-        exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"])));
-
-        //Test Exercises
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-        Exercises.Add(new Exercise("Test"));
-
+        exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"])));
 
         //Test Lessons
         Lessons.Add(new Lesson("Test", "TestTeacher", 1));
@@ -102,8 +87,5 @@ public class MyLessonsViewModel : ViewModelBase
         Lessons.Add(new Lesson("Test", "TestTeacher", 1));
         Lessons.Add(new Lesson("Test", "TestTeacher", 1));
         Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-
-
-
     }
 }

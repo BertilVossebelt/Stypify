@@ -6,10 +6,12 @@ namespace TypingApp.Models;
 
 public class Exercise
 {
+    public string Name { get; }
     public string Text { get; }
 
-    public Exercise(string text)
+    public Exercise(string text, string name)
     {
+        Name = name;
         Text = text;
     }
 
