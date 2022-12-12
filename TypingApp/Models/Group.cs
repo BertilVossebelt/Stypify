@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TypingApp.Commands;
 using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
 
 namespace TypingApp.Models
 {
@@ -24,6 +25,9 @@ namespace TypingApp.Models
             GroupId = (int)props["id"];
             GroupName = (string)props["name"];
             GroupCode = (string)props["code"];
+
+            var groupProvider = new GroupProvider();
+            AmountOfStudents = groupProvider.GetGroupCount(GroupId);
         }
 
         public void RefreshCode()

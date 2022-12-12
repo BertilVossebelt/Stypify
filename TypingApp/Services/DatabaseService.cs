@@ -45,7 +45,9 @@ public class DatabaseService
     public void VoidExecuteRaw(string query)
     {
         var command = new SqlCommand(query, _connection);
-        
+        var reader = command.ExecuteReader();
+        reader.Close();
+
     }
 
     public List<Dictionary<string, object>>? Select(string query)

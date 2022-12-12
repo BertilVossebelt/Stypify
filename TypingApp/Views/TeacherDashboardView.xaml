@@ -220,7 +220,7 @@
 
             <!--  HIER IMPLEMENTEREN VAN LESSEN (er moet dan boven en onder ook nog wat aangepast/verwijderd/aangemaakt worden) -->
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Nog geen groep geselecteerd', TargetNullValue= 'Nog geen groep geselecteerd' not}"  Margin="21,0,0,0" FontSize="25" />
+                <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Nog geen groep geselecteerd', TargetNullValue= 'Nog geen groep geselecteerd'}"  Margin="21,0,0,0" FontSize="25" />
                 <TextBlock Text = "{Binding SelectedItem.GroupCode ,FallbackValue='Geen Code' ,TargetNullValue= 'Geen Code'}" VerticalAlignment="Bottom" FontStyle="Italic"/>
                 <Button Command="{Binding UpdateGroupsCodeButton}" Height="15" VerticalAlignment="Bottom" Width="15">
                     
@@ -246,15 +246,18 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Height="25" Orientation="Horizontal">
 
-                                        <Label Content="{Binding Path=Name}" />
-                                        <Label Content="Placeholder" Margin="195,0,0,0" />
+                                        <Label Content="{Binding Path=FullName}" />
+                                       
                                     </StackPanel>
-                                    <StatusBar Width="260" Margin="0,0,0,0" Height="4" HorizontalAlignment="Left"
+                                    <!--
+                                        "<StatusBar Width="260" Margin="0,0,0,0" Height="4" HorizontalAlignment="Left"
                                                Grid.Column="1" />
+                                    
                                     <Label Content="55%" Grid.Column="1" HorizontalAlignment="Right"
                                            VerticalAlignment="Stretch" Padding="0,0,0,0"
                                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                            Margin="0,0,5,0" />
+                                    -->
                                 </Grid>
                             </Border>
                         </DataTemplate>

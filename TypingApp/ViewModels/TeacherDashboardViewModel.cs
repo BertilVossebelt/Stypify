@@ -20,7 +20,7 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
     private string _welcomeMessage;
     private Group _selectedItem;
     private ObservableCollection<Group> _groups;
-    private ObservableCollection<Student> _students;
+    private ObservableCollection<User> _students;
 
     public ICommand AddGroupButton { get; }
     public ICommand MyLessonsButton { get; }
@@ -66,7 +66,7 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<Student> Students
+    public ObservableCollection<User> Students
     {
         get => _students;
         set
@@ -88,7 +88,8 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
         UpdateGroupsCodeButton = new UpdateGroupsCodeCommand(this);
 
         Groups = new ObservableCollection<Group>();
-        Students = new ObservableCollection<Student>();
+        Students = new ObservableCollection<User>();
+        Students.Add(new User(1, "test", "test", "'n", "test", false, false));
         Groups.Add(new Group(1, "DummyGroep", "ASDASD"));
 
         if (_userStore.Teacher != null)
@@ -96,12 +97,24 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
             WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName} {_userStore.Teacher.Preposition} {_userStore.Teacher.LastName}";
 
             var teacherProvider = new TeacherProvider();
+            var groupProvider = new GroupProvider();
+
             var groups = teacherProvider.GetGroups(_userStore.Teacher.Id);
             
+            //var groupProvider = new GroupProvider();
+            // var groups = groupProvider.GetGroupsV2(_userStore.Teacher.Id);
+
+
             if (groups != null)
             {
-                foreach (var group in groups) Groups.Add(new Group(group));
+                foreach (var group in groups) 
+                {
+                    Groups.Add(new Group(group)); 
+                } //
+
             }
+
+
         }
     }
 
@@ -112,8 +125,10 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
 
     private void GetStudentsFromGroup()
     {
-        var students = new GroupProvider().GetStudents(SelectedItem.GroupId);
-        if (students == null) return;
+        var tupleResult = new GroupProvider().GetStudents(SelectedItem.GroupId);
+        Students = tupleResult.Item1;
+        _selectedItem.AmountOfStudents = tupleResult.Item2;
+        if (Students == null) return;
 
         // TODO: Should be queried from database instead
         var characters = new List<Character>()
@@ -123,10 +138,7 @@ public class TeacherDashboardViewModel : ViewModelBase , INotifyPropertyChanged
             new('a'),
             new('t'),
         };
-
-        foreach (var student in students)
-        {
-            Students.Add(new Student(student, characters));
-        }
+     
+        Students = Students;
     } 
 }

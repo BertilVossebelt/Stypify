@@ -8,7 +8,7 @@ public class Admin : User
     {
     }
 
-    public Admin(int id, string email, string firstName, string lastName, bool isTeacher, bool isAdmin) : base(id, email, firstName, lastName, isTeacher, isAdmin)
+    public Admin(int id, string email, string firstName, string preposition, string lastName, bool isTeacher, bool isAdmin) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
     {
     }
 }

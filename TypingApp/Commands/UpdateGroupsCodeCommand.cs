@@ -21,11 +21,18 @@ namespace TypingApp.Commands
         {
             dashs = dash;
         }
+        public UpdateGroupsCodeCommand()
+        {
 
+        }
         public override void Execute(object? parameter)
         {
-            dashs.SelectedItem.RefreshCode();
-            dashs.SelectedItem = dashs.SelectedItem;
+            if (dashs.SelectedItem is not null) 
+            {
+                dashs.SelectedItem.RefreshCode();
+                dashs.SelectedItem = dashs.SelectedItem;
+            }
+            
         }
         /*public override (int id, string code)
         {
