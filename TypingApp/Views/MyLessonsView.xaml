@@ -6,6 +6,31 @@
              mc:Ignorable="d"
              MinHeight="700"
              MinWidth="1200">
+
+    <UserControl.Resources>
+        <Style x:Key="_ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border"
+                                Padding="2"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="#00FFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -43,7 +68,7 @@
         
         <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Margin="0, 20, 0, 0" Text="Mijn lessen" FontSize="30"></TextBlock>
-            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Height="200">
+            <ScrollViewer x:Name="Scrollviewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Height="200">
                 <ListBox ItemsSource="{Binding Lessons}"
                          SelectedItem="{Binding Path=SelectedLesson, Mode=TwoWay}"
                          SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -58,54 +83,45 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border BorderThickness="1" Margin="0,0,10,0" HorizontalAlignment="Left"
-                                    Width="170" Height="200" Background="Transparent" CornerRadius="10">
+                                            Width="170" Height="200" Background="Transparent" CornerRadius="10">
                                 <Grid>
-                                    <!-- <Border x:Name="Testborder" BorderBrush="Transparent" -->
-                                    <!--         VerticalAlignment="Center" BorderThickness="5" CornerRadius="20" -->
-                                    <!--         Visibility="Visible" IsManipulationEnabled="True" Height="200"> -->
-                                    <!--     <Border.Background> -->
-                                    <!--         <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" /> -->
-                                    <!--     </Border.Background> -->
-                                    <!-- </Border> -->
+                                    <Border x:Name="Testborder" BorderBrush="Transparent"
+                                                    VerticalAlignment="Center" BorderThickness="5" CornerRadius="20"
+                                                    Visibility="Visible" IsManipulationEnabled="True" Height="200">
+                                        <Border.Background>
+                                            <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
+                                        </Border.Background>
+                                    </Border>
 
-                                    <StatusBar Width="100" Height="7" HorizontalAlignment="Center"
-                                               VerticalAlignment="Top" Margin="0,15,0,0" />
-                                    <Label Content="0%" Foreground="White" VerticalAlignment="Top"
-                                           HorizontalAlignment="Center" Margin="80,17,0,0">
-                                    </Label>
-                                    <Label x:Name="StudentAmountLabel" Content="{Binding Path=Teacher}"
-                                           Foreground="White" FontSize="11" HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom" Margin="10,0,0,15" FontStyle="Italic"
-                                           FontWeight="Medium" FontStretch="Normal" />
-                                    <Label x:Name="GroupNameLabel" Content="{Binding Path=LessonName}"
-                                           HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                           HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
-                                           Margin="9,0,0,30" Foreground="White" FontSize="18"
-                                           FontWeight="Medium" FontStyle="Normal" FontStretch="Normal"
-                                           OpacityMask="Black" BorderBrush="Black" />
+                                    <Label x:Name="LessonNameLabel" Content="{Binding Path=LessonName}"
+                                                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
+                                                   Margin="9,0,0,30" Foreground="White" FontSize="18"
+                                                   FontWeight="Medium" FontStyle="Normal" FontStretch="Normal"
+                                                   OpacityMask="Black" BorderBrush="Black" />
                                 </Grid>
                             </Border>
-                            <!-- <DataTemplate.Triggers> -->
-                            <!--     <DataTrigger -->
-                            <!--         Binding="{Binding -->
-                            <!--                     RelativeSource={RelativeSource -->
-                            <!--                     Mode=FindAncestor, -->
-                            <!--                     AncestorType={x:Type ListBoxItem}}, -->
-                            <!--                     Path=IsSelected}" -->
-                            <!--         Value="True"> -->
-                            <!--         <Setter -->
-                            <!--             TargetName="Testborder" -->
-                            <!--             Property="BorderBrush" -->
-                            <!--             Value="Purple" /> -->
-                            <!--     </DataTrigger> -->
-                            <!-- </DataTemplate.Triggers> -->
+                            <DataTemplate.Triggers>
+                                <DataTrigger
+                                            Binding="{Binding
+                                                RelativeSource={RelativeSource
+                                                Mode=FindAncestor,
+                                                AncestorType={x:Type ListBoxItem}},
+                                                Path=IsSelected}"
+                                            Value="True">
+                                    <Setter
+                                                TargetName="Testborder"
+                                                Property="BorderBrush"
+                                                Value="Purple" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </ScrollViewer>
         </StackPanel>
         <Button Grid.Row="1" Grid.Column="0" BorderThickness="0" BorderBrush="Purple"
-                Background="Purple">
+                Background="Purple" Click="GoLeft">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"></Setter>
@@ -129,7 +145,7 @@
             </Button.Template>
         </Button>
         <Button Grid.Row="1" Grid.Column="2" BorderThickness="0" BorderBrush="Purple"
-                Background="Purple">
+                Background="Purple" Click="GoRight">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"></Setter>
@@ -173,99 +189,80 @@
             </Button.Resources>
         </Button>
 
-        
-        
-        <WrapPanel Grid.Row="4" Grid.Column="1">
-            <Border BorderThickness="1"
-                    BorderBrush="#C194D1"
-                    CornerRadius="15"
-                    Margin="15"
-                    Width="{Binding SystemParameters.PrimaryScreenWidth}">
-
-                <Border BorderThickness="15"
-                        BorderBrush="#EFDEFE"
-                        CornerRadius="7">
-                    <StackPanel Width="300" Height="75" Background="#EFDEFE">
-                        <TextBlock Text="Naam" 
-                                   Margin="0, 0, 0 , 7" 
-                                   FontSize="20" />
-                        <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, " />
-                        <TextBlock Text="Aantal karakters: 35" 
-                                   Margin="0, 7, 0 , 0" 
-                                   HorizontalAlignment="Right"
-                                   FontStyle="Italic"/>
-                    </StackPanel>
-                </Border>
-            </Border>
-            <Border BorderThickness="1"
-                    BorderBrush="#C194D1"
-                    CornerRadius="15"
-                    Margin="15">
-
-                <Border BorderThickness="15"
-                        BorderBrush="#EFDEFE"
-                        CornerRadius="7">
-                    <StackPanel Width="300" Height="75" Background="#EFDEFE">
-                        <TextBlock Text="Naam" 
-                                   Margin="0, 0, 0 , 7" 
-                                   FontSize="20" />
-                        <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, " />
-                        <TextBlock Text="Aantal karakters: 35" 
-                                   Margin="0, 7, 0 , 0" 
-                                   HorizontalAlignment="Right"
-                                   FontStyle="Italic"/>
-                    </StackPanel>
-                </Border>
-            </Border>
-            <Border BorderThickness="1"
-                    BorderBrush="#C194D1"
-                    CornerRadius="15"
-                    Margin="15">
-
-                <Border BorderThickness="15"
-                        BorderBrush="#EFDEFE"
-                        CornerRadius="7">
-                    <StackPanel Width="300" Height="75" Background="#EFDEFE">
-                        <TextBlock Text="Naam" 
-                                   Margin="0, 0, 0 , 7" 
-                                   FontSize="20" />
-                        <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, " />
-                        <TextBlock Text="Aantal karakters: 35" 
-                                   Margin="0, 7, 0 , 0" 
-                                   HorizontalAlignment="Right"
-                                   FontStyle="Italic"/>
-                    </StackPanel>
-                </Border>
-            </Border>
 
 
-            <ListBox ItemsSource="{Binding Exercises}"
-                     SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
-                     SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                     BorderBrush="Transparent" Background="Transparent"
-                     ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" SelectedIndex="2">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="1" Margin="0,0,10,0" HorizontalAlignment="Left"
-                                Width="170" Height="200" Background="Transparent" CornerRadius="10">
-                        </Border>
-                        <!-- <DataTemplate.Triggers> -->
-                        <!--     <DataTrigger -->
-                        <!--         Binding="{Binding -->
-                        <!--                         RelativeSource={RelativeSource -->
-                        <!--                         Mode=FindAncestor, -->
-                        <!--                         AncestorType={x:Type ListBoxItem}}, -->
-                        <!--                         Path=IsSelected}" -->
-                        <!--         Value="True"> -->
-                        <!--         <Setter -->
-                        <!--             TargetName="Testborder" -->
-                        <!--             Property="BorderBrush" -->
-                        <!--             Value="Purple" /> -->
-                        <!--     </DataTrigger> -->
-                        <!-- </DataTemplate.Triggers> -->
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        <WrapPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center">
+            
+            <ScrollViewer VerticalScrollBarVisibility="Visible" 
+                          Height="400"
+                          >
+                <ListBox ItemsSource="{Binding Exercises}"
+                         SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
+                         SelectionMode="Single" 
+                         BorderBrush="Transparent" 
+                         Background="Transparent"
+                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
+                         SelectedIndex="2"
+                         HorizontalContentAlignment="Stretch"
+                         >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="4"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="ExerciseBorderItem" 
+                                        BorderThickness="1"
+                                        BorderBrush="Purple"
+                                        CornerRadius="7"
+                                        Height="100"
+                                        VerticalAlignment="Top"            
+                                        >
+                                <Border.Background>
+                                    <SolidColorBrush Color="#EFDEFE"/>
+                                </Border.Background>
+                                
+                                <StackPanel Width="300"  >
+                                    <TextBlock Text="Naam" 
+                                               Margin="0, 0, 0 , 7" 
+                                               FontSize="20" 
+                                               />
+                                    <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
+                                               />
+                                    <TextBlock Text="Aantal karakters: 35" 
+                                               Margin="0, 7, 0 , 0" 
+                                               HorizontalAlignment="Right"
+                                               FontStyle="Italic"
+                                               />
+                                </StackPanel>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger 
+                                         Binding="{Binding 
+                                                     RelativeSource={RelativeSource 
+                                                     Mode=FindAncestor, 
+                                                     AncestorType={x:Type ListBoxItem}}, 
+                                                     Path=IsSelected}" 
+                                         Value="True">
+                                    <Setter 
+                                             TargetName="ExerciseBorderItem"
+                                             Property="BorderBrush" 
+                                             Value="Purple" 
+                                             />
+                                    <Setter
+                                        TargetName="ExerciseBorderItem" 
+                                        Property="BorderThickness"
+                                        Value="6" 
+                                        />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+
         </WrapPanel>
     </Grid>
 </UserControl>

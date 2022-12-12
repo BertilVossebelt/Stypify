@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using TypingApp.ViewModels;
 
 namespace TypingApp.Views;
 
