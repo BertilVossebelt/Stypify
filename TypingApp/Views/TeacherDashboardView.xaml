@@ -221,7 +221,15 @@
             <!--  HIER IMPLEMENTEREN VAN LESSEN (er moet dan boven en onder ook nog wat aangepast/verwijderd/aangemaakt worden) -->
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Nog geen groep geselecteerd', TargetNullValue= 'Nog geen groep geselecteerd'}"  Margin="21,0,15,0" FontSize="25" />
-                <TextBlock Text = "{Binding SelectedItem.GroupCode ,FallbackValue='Geen Code' ,TargetNullValue= 'Geen Code'}" VerticalAlignment="Bottom" FontStyle="Italic" Margin="0,0, 5,0"/>
+                <TextBox Background="Transparent"
+                         BorderThickness="0"
+                         Text="{Binding SelectedItem.GroupCode, Mode=OneWay, FallbackValue=Geen Code, TargetNullValue=Geen Code}"
+                         VerticalAlignment="Bottom"
+                         FontStyle="Italic"
+                         Margin="0,0, 5,0"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap" />
+                
                 <Button Command="{Binding UpdateGroupsCodeButton}" Height="15" VerticalAlignment="Bottom" Width="15">
                     
                 </Button>
