@@ -2,6 +2,8 @@
 using System.Data.SqlClient;
 using System.Data;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services;
@@ -46,6 +48,7 @@ namespace TypingApp.Commands
             var user = new UserProvider().GetById(_userId);
             if (user == null) return;
 
+            // Check of de user een docent, admin of student is.
             if ((byte)user["teacher"] == 1)
             {
                 _userStore.CreateTeacher(user);
@@ -64,29 +67,19 @@ namespace TypingApp.Commands
             navigateCommand.Execute(this);
         }
 
+        // Check of de ingevulde account gegevens kloppen.
         private bool AuthenticateUser(NetworkCredential credential)
         {
             var userProvider = new UserProvider();
-            var validUser = userProvider.WeirdThing(credential.UserName, credential.Password);
+            var validUser = userProvider.VerifyUser(credential.UserName, credential.Password);
 
             if (!validUser) return validUser;
-
-            _userId = userProvider.WeirdThingAgainId(credential.UserName, credential.Password);
+            
+            _userId = userProvider.GetUserId(credential.UserName);
             return validUser;
         }
 
-        private bool IsTeacherAccount()
-        {
-            var userProvider = new UserProvider();
-            return userProvider.WeirdThingTeacher(_loginViewModel.Email);
-        }
-
-        private bool IsAdminAccount()
-        {
-            var userProvider = new UserProvider();
-            return userProvider.WeirdThingAdmin(_loginViewModel.Email);
-        }
-
+        // Laat een error message zien als de accountgegevens niet kloppen.
         private static void ShowIncorrectCredentialsMessage()
         {
             const string message = "Email of wachtwoord incorrect.";

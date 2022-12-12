@@ -112,7 +112,6 @@
                          Margin="0,0,0,0"/>
 
                 <TextBlock Text="Wachtwoord"
-                        FontFamily="Helvetica"
                         FontWeight="Light"
                         FontSize="17"/>
                 <components:BindablePasswordBox 
@@ -139,14 +138,16 @@
                     Height="30"
                     FontStyle="Italic"/>
 
-                <TextBlock Text="{Binding ErrorMessage}"
-                        Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        Foreground="Red"
-                        FontFamily="Helvetica"
-                        FontWeight="Light"
-                        FontSize="17"
-                        HorizontalAlignment="Center"
-                        Margin="0,5,0,0"/>
+                <TextBlock
+                    Text="{Binding ErrorMessage}"
+                    Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Foreground="Red"
+                    FontWeight="Light"
+                    MaxWidth="250"
+                    TextWrapping="WrapWithOverflow"
+                    FontSize="17"
+                    HorizontalAlignment="Center"
+                    Margin="0,5,0,0"/>
                 
                 <Button Command="{Binding RegisterButton}" Foreground="White" Width="250" Height="30"
                         BorderThickness="0" BorderBrush="Purple" Background="Purple" FontSize="15" Margin="0, 10, 0, 5">
