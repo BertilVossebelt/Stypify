@@ -1,45 +1,55 @@
-﻿using System.Windows.Input;
+using System;
+using System.ComponentModel;
+using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
 
-public class AddGroupViewModel : ViewModelBase
+public class AddGroupViewModel : ViewModelBase , INotifyPropertyChanged
 {
+    private string _groupCode;
+    private string _groupName;
+
     public ICommand BackButton { get; }
     public ICommand CancelButton { get; }
-    public ICommand SaveButton { get; }
-    public ICommand NewGroupCodeButton { get; }
-    private Group _group;
-    private string? _groupCodeText;
-    private string? _groupNameText;
+    public ICommand SaveButton { get; set; }
+    public ICommand UpdateGroupCodeButton { get; set; }
 
-    public string GroupCodeText
+    public string GroupCode
     {
-        get => _groupCodeText;
-        set { _groupCodeText = value; OnPropertyChanged(); }
+        get => _groupCode;
+        set
+        {
+            _groupCode = value;
+            OnPropertyChanged();
+        }
     }
 
-    public string GroupNameText
+    public string GroupName
     {
-        get => _groupNameText;
-        set{ _groupNameText = value; _group.GroupName = value; OnPropertyChanged(); }
+        get => _groupName;
+        set
+        {
+            _groupName = value; 
+            OnPropertyChanged();
+        }
     }
-
-    public AddGroupViewModel(NavigationService studentDashboardNavigationService, NavigationService teacherDashboardNavigationService, User user, DatabaseConnection connection)
-    {
-        _group = new Group(connection);
-        _group.GroupCodeGeneratorMethod();
-
-        GroupCodeText = _group.GroupCode.ToString();
-        SaveButton = new SaveGroupCommand(_group, user, connection, teacherDashboardNavigationService);
+    
+    public AddGroupViewModel(NavigationService studentDashboardNavigationService,
+        NavigationService teacherDashboardNavigationService, UserStore userStore)
+    { 
         
-        var teacher = new NavigateCommand(teacherDashboardNavigationService);
+        
         var student = new NavigateCommand(studentDashboardNavigationService);
-        BackButton = user.IsTeacher ? teacher : student;
+        var teacher = new NavigateCommand(teacherDashboardNavigationService);
         
+        BackButton = userStore.Teacher == null ? student : teacher;
         CancelButton = new CancelCommand(teacherDashboardNavigationService);
-        NewGroupCodeButton = new NewGroupCodeCommand(_group, this);
+        SaveButton = new CreateGroupCommand(userStore, teacherDashboardNavigationService, this);
+        UpdateGroupCodeButton = new UpdateGroupsCodeCommand(this);
     }
+    
 }

@@ -1,121 +1,87 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
+using TypingApp.Models;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.ViewModels;
 
 namespace TypingApp.Commands
 {
     public class RegisterStudentCommand : CommandBase
     {
-        private readonly DatabaseConnection _connection;
         private readonly RegisterViewModel _registerViewModel;
 
-        public RegisterStudentCommand(RegisterViewModel registerViewModel, DatabaseConnection connection)
+        public RegisterStudentCommand(RegisterViewModel registerViewModel)
         {
             _registerViewModel = registerViewModel;
-            _connection = connection;
         }
 
+        // Check of het registercommando uitgevoerd mag worden.
         public override bool CanExecute(object? parameter)
         {
-            if (_registerViewModel.CanCreateAccount)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return _registerViewModel.CanCreateAccount;
         }
 
+        // Voer het registercommando uit.
         public override void Execute(object? parameter)
         {
-            string password = SecureStringToString(_registerViewModel.Password);
-            string passwordConfirm = SecureStringToString(_registerViewModel.PasswordConfirm);
-
-            if (!PasswordConfirmCorrect(password, passwordConfirm))
+            if (DoesAccountExist())
             {
-                MessageBox.Show("De twee wachtwoorden moeten gelijk zijn.", "Wachtwoorden niet gelijk",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            } 
-            else if (DoesAccountExist())
-            {
-                
-                MessageBox.Show("Er bestaat al een account met dit emailadres.", "Bestaand account",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowAccountAlreadyExistsError();
             }
             else
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand();
-                    command.Connection = _connection.GetConnection();
+                    string password = SecureStringToString(_registerViewModel.Password);
+                    PasswordHash hash = new PasswordHash(password);
+                    byte[] hashedPassword = hash.ToArray();
+                    byte[] salt = hash.Salt;
+                    
+                    new StudentProvider().Create(_registerViewModel.Email, hashedPassword, salt,
+                        _registerViewModel.Preposition, _registerViewModel.FirstName, _registerViewModel.LastName);
 
-                    command.CommandText =
-                        "INSERT INTO [Users] (teacher, student, email, password, first_name, preposition, last_name, admin)" +
-                        "VALUES (@teacher, @student, @email, @password, @first_name, @preposition, @last_name, @admin)";
-
-                    command.Parameters.Add("@teacher", SqlDbType.TinyInt).Value = 0;
-                    command.Parameters.Add("@student", SqlDbType.TinyInt).Value = 1;
-                    command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _registerViewModel.Email;
-                    command.Parameters.Add("@password", SqlDbType.NVarChar).Value = password;
-
-                    if (!string.IsNullOrEmpty(_registerViewModel.Preposition))
-                    {
-                        command.Parameters.Add("@preposition", SqlDbType.NVarChar).Value = _registerViewModel.Preposition;
-                    }
-                    else
-                    {
-                        command.Parameters.AddWithValue("@preposition", DBNull.Value);
-                    }
-
-                    command.Parameters.Add("@first_name", SqlDbType.NVarChar).Value = _registerViewModel.FirstName;
-                    command.Parameters.Add("@last_name", SqlDbType.NVarChar).Value = _registerViewModel.LastName;
-                    command.Parameters.Add("@admin", SqlDbType.TinyInt).Value = 0;
-
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Account succesvol aangemaakt", "Account aangemaakt", MessageBoxButton.OK,
-                        MessageBoxImage.Information);
+                    ShowAccountSuccesfullyCreatedMessage();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
                 }
-                
             }
         }
 
-        public bool DoesAccountExist()
+        // Check of het account al bestaat.
+        private bool DoesAccountExist()
         {
-            bool doesAccountExist;
-            SqlCommand command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _registerViewModel.Email;
-            doesAccountExist = command.ExecuteScalar() == null ? false : true;
-
-            return doesAccountExist;
+            var student = new StudentProvider().GetByEmail(_registerViewModel.Email);
+            return student != null;
         }
 
-        public bool PasswordConfirmCorrect(string password, string passwordConfirm)
+        // Laat een error message zien als het account al bestaat.
+        private void ShowAccountAlreadyExistsError()
         {
-            if (password.Equals(passwordConfirm))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            const string message = "Er bestaat al een account met dit emailadres.";
+            const MessageBoxButton type = MessageBoxButton.OK;
+            const MessageBoxImage icon = MessageBoxImage.Error;
+
+            MessageBox.Show(message, "Bestaand account", type, icon);
         }
 
-        String SecureStringToString(SecureString value)
+        // Laat een error message zien als het account al bestaat.
+        private void ShowAccountSuccesfullyCreatedMessage()
         {
-            IntPtr valuePtr = IntPtr.Zero;
+            const string message = "Account succesvol aangemaakt.";
+            const MessageBoxButton type = MessageBoxButton.OK;
+            const MessageBoxImage icon = MessageBoxImage.Information;
+
+            MessageBox.Show(message, "Account aangemaakt", type, icon);
+        }
+        
+        // Convert de SecureString naar een string. (kan niet anders op dit moment)
+        private static string? SecureStringToString(SecureString value)
+        {
+            var valuePtr = IntPtr.Zero;
             try
             {
                 valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);

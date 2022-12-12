@@ -1,58 +1,39 @@
 using System;
+using System.Collections.Generic;
 using TypingApp.Commands;
+using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
 
 namespace TypingApp.Models
 {
     public class Group
     {
-        private readonly DatabaseConnection? _connection;
-
+        public int GroupId { get; set; }
         public string GroupName { get; set; }
         public string GroupCode { get; set; }
-        public int GroupId { get; set; }
-        public Group(string _groupName, int amount, int id, string groupCode)
+        public int AmountOfStudents { get; set; } = 0;
+
+        public Group(int groupId, string groupName, string groupCode)
         {
-            GroupName = _groupName;
+            GroupId = groupId;
+            GroupName = groupName;
             GroupCode = groupCode;
         }
-        
-        public Group(DatabaseConnection connection)
+
+        public Group(IReadOnlyDictionary<string, object> props)
         {
-            _connection = connection;
+            GroupId = (int)props["id"];
+            GroupName = (string)props["name"];
+            GroupCode = (string)props["code"];
+
+            var groupProvider = new GroupProvider();
+            AmountOfStudents = groupProvider.GetGroupCount(GroupId);
         }
 
-        public void GroupCodeGeneratorMethod()
+        public void RefreshCode()
         {
-            // Loop till a group code was found that wasn't in the database already.
-            while (true)
-            {
-                const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                var stringChars = new char[8];
-                var random = new Random();
-
-                for (var i = 0; i < stringChars.Length; i++)
-                {
-                    stringChars[i] = chars[random.Next(chars.Length)];
-                }
-
-                var newGroupCode = new string(stringChars);
-                if (CheckCodeInDataBase(newGroupCode))
-                {
-                    GroupCode = newGroupCode;
-                    break;
-                }
-            }
-        }
-
-        private bool CheckCodeInDataBase(string groupCode)
-        {
-            // Check if code is already used.
-            var queryString = $"SELECT id FROM Groups WHERE code='{groupCode}';";
-
-            var reader = _connection?.ExecuteSqlStatement(queryString);
-            if (reader == null || reader.HasRows) return false;
-            reader.Close();
-            return true;
+            GroupCode = new GroupCodeService().GenerateCode();
+            new GroupCodeService().updateCodeInDatabase(GroupId, GroupCode);
         }
     }
 }

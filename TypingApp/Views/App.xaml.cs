@@ -1,19 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
-using TypingApp.Commands;
 
 namespace TypingApp.Views
 {
@@ -22,34 +15,22 @@ namespace TypingApp.Views
     /// </summary>
     public partial class App : Application
     {
-        private readonly User _user;
-        private readonly ExerciseStore _exerciseStore;
         private readonly NavigationStore _navigationStore;
-        private readonly DatabaseConnection _connection;
+        private readonly ExerciseStore _exerciseStore;
+        private readonly UserStore _userStore;
 
         public App()
         {
-            var characters = new List<Character>()
-            {
-                new('e'),
-                new('n'),
-                new('a'),
-                new('t'),
-            };
-
-            _user = new User(0, "email@email.nl", "Voornaam", "Achternaam", characters, false);
             _navigationStore = new NavigationStore();
-            _connection = new DatabaseConnection();
             _exerciseStore = new ExerciseStore();
+            _userStore = new UserStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // _navigationStore.CurrentViewModel = new GroupViewModel(_connection);
-
             _navigationStore.CurrentViewModel = CreateLoginViewModel();
 
-            MainWindow = new MainWindow(_exerciseStore, _user)
+            MainWindow = new MainWindow(_exerciseStore, _userStore)
             {
                 DataContext = new MainViewModel(_navigationStore)
             };
@@ -59,24 +40,26 @@ namespace TypingApp.Views
             base.OnStartup(e);
         }
 
-        private LoginViewModel? CreateLoginViewModel()
+        private LoginViewModel CreateLoginViewModel()
         {
             var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
             var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
             var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
 
-            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel, teacherDashboardViewModel, _connection, _user);
+            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel,
+                teacherDashboardViewModel, _userStore);
         }
 
         private AdminDashboardViewModel CreateAdminDashboardViewModel()
         {
-            return new AdminDashboardViewModel(_connection);
+            var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            return new AdminDashboardViewModel(_userStore, loginNavigationService);
         }
 
         private RegisterViewModel CreateRegisterViewModel()
         {
-            return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel), _connection);
+            return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel));
         }
 
         private StudentDashboardViewModel CreateStudentDashboardViewModel()
@@ -84,24 +67,40 @@ namespace TypingApp.Views
             var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
             var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
-            return new StudentDashboardViewModel(_user, _connection ,exerciseNavigationService, linkToGroupNavigationService, loginNavigationService);
-        }
-        private ExerciseViewModel CreateExerciseViewModel()
-        {
-            return new ExerciseViewModel(new NavigationService(_navigationStore, CreateStudentDashboardViewModel), _user, _exerciseStore);
+
+            return new StudentDashboardViewModel(_userStore, exerciseNavigationService, linkToGroupNavigationService,
+                loginNavigationService);
         }
 
-        private GroupViewModel CreateTeacherDashboardViewModel()
+        private ExerciseViewModel CreateExerciseViewModel()
         {
-            return new GroupViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _user, _connection);
-            //return new TeacherDashboardViewModel(new NavigationService(_navigationStore, CreateAddGroupViewModel), _user, _connection);
+            return new ExerciseViewModel(new NavigationService(_navigationStore, CreateStudentDashboardViewModel),
+                _userStore, _exerciseStore);
+        }
+
+        private TeacherDashboardViewModel CreateTeacherDashboardViewModel()
+        {
+            var myLessonsViewModel = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
+            var createAddGroupViewModel = new NavigationService(_navigationStore, CreateAddGroupViewModel);
+            var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+
+            return new TeacherDashboardViewModel(createAddGroupViewModel, myLessonsViewModel, loginNavigationService, _userStore);
+        }
+
+        private MyLessonsViewModel CreateMyLessonsViewModel()
+        {
+            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+            var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
+            
+            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel, _userStore);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()
         {
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
-            return new AddGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _user, _connection);
+
+            return new AddGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _userStore);
         }
 
         private LinkToGroupViewModel CreateLinkToGroupViewModel()
@@ -109,7 +108,14 @@ namespace TypingApp.Views
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
 
-            return new LinkToGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _user, _connection);
+            return new LinkToGroupViewModel(studentDashboardViewModel, teacherDashboardViewModel, _userStore);
+        }
+
+        private CreateExerciseViewModel CreateCreateExerciseViewModel()
+        {
+            var myLessonsNavigationService = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
+
+            return new CreateExerciseViewModel(myLessonsNavigationService, _userStore);
         }
     }
 }

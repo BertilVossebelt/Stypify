@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using TypingApp.ViewModels;
 
 namespace TypingApp.Views;
 
@@ -8,4 +9,17 @@ public partial class StudentDashboardView : UserControl
     {
         InitializeComponent();
     }
+
+
+    private void GoRight(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ScrollViewer.PageRight();
+    }
+
+    private void GoLeft(object sender, System.Windows.RoutedEventArgs e)
+    {
+        ScrollViewer.PageLeft();
+    }
+
 }
+

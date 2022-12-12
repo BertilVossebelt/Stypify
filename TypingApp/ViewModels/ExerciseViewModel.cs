@@ -22,14 +22,17 @@ public class ExerciseViewModel : ViewModelBase
     }
     public ICommand BackButton { get; }
 
-    public ExerciseViewModel(NavigationService studentDashboardNavigationService, User user, ExerciseStore exerciseStore)
+    public ExerciseViewModel(NavigationService studentDashboardNavigationService, UserStore userStore, ExerciseStore exerciseStore)
     {
         BackButton = new NavigateCommand(studentDashboardNavigationService);
         exerciseStore.ExerciseCreated += OnExerciseChanged;
         exerciseStore.ExerciseUpdated += OnExerciseChanged;
 
-        var generateExerciseCommand = new GenerateExerciseCommand(exerciseStore, user.Characters);
-        generateExerciseCommand.Execute(this);
+        if (userStore.Student?.Characters != null)
+        {
+            var generateExerciseCommand = new GenerateExerciseCommand(exerciseStore, userStore.Student.Characters);
+            generateExerciseCommand.Execute(this);
+        }
     }
     
     private void OnExerciseChanged(List<Character> characters)

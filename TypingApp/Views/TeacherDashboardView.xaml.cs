@@ -1,11 +1,26 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
-namespace TypingApp.Views;
-
-public partial class TeacherDashboardView : UserControl
+namespace TypingApp.Views
 {
-    public TeacherDashboardView()
+    /// <summary>
+    /// Interaction logic for GroupView.xaml
+    /// </summary>
+    public partial class TeacherDashboardView : UserControl
     {
-        InitializeComponent();
+        public TeacherDashboardView()
+        {
+            InitializeComponent();
+        }
+
+        private void GoRight(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer.PageRight();
+        }
+
+        private void GoLeft(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer.PageLeft();
+        }
     }
 }

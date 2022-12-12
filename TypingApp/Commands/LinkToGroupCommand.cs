@@ -1,25 +1,27 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
+using TypingApp.Stores;
+using TypingApp.ViewModels;
 using Group = TypingApp.Models.Group;
 
 namespace TypingApp.Commands
 {
     internal class LinkToGroupSaveCommand : CommandBase
     {
-        private readonly User _user;
-        private readonly DatabaseConnection _connection;
-        private readonly Group _code;
+        private readonly UserStore _userStore;
+        private readonly LinkToGroupViewModel _linkToGroupViewModel;
         private int _groupId;
         private readonly NavigationService _studentDashboardNavigationService;
 
-        public LinkToGroupSaveCommand(Group code, User user, DatabaseConnection connection,
+        public LinkToGroupSaveCommand(LinkToGroupViewModel linkToGroupViewModel, UserStore userStore,
             NavigationService studentDashboardNavigationService)
         {
-            _code = code;
-            _user = user;
-            _connection = connection;
+            _linkToGroupViewModel = linkToGroupViewModel;
+            _userStore = userStore;
             _studentDashboardNavigationService = studentDashboardNavigationService;
         }
 
@@ -29,53 +31,54 @@ namespace TypingApp.Commands
             var linkGroupMessageBox = AskUserVerification();
             if (linkGroupMessageBox != MessageBoxResult.Yes) return;
 
-            GetGroupId();
+            // Find group.
+            if (!GetGroupId()) return;
             
             // Prevent linking if user is already linked.
-            if (CheckIfUserIsLinked(out var reader)) return;
+            if (CheckIfUserIsLinked()) return;
 
             // Link to group.
-            reader.Close();
-            var queryString3 = $"INSERT INTO Group_Student (group_id,student_id) VALUES ('{_groupId}','{_user.Id}')";
-            _connection.ExecuteSqlStatement2(queryString3);
+            if (_userStore.Student != null)
+            {
+                var student = new GroupProvider().LinkStudent(_groupId, _userStore.Student.Id);
+                if (student != null) ShowLinkedMessage();
+            }
             
             // Navigate to student dashboard.
             var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
             navigateCommand.Execute(this);
         }
 
-        private bool CheckIfUserIsLinked(out SqlDataReader reader)
+        private bool CheckIfUserIsLinked()
         {
             // Check if student is already linked to group.
-            var queryString2 = $"SELECT id FROM Group_Student WHERE group_id='{_groupId}' AND student_id='{_user.Id}';";
-            reader = _connection.ExecuteSqlStatement(queryString2);
+            if (_userStore.Student != null)
+            {
+                var student = new GroupProvider().GetStudent(_groupId, _userStore.Student.Id);
+                if (student == null) return false;
+            }
 
-            // Check if student is already linked
-            if (!reader.HasRows) return false;
             ShowAlreadyLinkedError();
             return true;
-
         }
 
         /*
          * Checks if group code exists and finds the group id.
          */
-        private void GetGroupId()
+        private bool GetGroupId()
         {
-            var queryString = $"SELECT id FROM Groups WHERE code='{_code.GroupCode}'";
-            var reader = _connection.ExecuteSqlStatement(queryString);
-
+            var group = new GroupProvider().GetByCode(_linkToGroupViewModel.GroupCode);
+            
             // Close connection if reader doesn't have rows.
-            if (!reader.HasRows)
+            if (group == null)
             {
-                reader.Close();
                 ShowGroupDoesNotExistError();
-                return;
+                return false;
             }
 
             // If reader has rows, get group id.
-            while (reader.Read()) _groupId = (int)reader["id"];
-            reader.Close();
+            _groupId = (int)group["id"];
+            return true;
         }
         
         /*
@@ -104,6 +107,20 @@ namespace TypingApp.Commands
             const MessageBoxImage icon = MessageBoxImage.Error;
 
             MessageBox.Show(message, "Fout", type, icon);
+        }
+        
+        /*
+         * Notifies the user he is now linked to the group.
+         * ---------------------------------------------
+         * Show OK messagebox
+         */
+        private static void ShowLinkedMessage()
+        {
+            const string message = "Je bent gekoppeld aan de groep";
+            const MessageBoxButton type = MessageBoxButton.OK;
+            const MessageBoxImage icon = MessageBoxImage.Information;
+
+            MessageBox.Show(message, "Succes", type, icon);
         }
 
         /*

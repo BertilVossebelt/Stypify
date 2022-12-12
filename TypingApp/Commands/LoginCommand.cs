@@ -2,8 +2,13 @@
 using System.Data.SqlClient;
 using System.Data;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows;
 using TypingApp.Models;
+using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
+using TypingApp.Stores;
 using TypingApp.ViewModels;
 using NavigationService = TypingApp.Services.NavigationService;
 
@@ -11,23 +16,23 @@ namespace TypingApp.Commands
 {
     public class LoginCommand : CommandBase
     {
-        private readonly DatabaseConnection _connection;
         private readonly LoginViewModel _loginViewModel;
-        private readonly User _user;
+        private readonly UserStore _userStore;
         private readonly NavigationService _studentDashboardNavigationService;
         private readonly NavigationService _adminDashboardNavigationService;
         private readonly NavigationService _teacherDashboardNavigationService;
 
-        public LoginCommand(LoginViewModel loginViewModel, DatabaseConnection connection,
+        private int _userId { get; set; }
+
+        public LoginCommand(LoginViewModel loginViewModel,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
-            NavigationService teacherDashboardNavigationService, User user)
+            NavigationService teacherDashboardNavigationService, UserStore userStore)
         {
             _loginViewModel = loginViewModel;
-            _connection = connection;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
             _teacherDashboardNavigationService = teacherDashboardNavigationService;
-            _user = user;
+            _userStore = userStore;
         }
 
         public override void Execute(object? parameter)
@@ -38,67 +43,43 @@ namespace TypingApp.Commands
                 ShowIncorrectCredentialsMessage();
                 return;
             }
-
+            
             var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
-            if (IsAdminAccount()) navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
-            if (IsTeacherAccount()) navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+            var user = new UserProvider().GetById(_userId);
+            if (user == null) return;
+
+            // Check of de user een docent, admin of student is.
+            if ((byte)user["teacher"] == 1)
+            {
+                _userStore.CreateTeacher(user);
+                navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+            }
+            else if ((byte)user["admin"] == 1)
+            {
+                _userStore.CreateAdmin(user);
+                navigateCommand = new NavigateCommand(_adminDashboardNavigationService);
+            }
+            else
+            {
+                _userStore.CreateStudent(user);
+            }
+            
             navigateCommand.Execute(this);
         }
 
+        // Check of de ingevulde account gegevens kloppen.
         private bool AuthenticateUser(NetworkCredential credential)
         {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
+            var userProvider = new UserProvider();
+            var validUser = userProvider.VerifyUser(credential.UserName, credential.Password);
 
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email and [password]=@password";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = credential.UserName;
-            command.Parameters.Add("@password", SqlDbType.NVarChar).Value = credential.Password;
-            var validUser = command.ExecuteScalar() != null;
-            
             if (!validUser) return validUser;
             
-            var userId = (int)command.ExecuteScalar();
-            _user.Id = userId;
+            _userId = userProvider.GetUserId(credential.UserName);
             return validUser;
         }
 
-        public bool IsStudentAccount()
-        {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND student = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            var isStudentAccount = command.ExecuteScalar() != null;
-            _user.IsTeacher = false;
-            
-            return isStudentAccount;
-        }
-
-        private bool IsTeacherAccount()
-        {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND teacher = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            var isTeacherAccount = command.ExecuteScalar() != null;
-            _user.IsTeacher = true;
-            return isTeacherAccount;
-        }
-
-        private bool IsAdminAccount()
-        {
-            var command = new SqlCommand();
-            command.Connection = _connection.GetConnection();
-
-            command.CommandText = "SELECT * FROM [Users] WHERE email=@email AND admin = 1";
-            command.Parameters.Add("@email", SqlDbType.NVarChar).Value = _loginViewModel.Email;
-            var isAdminAccount = command.ExecuteScalar() != null;
-
-            return isAdminAccount;
-        }
-        
+        // Laat een error message zien als de accountgegevens niet kloppen.
         private static void ShowIncorrectCredentialsMessage()
         {
             const string message = "Email of wachtwoord incorrect.";
