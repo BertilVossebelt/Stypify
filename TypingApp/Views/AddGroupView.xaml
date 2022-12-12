@@ -9,24 +9,39 @@
              Width="1200">
 
     <Grid>
-        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,640">
-            <Button Command="{Binding BackButton}" Width="70" HorizontalAlignment="Left" Margin="10">Terug</Button>
+        <!-- <Grid.RowDefinitions> -->
+        <!--     <RowDefinition Height="40"/> -->
+        <!--     <RowDefinition Height="*"/> -->
+        <!-- </Grid.RowDefinitions> -->
+
+        <StackPanel Background="#EFDEFE" Height="40" VerticalAlignment="Top">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Command="{Binding BackButton}"
+                        Width="70"
+                        HorizontalAlignment="Left"
+                        Margin="10"
+                        Background="Transparent"
+                        BorderThickness="0">
+                    Terug
+                </Button>
+            </Grid>
         </StackPanel>
 
-        <Grid>
-            <Rectangle HorizontalAlignment="Center"
-                       Height="136"
-                       Margin="100,0,0,0"
-                       Stroke="#d390d3"
-                       VerticalAlignment="Center"
-                       Width="175"
-                       Fill="#f6e0fe" />
-            
+        
+        <Border BorderThickness="1" Height="136" Width="280" VerticalAlignment="Center" HorizontalAlignment="Center"
+                CornerRadius="15" BorderBrush="#d390d3" Background="#f6e0fe">
+        </Border>
+        
             <Border BorderBrush="#ac31a9"
                     CornerRadius="15,15,15,15"
                     BorderThickness="15"
                     Margin="450,282,615,282" />
-            
+
             <Rectangle HorizontalAlignment="Center"
                        Height="116" Width="115"
                        Margin="0,0,173,0"
@@ -82,6 +97,7 @@
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
                        Margin="150,0,0,150" />
+        
             <Button Command="{Binding NewGroupCodeButton}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -89,5 +105,4 @@
                     Width="17"
                     Margin="250,0,0,150" />
         </Grid>
-    </Grid>
 </UserControl>

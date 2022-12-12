@@ -52,17 +52,22 @@ public class StudentDashboardViewModel : ViewModelBase
         
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
         AddToGroupButton = new NavigateCommand(linkToGroupNavigationService);
-        LogOutButton = new NavigateCommand(loginNavigationService);
+        LogOutButton = new LogOutCommand(userStore, loginNavigationService);
 
         Lessons = new ObservableCollection<Lesson>();
-        //Dummy Lessons (uses Group model for now) 
+        //Dummy Lessons
         getLessons();
     }
 
 
     private string GetName()
     {
-        return  "Welkom " + _userStore.Student?.FirstName + " " + _userStore.Student?.Preposition + _userStore.Student?.LastName;
+        if (_userStore.Student != null)
+        {
+            return $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
+        }
+        else return "Error, student = Null";
+
     }
 
     private string GetCompletedExercises()
@@ -76,22 +81,6 @@ public class StudentDashboardViewModel : ViewModelBase
     {
         //TODO: get lessons from database
         Lessons.Clear(); Lessons.Add(new Lesson("Lesson","Teacher 1",1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
         Lessons.Add(new Lesson("Lesson", "Teacher 1", 1)); Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
     }
     private void getNonCompletedLessons()

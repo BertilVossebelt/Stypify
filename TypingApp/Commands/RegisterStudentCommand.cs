@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.Cryptography;
 using System.Windows;
 using TypingApp.Models;
-using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.ViewModels;
 

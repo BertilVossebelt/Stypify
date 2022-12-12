@@ -34,7 +34,6 @@ namespace TypingApp.Commands
             // Find group.
             if (!GetGroupId()) return;
             
-            Console.WriteLine("oke");
             // Prevent linking if user is already linked.
             if (CheckIfUserIsLinked()) return;
 
@@ -68,7 +67,6 @@ namespace TypingApp.Commands
          */
         private bool GetGroupId()
         {
-            Console.WriteLine(_linkToGroupViewModel.GroupCode);
             var group = new GroupProvider().GetByCode(_linkToGroupViewModel.GroupCode);
             
             // Close connection if reader doesn't have rows.

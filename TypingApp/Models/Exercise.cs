@@ -7,7 +7,12 @@ namespace TypingApp.Models;
 public class Exercise
 {
     public string Text { get; }
-    
+
+    public Exercise(string text)
+    {
+        Text = text;
+    }
+
     // Generate exercise.
     public Exercise(IReadOnlyList<Character> subset)
     {

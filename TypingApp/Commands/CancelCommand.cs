@@ -14,7 +14,7 @@ public class CancelCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        var cancelMessageBox = MessageBox.Show("Weet je zeker dat je wilt annuleren", "Annuleren", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        var cancelMessageBox = MessageBox.Show("Weet je zeker dat je deze actie wilt annuleren?", "Annuleren", MessageBoxButton.YesNo, MessageBoxImage.Question);
         
         if (cancelMessageBox != MessageBoxResult.Yes) return;
         var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);

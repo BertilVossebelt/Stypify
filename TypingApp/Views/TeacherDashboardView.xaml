@@ -31,76 +31,53 @@
 
     <Grid>
         <StackPanel>
-            <Border BorderBrush="Black" BorderThickness="1" Height="45" Background="#FFF7E1FF" Padding="0,0,0,0" />
-            <Label Content="{Binding Welcome, Mode=TwoWay}"
+            <StackPanel Background="#EFDEFE">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Text="Stypify"
+                               FontSize="18"
+                               Width="100"
+                               Padding="2"
+                               FontStyle="Italic"
+                               FontWeight="Bold"
+                               Margin="5"
+                               HorizontalAlignment="Left"
+                               Foreground="#FFD07FCD" />
+
+                    <Button Grid.Column="2" Content="Uitloggen" Margin="10" Command="{Binding LogOutButton}"
+                            VerticalAlignment="Top"
+                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
+                    <Button Grid.Column="1" Command="{Binding MyLessonsButton}"
+                            Content="Mijn lessen"
+                            HorizontalAlignment="Right"
+                            Margin="10"
+                            Width="80"
+                            Height="20"
+                            Background="#00000000"
+                            BorderBrush="#00000000">
+                    </Button>
+
+                </Grid>
+            </StackPanel>
+
+
+            <Label Content="{Binding WelcomeMessage, Mode=TwoWay}"
                    HorizontalAlignment="Left"
-                   Margin="35,10,0,0"
+                   Margin="35,10,5,0"
                    VerticalAlignment="Stretch"
                    FontSize="36"
                    Foreground="#FFD07FCD"
                    Height="50"
-                   FontStyle="Italic" />
+                   FontStyle="Italic"
+                   FontWeight="Bold" />
 
-            <Rectangle Height="2" Margin="25,10,25,2">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="Black" Opacity="0.45" />
-                </Rectangle.Fill>
-            </Rectangle>
-            <Label Content="Mijn groepen:" Foreground="Black" Margin="15,0,0,0" FontSize="24" />
-            <Button Content="Groep Toevoegen" Command="{Binding AddGroupButton}" Width="100" Margin="1000,0,0,0" />
 
-            <ListBox x:Name="GroupListBox" ItemsSource="{Binding Groups}"
-                     SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
-                     SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                     ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-
-                        <Border BorderBrush="Black" BorderThickness="1" Width="120" Height="140"
-                                HorizontalAlignment="Left" Margin="0,0,0,0" Background="Black" CornerRadius="10">
-                            <Grid>
-                                <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Margin="0,0,0,0"
-                                        Visibility="Visible" IsManipulationEnabled="True" HorizontalAlignment="Stretch"
-                                        Width="110" Height="130">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <!-- Here the code making the selected item purple (Doesn't work right now)-->
-                                                <DataTrigger
-                                                    Binding="{Binding ElementName=TestListBox, Path=IsSelected}"
-                                                    Value="True">
-                                                    <Setter Property="BorderBrush" Value="Purple" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-
-                                    <Border.Background>
-                                        <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
-                                    </Border.Background>
-                                </Border>
-                                <Label x:Name="StudentAmountLabel" Content="{Binding Path=GroupCode}" Canvas.Left="17"
-                                       Canvas.Top="69" Foreground="White" FontSize="11" HorizontalAlignment="Left"
-                                       VerticalAlignment="Bottom" Margin="10,0,0,5" FontStyle="Italic"
-                                       FontWeight="Medium" FontStretch="Normal" />
-                                <Label x:Name="GroupNameLabel" Content="{Binding Path=GroupName}" Canvas.Left="13"
-                                       Canvas.Top="54" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                       HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
-                                       Margin="5,0,0,18" Foreground="White" FontSize="18" FontWeight="Medium"
-                                       FontStyle="Normal" FontStretch="Normal" OpacityMask="Black" BorderBrush="Black" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-
-            </ListBox>
-            <DockPanel LastChildFill="True" Height="275">
+            <DockPanel LastChildFill="True" Height="250">
                 <Button DockPanel.Dock="Left" BorderThickness="0" BorderBrush="Purple" Background="Purple"
                         Click="GoLeft">
                     <Button.Resources>
@@ -118,7 +95,7 @@
                                 <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10,125,10,0"
                                             Grid.RowSpan="2">
                                     <Rectangle Stroke="Purple" Fill="Purple" VerticalAlignment="Top" />
-                                    <Polygon Points="0,0 30,25, 0,50" Stroke="Purple" Fill="Purple" />
+                                    <Polygon Points="0,0 20,15, 0,30" Stroke="Purple" Fill="Purple" />
                                 </StackPanel>
                                 <ContentPresenter VerticalAlignment="Top" Margin="0,100,0,0" />
                             </Grid>
@@ -137,7 +114,7 @@
                             <Grid>
                                 <StackPanel Orientation="Horizontal" Margin="10,125,10,0">
                                     <Rectangle Stroke="Purple" Fill="Purple" VerticalAlignment="Top" />
-                                    <Polygon Points="0,0 30,25, 0,50" Stroke="Purple" Fill="Purple" />
+                                    <Polygon Points="0,0 20,15, 0,30" Stroke="Purple" Fill="Purple" />
                                 </StackPanel>
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Grid>
@@ -155,15 +132,34 @@
                 </StackPanel>
 
                 <DockPanel Height="55" DockPanel.Dock="Top">
-                    <TextBlock DockPanel.Dock="Left" Text="Mijn Groepen" VerticalAlignment="Center" FontSize="40"></TextBlock>
-                    <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="Groep Toevoegen"
-                            Command="{Binding AddGroupButton}" Width="100" />
+                    <TextBlock DockPanel.Dock="Left" Text="Mijn Groepen" VerticalAlignment="Center" FontSize="25" />
+
+                    <Button Command="{Binding AddGroupButton}"
+                            DockPanel.Dock="Right"
+                            Foreground="White"
+                            Width="250"
+                            Height="35"
+                            BorderThickness="0"
+                            Background="Purple"
+                            FontSize="18"
+                            HorizontalAlignment="Right">
+                        <Button.BitmapEffect>
+                            <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4"
+                                                    Opacity="1" />
+                        </Button.BitmapEffect>
+                        Groep toevoegen
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="18"></Setter>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                 </DockPanel>
 
                 <Grid>
                     <ScrollViewer x:Name="ScrollViewer" VerticalScrollBarVisibility="Hidden"
                                   HorizontalScrollBarVisibility="Hidden">
-                        <ListBox x:Name="LessonListBox" ItemsSource="{Binding Groups}"
+                        <ListBox ItemsSource="{Binding Groups}"
                                  SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
                                  SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                  BorderBrush="Transparent" Background="Transparent"
@@ -177,25 +173,22 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderThickness="1" Margin="0,0,10,0" HorizontalAlignment="Left"
-                                            Width="170" Height="200" Background="Transparent" CornerRadius="10">
+                                            Width="140" Height="170" Background="Transparent" CornerRadius="10">
                                         <Grid>
                                             <Border x:Name="Testborder" BorderBrush="Transparent"
                                                     VerticalAlignment="Center" BorderThickness="5" CornerRadius="20"
-                                                    Visibility="Visible" IsManipulationEnabled="True" Height="200">
+                                                    Visibility="Visible" IsManipulationEnabled="True" Height="170">
                                                 <Border.Background>
                                                     <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
                                                 </Border.Background>
                                             </Border>
 
-                                            <StatusBar Width="100" Height="7" HorizontalAlignment="Center"
-                                                       VerticalAlignment="Top" Margin="0,15,0,0" />
-                                            <Label Content="0%" Foreground="White" VerticalAlignment="Top"
-                                                   HorizontalAlignment="Center" Margin="80,17,0,0">
-                                            </Label>
-                                            <Label x:Name="StudentAmountLabel" Content="{Binding Path=GroupCode}"
+                                            <Label x:Name="StudentAmountLabel"
+                                                   Content="{Binding Path=AmountOfStudents}"
                                                    Foreground="White" FontSize="11" HorizontalAlignment="Left"
                                                    VerticalAlignment="Bottom" Margin="10,0,0,15" FontStyle="Italic"
                                                    FontWeight="Medium" FontStretch="Normal" />
+
                                             <Label x:Name="GroupNameLabel" Content="{Binding Path=GroupName}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                                    HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
@@ -229,16 +222,12 @@
 
             <StackPanel Margin="15,15,15,0">
 
-                <Border BorderBrush="Black" BorderThickness="1" Height="25" VerticalAlignment="Top" Margin="0,2,0,2">
-                    <StackPanel Height="25" Orientation="Horizontal" Margin="0,2,0,2">
-                        <Label Content="Naam" />
-                        <Label Content="Aantal Oefeningen" Margin="150,0,0,0" />
-                    </StackPanel>
-                </Border>
+                <StackPanel Height="30" Orientation="Horizontal" Margin="0,2,0,2">
+                    <Label Content="Naam" FontSize="15" />
+                    <Label Content="Aantal Oefeningen" FontSize="15" Margin="150,0,0,0" />
+                </StackPanel>
 
                 <ItemsControl ItemsSource="{Binding Students}">
-
-
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="Black" BorderThickness="1" Height="25" VerticalAlignment="Top">
