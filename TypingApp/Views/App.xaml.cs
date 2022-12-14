@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Windows;
 using TypingApp.Commands;
@@ -18,11 +19,13 @@ namespace TypingApp.Views
         private readonly NavigationStore _navigationStore;
         private readonly ExerciseStore _exerciseStore;
         private readonly UserStore _userStore;
+        private readonly LessonStore _lessonStore;
 
         public App()
         {
             _navigationStore = new NavigationStore();
             _exerciseStore = new ExerciseStore();
+            _lessonStore = new LessonStore();
             _userStore = new UserStore();
         }
 
@@ -91,8 +94,9 @@ namespace TypingApp.Views
         {
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
+            var createLessonExerciseViewModel = new NavigationService(_navigationStore, CreateCreateLessonViewModel);
             
-            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel, _userStore);
+            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel, createLessonExerciseViewModel, _userStore,_lessonStore);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()
@@ -116,6 +120,17 @@ namespace TypingApp.Views
             var myLessonsNavigationService = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
 
             return new CreateExerciseViewModel(myLessonsNavigationService, _userStore);
+        }
+
+        //Viewmodel does not exist yet so this a temp viewmodel because it will throw notImplemented
+        private TeacherDashboardViewModel CreateCreateLessonViewModel()
+        {
+            var myLessonNavigationService = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
+
+            throw new NotImplementedException();
+            //Gives lessonStore to AddLessonViewModel (Which adds and edits lessons) so AddLessonViewModel knows which lessons it is editing,
+            //Should return somethinng like this:
+            //return new CreateLessonViewModel(myLessonNavigationService, _userStore, _lessonStore);
         }
     }
 }

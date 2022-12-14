@@ -16,10 +16,13 @@ public class MyLessonsViewModel : ViewModelBase
     private ObservableCollection<Exercise>? _exercises;
     private Lesson? _selectedLesson;
     private Exercise? _selectedExercise;
+    private NavigationService _createLessonNavigationService;
+    private LessonStore _lessonStore;
 
     public ICommand BackButton { get; }
     public ICommand CreateExerciseButton { get; }
-    
+    public ICommand CreateLessonButton { get; }
+
     public ObservableCollection<Lesson>? Lessons
     {
         get => _lessons;
@@ -47,6 +50,11 @@ public class MyLessonsViewModel : ViewModelBase
         set
         {
             _selectedLesson = value;
+            _lessonStore.UpdateLesson(value);
+            //Test if lessonstore has correct lesson:
+            Console.WriteLine(_lessonStore.Lesson.LessonName);
+            var navigateCommand = new NavigateCommand(_createLessonNavigationService);
+            //navigateCommand.Execute(this);
             OnPropertyChanged();
         }
     }
@@ -63,10 +71,14 @@ public class MyLessonsViewModel : ViewModelBase
 
     
 
-    public MyLessonsViewModel(NavigationService teacherDashboardNavigationService, NavigationService createExerciseNavigationService, UserStore userStore)
+    public MyLessonsViewModel(NavigationService teacherDashboardNavigationService, NavigationService createExerciseNavigationService, NavigationService createLessonNavigationService, UserStore userStore, LessonStore lessonStore)
     {
+        _createLessonNavigationService = createLessonNavigationService;
+        _lessonStore = lessonStore;
         BackButton = new NavigateCommand(teacherDashboardNavigationService);
         CreateExerciseButton = new NavigateCommand(createExerciseNavigationService);
+        CreateLessonButton = new NavigateCommand(createLessonNavigationService);
+
         Exercises = new ObservableCollection<Exercise>();
         Lessons = new ObservableCollection<Lesson>();
 
@@ -75,17 +87,9 @@ public class MyLessonsViewModel : ViewModelBase
         var exercises = new ExerciseProvider().GetAll(userStore.Teacher.Id);
         exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"])));
 
-        //Test Lessons
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
+        //Populate lessons
+        if (userStore.Teacher == null) return;
+        var lessons = new LessonProvider().GetAll(userStore.Teacher.Id);
+        lessons?.ForEach(e => Lessons?.Add(new Lesson((string)e["lesson_name"],userStore.Teacher.FullName,(int)e["id"])));
     }
 }
