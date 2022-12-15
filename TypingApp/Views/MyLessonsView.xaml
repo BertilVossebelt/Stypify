@@ -213,11 +213,8 @@
 
 
         <WrapPanel Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Grid.RowSpan="2">
-
-            <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                          Grid.Row="5" HorizontalScrollBarVisibility="Hidden">
-
-                <ListBox ItemsSource="{Binding Exercises}"
+            
+            <ListBox ItemsSource="{Binding Exercises}"
                          SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
                          SelectionMode="Single" 
                          BorderBrush="Transparent" 
@@ -275,7 +272,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </ScrollViewer>
+            
 
         </WrapPanel>
     </Grid>
