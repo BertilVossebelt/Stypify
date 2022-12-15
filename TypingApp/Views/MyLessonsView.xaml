@@ -90,7 +90,7 @@
 
         <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,30" Grid.RowSpan="3">
 
-            <ScrollViewer x:Name="Scrollviewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Height="200">
+            <ScrollViewer x:Name="Scrollviewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Height="250">
                 <ListBox ItemsSource="{Binding Lessons}"
                          SelectedItem="{Binding Path=SelectedLesson, Mode=TwoWay}"
                          SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
