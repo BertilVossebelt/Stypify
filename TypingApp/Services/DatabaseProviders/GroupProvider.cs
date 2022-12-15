@@ -9,13 +9,13 @@ public class GroupProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [Groups] WHERE id = {id}";
+        var query = $"SELECT * FROM [Group] WHERE id = {id}";
         return DbInterface?.Select(query)?[0];
     }
 
     public Dictionary<string, object>? GetByCode(string groupCode)
     {
-        var query = $"SELECT * FROM [Groups] WHERE code = '{groupCode}';";
+        var query = $"SELECT * FROM [Group] WHERE code = '{groupCode}';";
         return DbInterface?.Select(query)?[0];
     }
 
@@ -41,7 +41,7 @@ public class GroupProvider : BaseProvider
 
     public Tuple<ObservableCollection<Student>, int>? GetStudents(int groupId)
     {
-        var query = $"SELECT s.id, s.email, s.first_name, s.preposition, s.last_name, s.teacher, s.admin, completed_excercises FROM [Users] s JOIN Group_Student g ON s.id = g.student_id LEFT JOIN Student t ON g.student_id = t.student_id WHERE g.group_id = {groupId}";
+        var query = $"SELECT s.id, s.email, s.first_name, s.preposition, s.last_name, s.teacher, s.admin, completed_excercises FROM [User] s JOIN Group_Student g ON s.id = g.student_id LEFT JOIN Student t ON g.student_id = t.student_id WHERE g.group_id = {groupId}";
         var reader = DbInterface?.ExecuteRaw(query);
         ObservableCollection<Student> students = new ObservableCollection<Student>();
         string preposition;
@@ -86,7 +86,7 @@ public class GroupProvider : BaseProvider
 
     public Dictionary<string, object>? Create(int teacherId, string groupName, string groupCode)
     {
-        var query = $"INSERT INTO [Groups] (teacher_id,name,code) VALUES ({teacherId}, '{groupName}', '{groupCode}')";
+        var query = $"INSERT INTO [Group] (teacher_id,name,code) VALUES ({teacherId}, '{groupName}', '{groupCode}')";
         return DbInterface?.Insert(query);
     }
 
@@ -98,7 +98,7 @@ public class GroupProvider : BaseProvider
 
     public void UpdateGroupCode(int groupId, string groupCode)
     {
-        var query = $"UPDATE Groups SET Groups.code = '{groupCode}' WHERE Groups.id = {groupId}";
+        var query = $"UPDATE Group SET Group.code = '{groupCode}' WHERE Group.id = {groupId}";
         DbInterface?.VoidExecuteRaw(query);
     }
 }

@@ -95,6 +95,7 @@ public class MyLessonsViewModel : ViewModelBase
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
+        /*Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
@@ -110,7 +111,6 @@ public class MyLessonsViewModel : ViewModelBase
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
-        Exercises.Add(new Exercise("test", "test"));
-        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));*/
     }
 }

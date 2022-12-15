@@ -10,13 +10,13 @@ public class StudentProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [Users] WHERE id = {id} AND teacher = false AND admin = false";
+        var query = $"SELECT * FROM [User] WHERE id = {id} AND teacher = false AND admin = false";
         return DbInterface?.Select(query)?[0];
     }
     
     public Dictionary<string, object>? GetByEmail(string email)
     {
-        var query = $"SELECT * FROM [Users] WHERE email= '{email}'";
+        var query = $"SELECT * FROM [User] WHERE email= '{email}'";
         return DbInterface?.Select(query)?[0];
     }
     
@@ -26,7 +26,7 @@ public class StudentProvider : BaseProvider
         command.Connection = DbInterface?.GetConnection();
 
         command.CommandText =
-            "INSERT INTO [Users] (teacher, email, hashedpassword, salt, first_name, preposition, last_name, admin)" +
+            "INSERT INTO [User] (teacher, email, hashedpassword, salt, first_name, preposition, last_name, admin)" +
             "VALUES (@teacher, @email, @hashedpassword, @salt, @first_name, @preposition, @last_name, @admin)";
 
         command.Parameters.Add("@teacher", SqlDbType.TinyInt).Value = 0;

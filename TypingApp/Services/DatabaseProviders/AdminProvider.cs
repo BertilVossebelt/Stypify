@@ -10,7 +10,7 @@ public class AdminProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [Users] WHERE id = {id} AND admin = true";
+        var query = $"SELECT * FROM [User] WHERE id = {id} AND admin = true";
         return DbInterface?.Select(query)?[0];
     }
 
@@ -21,7 +21,7 @@ public class AdminProvider : BaseProvider
         command.Connection = DbInterface?.GetConnection();
 
         command.CommandText =
-            "INSERT INTO [Users] (teacher, student, email, password, first_name, preposition, last_name, admin)" +
+            "INSERT INTO [User] (teacher, student, email, password, first_name, preposition, last_name, admin)" +
             "VALUES (@teacher, @student, @email, @password, @first_name, @preposition, @last_name, @admin)";
 
         command.Parameters.Add("@teacher", SqlDbType.TinyInt).Value = 1;

@@ -13,7 +13,7 @@ public class UserProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [Users] WHERE id = {id}";
+        var query = $"SELECT * FROM [User] WHERE id = {id}";
         return DbInterface?.Select(query)?[0];
     }
 
@@ -23,7 +23,7 @@ public class UserProvider : BaseProvider
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
 
-        command.CommandText = "SELECT hashedpassword, salt FROM [Users] WHERE email=@email";
+        command.CommandText = "SELECT hashedpassword, salt FROM [User] WHERE email=@email";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
         
         using (SqlDataReader reader = command.ExecuteReader())
@@ -48,7 +48,7 @@ public class UserProvider : BaseProvider
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
 
-        command.CommandText = "SELECT id FROM [Users] WHERE email=@email";
+        command.CommandText = "SELECT id FROM [User] WHERE email=@email";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
         return (int)command.ExecuteScalar();
     }
