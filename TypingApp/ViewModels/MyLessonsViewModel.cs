@@ -91,5 +91,26 @@ public class MyLessonsViewModel : ViewModelBase
         if (userStore.Teacher == null) return;
         var lessons = new LessonProvider().GetAll(userStore.Teacher.Id);
         lessons?.ForEach(e => Lessons?.Add(new Lesson((string)e["lesson_name"],userStore.Teacher.FullName,(int)e["id"])));
+
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("test", "test"));
     }
 }

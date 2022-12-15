@@ -90,7 +90,7 @@
 
         <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,30" Grid.RowSpan="3">
 
-            <ScrollViewer x:Name="Scrollviewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Height="250">
+            <ScrollViewer x:Name="Scrollviewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" >
                 <ListBox ItemsSource="{Binding Lessons}"
                          SelectedItem="{Binding Path=SelectedLesson, Mode=TwoWay}"
                          SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -142,8 +142,8 @@
                 </ListBox>
             </ScrollViewer>
         </StackPanel>
-        <Button Grid.Row="1" Grid.Column="0" BorderThickness="0" BorderBrush="Purple"
-                Background="Purple" Click="GoLeft" Margin="0,0,0,30" Grid.RowSpan="3">
+        <Button Grid.Row="2" Grid.Column="0" BorderBrush="Purple" Background="Purple"
+                        Click="GoLeft">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"></Setter>
@@ -156,18 +156,18 @@
                             <RowDefinition Height="177*" />
                             <RowDefinition Height="23*" />
                         </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10,125,10,0"
-                                    Grid.RowSpan="2">
+                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                            Grid.RowSpan="2">
                             <Rectangle Stroke="Purple" Fill="Purple" VerticalAlignment="Top" />
-                            <Polygon Points="0,0 30,25, 0,50" Stroke="Purple" Fill="Purple" />
+                            <Polygon Points="0,0 20,15, 0,30" Stroke="Purple" Fill="Purple" />
                         </StackPanel>
                         <ContentPresenter VerticalAlignment="Top" Margin="0,100,0,0" />
                     </Grid>
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <Button Grid.Row="1" Grid.Column="2" BorderThickness="0" BorderBrush="Purple"
-                Background="Purple" Click="GoRight" Margin="0,0,0,30" Grid.RowSpan="3">
+        <Button Grid.Row="2" Grid.Column="2" BorderThickness="0" BorderBrush="Purple" Background="Purple"
+                        Click="GoRight">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"></Setter>
@@ -176,9 +176,9 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <StackPanel Orientation="Horizontal" Margin="10,125,10,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Rectangle Stroke="Purple" Fill="Purple" VerticalAlignment="Top" />
-                            <Polygon Points="0,0 30,25, 0,50" Stroke="Purple" Fill="Purple" />
+                            <Polygon Points="0,0 20,15, 0,30" Stroke="Purple" Fill="Purple" />
                         </StackPanel>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Grid>
@@ -212,10 +212,10 @@
 
 
 
-        <WrapPanel Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center">
+        <WrapPanel Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Grid.RowSpan="2">
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                          Height="250" HorizontalScrollBarVisibility="Hidden">
+                          Grid.Row="5" HorizontalScrollBarVisibility="Hidden">
 
                 <ListBox ItemsSource="{Binding Exercises}"
                          SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
@@ -250,7 +250,6 @@
                                                FontSize="20" />
                                     <TextBlock Text="{Binding Path=Text}"/>
                                     <TextBlock Text="{Binding Path=AmountOfCharacters,StringFormat='Aantal karakters: {0}'}" 
-                                               Margin="0, 7, 0 , 0" 
                                                HorizontalAlignment="Right"
                                                FontStyle="Italic"/>
                                 </StackPanel>
