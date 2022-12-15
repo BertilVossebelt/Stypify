@@ -16,7 +16,7 @@ namespace TypingApp.Services.DatabaseProviders
 
         public Dictionary<string, object>? Create(int teacherId, string lessonName)
         {
-            var query = $"INSERT INTO [Lesson] (teacher_id, lesson_name,) VALUES ({teacherId}, '{lessonName}')";
+            var query = $"INSERT INTO [Lesson] (teacher_id, name,) VALUES ({teacherId}, '{lessonName}')";
             return DbInterface?.Insert(query);
         }
 
