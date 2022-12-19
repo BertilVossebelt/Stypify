@@ -1,13 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 using TypingApp.Models;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
-using Group = TypingApp.Models.Group;
-//using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using TypingApp.Views;
 
 namespace TypingApp.ViewModels;
 
@@ -20,7 +19,7 @@ public class StudentDashboardViewModel : ViewModelBase
     public ICommand StartPracticeButton { get; }
     public ICommand AddToGroupButton { get; }
     public ICommand LogOutButton { get; }
-
+    public ICommand LessonClickCommand { get; set; }
     public string WelcomeNameText { get; set; }
     public string CompletedExercisesText { get; set; }
 
@@ -46,7 +45,8 @@ public class StudentDashboardViewModel : ViewModelBase
     }
 
     public StudentDashboardViewModel(UserStore userStore, NavigationService exerciseNavigationService,
-        NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
+        NavigationService linkToGroupNavigationService, NavigationService loginNavigationService,
+        NavigationService customExerciseNavigationService)
     {
         _userStore = userStore;
 
@@ -55,11 +55,12 @@ public class StudentDashboardViewModel : ViewModelBase
 
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
         AddToGroupButton = new NavigateCommand(linkToGroupNavigationService);
+        LessonClickCommand = new NavigateCommand(customExerciseNavigationService);
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
 
         Lessons = new ObservableCollection<Lesson>();
-        //Dummy Lessons
-        getLessons();
+
+        GetLessons();
     }
 
 
@@ -67,10 +68,12 @@ public class StudentDashboardViewModel : ViewModelBase
     {
         if (_userStore.Student?.Preposition != null)
         {
-            return $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
+            return
+                $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
         }
 
-        if(_userStore.Student?.Preposition == null) {
+        if (_userStore.Student?.Preposition == null)
+        {
             return $"Welkom {_userStore.Student?.FirstName} {_userStore.Student?.LastName}";
         }
 
@@ -82,22 +85,41 @@ public class StudentDashboardViewModel : ViewModelBase
         return "Aantal gemaakte oefeningen: 0";
     }
 
-
-    private void getLessons()
+    // TODO: Save lessons in store so it doesn't have to be fetched every time.
+    private void GetLessons()
     {
-        //TODO: get lessons from database
+        // Check if user is a student.
+        if (_userStore.Student == null) return;
         Lessons.Clear();
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+
+        // Get the groups of the student.
+        var groups = new StudentProvider().GetGroups(_userStore.Student.Id);
+
+        if (groups == null) return;
+        foreach (var group in groups)
+        {
+            // Get the lessons of the group.
+            var lessons = new GroupProvider().GetLessons((int)group["id"]);
+
+            if (lessons == null) continue;
+            foreach (var lesson in lessons)
+            {
+                // Get the exercises of the lesson.
+                var exercises = new List<Exercise>();
+                var result = new ExerciseProvider().GetAll((int)lesson["id"]);
+                result?.ForEach(r => exercises.Add(new Exercise((string)r["text"], (string)r["name"])));
+
+                // Finally, create the lessons.
+                Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], "Naam", exercises));
+            }
+        }
     }
 
     private void getNonCompletedLessons()
     {
         //TODO: get lessons that are not completed from database
         Lessons.Clear();
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
+        // Lessons.Add(new Lesson(1, "Lesson", "Teacher 1"));
     }
 
     private void FilterCompletedLessons(bool isChecked)
@@ -106,6 +128,6 @@ public class StudentDashboardViewModel : ViewModelBase
         {
             getNonCompletedLessons();
         }
-        else getLessons();
+        else GetLessons();
     }
 }

@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Windows;
-using TypingApp.Commands;
-using TypingApp.Models;
 using TypingApp.Services;
-using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 
@@ -21,9 +17,16 @@ namespace TypingApp.Views
 
         public App()
         {
+            Console.WriteLine("Starting...");
             _navigationStore = new NavigationStore();
             _exerciseStore = new ExerciseStore();
             _userStore = new UserStore();
+        }
+        
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("Error" + Environment.NewLine + e.Exception.Message, "Error");
+            e.Handled = true;
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -67,9 +70,17 @@ namespace TypingApp.Views
             var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
             var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            var customExerciseNavigationService = new NavigationService(_navigationStore, CreateCustomExerciseViewModel);
 
             return new StudentDashboardViewModel(_userStore, exerciseNavigationService, linkToGroupNavigationService,
-                loginNavigationService);
+                loginNavigationService, customExerciseNavigationService);
+        }
+
+        private CustomExerciseViewModel CreateCustomExerciseViewModel()
+        {
+            var studentDashboardNavigationService = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            
+            return new CustomExerciseViewModel(studentDashboardNavigationService);
         }
 
         private ExerciseViewModel CreateExerciseViewModel()

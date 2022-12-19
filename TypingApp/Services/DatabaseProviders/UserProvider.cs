@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml;
 using TypingApp.Models;
 
 namespace TypingApp.Services.DatabaseProviders;
@@ -13,7 +9,7 @@ public class UserProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [Users] WHERE id = {id}";
+        var query = $"SELECT * FROM [User] WHERE id = {id}";
         return DbInterface?.Select(query)?[0];
     }
 
@@ -22,33 +18,28 @@ public class UserProvider : BaseProvider
     {
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
-
-        command.CommandText = "SELECT hashedpassword, salt FROM [Users] WHERE email=@email";
+        command.CommandText = "SELECT hashedpassword, salt FROM [User] WHERE email=@email";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
-        
-        using (SqlDataReader reader = command.ExecuteReader())
+
+        using var reader = command.ExecuteReader();
+        if (reader == null) return false;
+        while (reader.Read())
         {
-            if (reader != null)
-            {
-                while (reader.Read())
-                {
-                    byte[] hashedpassword = (byte[])reader["hashedpassword"];
-                    byte[] salt = (byte[])reader["salt"];
-                    PasswordHash hash = new PasswordHash(hashedpassword);
-                    return (hash.Verify(password, salt));
-                }
-            }
-            return false;
+            var hashedPassword = (byte[])reader["hashedpassword"];
+            var salt = (byte[])reader["salt"];
+            var hash = new PasswordHash(hashedPassword);
+            return hash.Verify(password, salt);
         }
+        return false;
     }
     
-    // Check welk userID bij deze email hoort.
+    // Get id of the user by email.
     public int GetUserId(string email)
     {
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
 
-        command.CommandText = "SELECT id FROM [Users] WHERE email=@email";
+        command.CommandText = "SELECT id FROM [User] WHERE email=@email";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
         return (int)command.ExecuteScalar();
     }

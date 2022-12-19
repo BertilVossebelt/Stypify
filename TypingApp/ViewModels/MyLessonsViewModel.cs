@@ -1,6 +1,5 @@
-using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
@@ -13,7 +12,7 @@ namespace TypingApp.ViewModels;
 public class MyLessonsViewModel : ViewModelBase
 {
     private ObservableCollection<Lesson>? _lessons;
-    private ObservableCollection<Exercise>? _exercises;
+    private List<Exercise>? _exercises;
     private Lesson? _selectedLesson;
     private Exercise? _selectedExercise;
 
@@ -31,7 +30,7 @@ public class MyLessonsViewModel : ViewModelBase
         }
     }
     
-    public ObservableCollection<Exercise>? Exercises
+    public List<Exercise>? Exercises
     {
         get => _exercises;
         set
@@ -67,7 +66,7 @@ public class MyLessonsViewModel : ViewModelBase
     {
         BackButton = new NavigateCommand(teacherDashboardNavigationService);
         CreateExerciseButton = new NavigateCommand(createExerciseNavigationService);
-        Exercises = new ObservableCollection<Exercise>();
+        Exercises = new List<Exercise>();
         Lessons = new ObservableCollection<Lesson>();
 
         // Populate Exercises
@@ -75,17 +74,18 @@ public class MyLessonsViewModel : ViewModelBase
         var exercises = new ExerciseProvider().GetAll(userStore.Teacher.Id);
         exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"])));
 
+        
         //Test Lessons
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
-        Lessons.Add(new Lesson("Test", "TestTeacher", 1));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
     }
 }
