@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace TypingApp.Views;
 
-public partial class CustomExerciseView : UserControl
+public partial class LessonView : UserControl
 {
-    public CustomExerciseView()
+    public LessonView()
     {
         InitializeComponent();
     }

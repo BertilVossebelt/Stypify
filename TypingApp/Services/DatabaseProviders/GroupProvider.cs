@@ -103,7 +103,8 @@ public class GroupProvider : BaseProvider
 
     public void UpdateGroupCode(int groupId, string groupCode)
     {
-        var query = $"UPDATE [Group] SET Group.code = '{groupCode}' WHERE Group.id = {groupId}";
-        DbInterface?.VoidExecuteRaw(query);
+        var query = $"UPDATE [Group] SET code = '{groupCode}' WHERE id = {groupId}";
+        var reader = DbInterface?.ExecuteRaw(query);
+        reader?.Close();
     }
 }

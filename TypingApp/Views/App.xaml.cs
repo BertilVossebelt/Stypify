@@ -14,13 +14,15 @@ namespace TypingApp.Views
         private readonly NavigationStore _navigationStore;
         private readonly ExerciseStore _exerciseStore;
         private readonly UserStore _userStore;
+        private readonly LessonStore _lessonStore;
 
         public App()
         {
-            Console.WriteLine("Starting...");
+            // Setup stores.
             _navigationStore = new NavigationStore();
             _exerciseStore = new ExerciseStore();
             _userStore = new UserStore();
+            _lessonStore = new LessonStore();
         }
         
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -51,7 +53,7 @@ namespace TypingApp.Views
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
 
             return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel,
-                teacherDashboardViewModel, _userStore);
+                teacherDashboardViewModel, _userStore, _lessonStore);
         }
 
         private AdminDashboardViewModel CreateAdminDashboardViewModel()
@@ -70,17 +72,17 @@ namespace TypingApp.Views
             var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
             var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
-            var customExerciseNavigationService = new NavigationService(_navigationStore, CreateCustomExerciseViewModel);
+            var lessonNavigationService = new NavigationService(_navigationStore, CreateLessonViewModel);
 
-            return new StudentDashboardViewModel(_userStore, exerciseNavigationService, linkToGroupNavigationService,
-                loginNavigationService, customExerciseNavigationService);
+            return new StudentDashboardViewModel(_userStore, _lessonStore, exerciseNavigationService, linkToGroupNavigationService,
+                loginNavigationService, lessonNavigationService);
         }
 
-        private CustomExerciseViewModel CreateCustomExerciseViewModel()
+        private LessonViewModel CreateLessonViewModel()
         {
             var studentDashboardNavigationService = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
             
-            return new CustomExerciseViewModel(studentDashboardNavigationService);
+            return new LessonViewModel(studentDashboardNavigationService, _lessonStore);
         }
 
         private ExerciseViewModel CreateExerciseViewModel()

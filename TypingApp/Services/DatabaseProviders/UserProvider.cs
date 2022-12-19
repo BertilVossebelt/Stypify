@@ -13,7 +13,7 @@ public class UserProvider : BaseProvider
         return DbInterface?.Select(query)?[0];
     }
 
-    // Check of de verificatie van de user correct is.
+    // Check if user credentials are correct.
     public bool VerifyUser(string email, string password)
     {
         var command = new SqlCommand();

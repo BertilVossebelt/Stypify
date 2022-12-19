@@ -1,8 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using TypingApp.Commands;
-using TypingApp.Services;
 
 namespace TypingApp.ViewModels;
 

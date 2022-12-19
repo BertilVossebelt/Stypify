@@ -1,4 +1,4 @@
-<UserControl x:Class="TypingApp.Views.CustomExerciseView"
+<UserControl x:Class="TypingApp.Views.LessonView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -52,16 +52,20 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="2" Margin="5" FontSize="15"> Naam les</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Lesson.Name}" Margin="5" FontSize="15" />
             
             <Border Grid.Row="1" Grid.Column="0" BorderBrush="#fff" CornerRadius="15" BorderThickness="15">
-                <TextBox Height="450" Background="#fff" BorderThickness="0"></TextBox>
+                <TextBox Height="450" Background="#fff" BorderThickness="0" />
             </Border>
             
             <StackPanel Grid.Row="1" Grid.Column="1" Background="#f7e1ff" />
 
             <Border Grid.Row="1" Grid.Column="2" BorderBrush="#fff" CornerRadius="15" BorderThickness="15">
-                <TextBlock Background="#fff"></TextBlock>
+                <TextBlock Text="{Binding Exercise.Text}"
+                           Background="#fff"
+                           FontSize="15"
+                           TextWrapping="Wrap"
+                           LineHeight="23" />
             </Border>
         </Grid>
 
