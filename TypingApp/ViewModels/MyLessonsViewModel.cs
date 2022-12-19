@@ -60,8 +60,6 @@ public class MyLessonsViewModel : ViewModelBase
         }
     }
 
-    
-
     public MyLessonsViewModel(NavigationService teacherDashboardNavigationService, NavigationService createExerciseNavigationService, UserStore userStore)
     {
         BackButton = new NavigateCommand(teacherDashboardNavigationService);

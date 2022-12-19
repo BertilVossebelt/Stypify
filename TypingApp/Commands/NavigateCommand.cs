@@ -1,7 +1,6 @@
 ﻿using System;
 using TypingApp.Services;
 
-
 namespace TypingApp.Commands;
 
 public class NavigateCommand : CommandBase

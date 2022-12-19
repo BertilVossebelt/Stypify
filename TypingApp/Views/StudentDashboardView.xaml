@@ -155,7 +155,7 @@
                     <ScrollViewer x:Name="ScrollViewer" VerticalScrollBarVisibility="Hidden"
                                   HorizontalScrollBarVisibility="Hidden">
                         <ListBox ItemsSource="{Binding Lessons}"
-                                 SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+                                 SelectedItem="{Binding Path=SelectedLesson, Mode=TwoWay}"
                                  SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                  BorderBrush="Transparent" Background="Transparent"
                                  ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" SelectedIndex="2">
@@ -167,8 +167,6 @@
                             
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource NoHighlight}" Command="{Binding DataContext.LessonClickCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" Background="Transparent"
-                                            Focusable="False" BorderThickness="0">
                                         <Border BorderThickness="1" Margin="0,0,10,0" HorizontalAlignment="Left"
                                                 Width="170" Height="200" Background="Transparent" CornerRadius="10">
                                             <Grid>
@@ -198,21 +196,6 @@
                                                        OpacityMask="Black" BorderBrush="Black" />
                                             </Grid>
                                         </Border>
-                                    </Button>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding
-                                                RelativeSource={RelativeSource
-                                                Mode=FindAncestor,
-                                                AncestorType={x:Type ListBoxItem}},
-                                                Path=IsSelected}"
-                                            Value="True">
-                                            <Setter
-                                                TargetName="Testborder"
-                                                Property="BorderBrush"
-                                                Value="Purple" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

@@ -7,7 +7,7 @@ public class TeacherProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [User] WHERE id = {id} AND teacher = true";
+        var query = $"SELECT * FROM [User] WHERE id = {id} AND teacher = 1";
         return DbInterface?.Select(query)?[0];
     }
 

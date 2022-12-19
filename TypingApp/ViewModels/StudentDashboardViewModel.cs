@@ -4,6 +4,10 @@ using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading;
+using System.Threading.Channels;
+using System.Windows.Controls;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
@@ -13,23 +17,35 @@ namespace TypingApp.ViewModels;
 public class StudentDashboardViewModel : ViewModelBase
 {
     private readonly UserStore _userStore;
-    private ObservableCollection<Lesson> _lessons;
+    private List<Lesson> _lessons;
     private bool _isFilterChecked;
+    private readonly LessonStore _lessonStore;
+    private Lesson _selectedLessons;
 
     public ICommand StartPracticeButton { get; }
     public ICommand AddToGroupButton { get; }
     public ICommand LogOutButton { get; }
-    public ICommand LessonClickCommand { get; set; }
+    public ICommand StartLessonCommand { get; set; }
     public string WelcomeNameText { get; set; }
     public string CompletedExercisesText { get; set; }
 
-    public ObservableCollection<Lesson> Lessons
+    public List<Lesson> Lessons
     {
         get => _lessons;
         set
         {
             _lessons = value;
             OnPropertyChanged();
+        }
+    }
+
+    public Lesson SelectedLesson
+    {
+        get => _selectedLessons;
+        set
+        {
+            _selectedLessons = value;
+            OnPropertyChanged(nameof(_selectedLessons));
         }
     }
 
@@ -44,75 +60,47 @@ public class StudentDashboardViewModel : ViewModelBase
         }
     }
 
-    public StudentDashboardViewModel(UserStore userStore, NavigationService exerciseNavigationService,
+    public StudentDashboardViewModel(UserStore userStore, LessonStore lessonStore,
+        NavigationService exerciseNavigationService,
         NavigationService linkToGroupNavigationService, NavigationService loginNavigationService,
-        NavigationService customExerciseNavigationService)
+        NavigationService lessonNavigationService)
     {
         _userStore = userStore;
+        _lessonStore = lessonStore;
 
         WelcomeNameText = GetName();
         CompletedExercisesText = GetCompletedExercises();
+        Lessons = _lessonStore.Lessons; 
 
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
-        AddToGroupButton = new NavigateCommand(linkToGroupNavigationService);
-        LessonClickCommand = new NavigateCommand(customExerciseNavigationService);
+        StartLessonCommand = new NavigateCommand(lessonNavigationService);
+        AddToGroupButton = new NavigateCommand(linkToGroupNavigationService); 
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
 
-        Lessons = new ObservableCollection<Lesson>();
-
-        GetLessons();
+        PropertyChanged += SelectLesson;
     }
-
-
+    
+    private void SelectLesson(object? sender, PropertyChangedEventArgs e)
+    {
+        _lessonStore.SetCurrentLesson(SelectedLesson);
+        StartLessonCommand.Execute(this);
+    }
+    
     private string GetName()
     {
         if (_userStore.Student?.Preposition != null)
         {
-            return
-                $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
+            return $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
         }
 
-        if (_userStore.Student?.Preposition == null)
-        {
-            return $"Welkom {_userStore.Student?.FirstName} {_userStore.Student?.LastName}";
-        }
-
-        return "Error, student = Null";
+        return _userStore.Student?.Preposition == null
+            ? $"Welkom {_userStore.Student?.FirstName} {_userStore.Student?.LastName}"
+            : "Error, student = Null";
     }
 
     private string GetCompletedExercises()
     {
         return "Aantal gemaakte oefeningen: 0";
-    }
-
-    // TODO: Save lessons in store so it doesn't have to be fetched every time.
-    private void GetLessons()
-    {
-        // Check if user is a student.
-        if (_userStore.Student == null) return;
-        Lessons.Clear();
-
-        // Get the groups of the student.
-        var groups = new StudentProvider().GetGroups(_userStore.Student.Id);
-
-        if (groups == null) return;
-        foreach (var group in groups)
-        {
-            // Get the lessons of the group.
-            var lessons = new GroupProvider().GetLessons((int)group["id"]);
-
-            if (lessons == null) continue;
-            foreach (var lesson in lessons)
-            {
-                // Get the exercises of the lesson.
-                var exercises = new List<Exercise>();
-                var result = new ExerciseProvider().GetAll((int)lesson["id"]);
-                result?.ForEach(r => exercises.Add(new Exercise((string)r["text"], (string)r["name"])));
-
-                // Finally, create the lessons.
-                Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], "Naam", exercises));
-            }
-        }
     }
 
     private void getNonCompletedLessons()
@@ -128,6 +116,9 @@ public class StudentDashboardViewModel : ViewModelBase
         {
             getNonCompletedLessons();
         }
-        else GetLessons();
+        else
+        {
+            Lessons = _lessonStore.Lessons;
+        }
     }
 }
