@@ -19,6 +19,25 @@ public class StudentProvider : BaseProvider
         return DbInterface?.Select(query)?[0];
     }
     
+    public Dictionary<string, object>? GetLessonById(int lessonId, int studentId)
+    {
+        var query = $"SELECT * FROM [User_Lesson] WHERE lesson_id = {lessonId} AND student_id = {studentId}";
+        return DbInterface?.Select(query)?[0];
+    }
+    
+    public void UpdateLesson(int lessonId, int studentId, int placeNumber)
+    {
+        var query = $"UPDATE [User_Lesson] SET place_number = {placeNumber} WHERE lesson_id = {lessonId} AND student_id = {studentId}";
+        var reader = DbInterface?.ExecuteRaw(query);
+        reader?.Close();
+    }
+    
+    public Dictionary<string, object>? CreateLesson(int lessonId, int studentId, int placeNumber)
+    {
+        var query = $"INSERT INTO [User_Lesson] (student_id, lesson_id, place_number) VAlUES ({studentId}, {lessonId}, {placeNumber})";
+        return DbInterface?.Select(query)?[0];
+    }
+    
     public List<Dictionary<string, object>>? GetGroups(int studentId)
     {
         var query = $"SELECT g.id, g.name, g.teacher_id, g.image FROM [Group] g JOIN [Group_Student] gl ON g.id = gl.group_id WHERE gl.student_id = '{studentId}'";

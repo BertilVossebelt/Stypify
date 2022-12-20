@@ -22,7 +22,7 @@ namespace TypingApp.Views
             _navigationStore = new NavigationStore();
             _exerciseStore = new ExerciseStore();
             _userStore = new UserStore();
-            _lessonStore = new LessonStore();
+            _lessonStore = new LessonStore(_userStore); // Needs to be initialized after user store.
         }
         
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -82,7 +82,7 @@ namespace TypingApp.Views
         {
             var studentDashboardNavigationService = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
             
-            return new LessonViewModel(studentDashboardNavigationService, _lessonStore);
+            return new LessonViewModel(studentDashboardNavigationService, _lessonStore, _userStore);
         }
 
         private ExerciseViewModel CreateExerciseViewModel()
