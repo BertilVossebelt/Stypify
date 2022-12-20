@@ -13,9 +13,9 @@ public class Lesson
 
     public Lesson(int id, string name, string teacherName, List<Exercise> exercises)
     {
+        Id = id;
         Name = name;
         TeacherName = teacherName;
-        Id = id;
         Exercises = exercises;
     }
 }

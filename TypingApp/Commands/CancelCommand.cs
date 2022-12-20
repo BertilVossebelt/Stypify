@@ -5,11 +5,11 @@ namespace TypingApp.Commands;
 
 public class CancelCommand : CommandBase
 {
-    private readonly NavigationService _teacherDashboardNavigationService;
+    private readonly NavigationService _navigationService;
 
-    public CancelCommand(NavigationService teacherDashboardNavigationService)
+    public CancelCommand(NavigationService navigationService)
     {
-        _teacherDashboardNavigationService = teacherDashboardNavigationService;
+        _navigationService = navigationService;
     }
 
     public override void Execute(object? parameter)
@@ -17,7 +17,7 @@ public class CancelCommand : CommandBase
         var cancelMessageBox = MessageBox.Show("Weet je zeker dat je deze actie wilt annuleren?", "Annuleren", MessageBoxButton.YesNo, MessageBoxImage.Question);
         
         if (cancelMessageBox != MessageBoxResult.Yes) return;
-        var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+        var navigateCommand = new NavigateCommand(_navigationService);
         navigateCommand.Execute(this);
     }
 }
