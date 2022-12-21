@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:TypingApp.Views"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1200">
 
@@ -226,13 +225,18 @@
                          Text="{Binding SelectedItem.GroupCode, Mode=OneWay, FallbackValue=Geen Code, TargetNullValue=Geen Code}"
                          VerticalAlignment="Bottom"
                          FontStyle="Italic"
-                         Margin="0,0, 5,0"
+                         Margin="0,0, 2,0"
                          IsReadOnly="True"
                          TextWrapping="Wrap" />
                 
-                <Button Command="{Binding UpdateGroupsCodeButton}" Height="15" VerticalAlignment="Bottom" Width="15">
-                    
-                </Button>
+                <Button Command="{Binding UpdateGroupsCodeButton}" 
+                        Content="⟳"
+                        VerticalContentAlignment="Bottom"
+                        FontSize="15"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Height="20" Width="15"
+                        VerticalAlignment="Bottom"/>
 
             </StackPanel>
             

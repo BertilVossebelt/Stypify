@@ -96,13 +96,18 @@
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
-                       Margin="150,0,0,150" />
-
+                       Margin="165,0,0,160"
+                       FontStyle="Italic" />
+        
         <Button Command="{Binding UpdateGroupCodeButton}"
+                    Content="⟳"
+                    FontSize="18"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Height="9"
-                    Width="17"
-                    Margin="250,0,0,150" />
+                    Height="25"
+                    Width="18"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Margin="250,0,0,165" />
         </Grid>
 </UserControl>
