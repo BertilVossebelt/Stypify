@@ -95,7 +95,7 @@
                          SelectedItem="{Binding Path=SelectedLesson, Mode=TwoWay}"
                          SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                          BorderBrush="Transparent" Background="Transparent"
-                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" SelectedIndex="2">
+                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" />
@@ -212,7 +212,7 @@
 
 
 
-        <WrapPanel Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Grid.RowSpan="2">
+        <WrapPanel Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Grid.RowSpan="2" Grid.ColumnSpan="2">
             
             <ListBox ItemsSource="{Binding Exercises}"
                          SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
@@ -220,11 +220,10 @@
                          BorderBrush="Transparent" 
                          Background="Transparent"
                          ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
-                         SelectedIndex="2"
                          HorizontalContentAlignment="Stretch">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="3"/>
+                            <UniformGrid Columns="5"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
 
@@ -241,7 +240,7 @@
                                     <SolidColorBrush Color="#EFDEFE"/>
                                 </Border.Background>
 
-                                <StackPanel Width="300">
+                                <StackPanel Width="230">
                                     <TextBlock Text="{Binding Path=Name}" 
                                                Margin="0, 0, 0 , 7" 
                                                FontSize="20" />

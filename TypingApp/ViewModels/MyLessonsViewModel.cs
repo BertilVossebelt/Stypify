@@ -92,7 +92,7 @@ public class MyLessonsViewModel : ViewModelBase
         var lessons = new LessonProvider().GetAll(userStore.Teacher.Id);
         lessons?.ForEach(e => Lessons?.Add(new Lesson((string)e["name"],userStore.Teacher.FullName,(int)e["id"])));
 
-        Exercises.Add(new Exercise("test", "test"));
+        Exercises.Add(new Exercise("testsdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "test"));
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));
         Exercises.Add(new Exercise("test", "test"));

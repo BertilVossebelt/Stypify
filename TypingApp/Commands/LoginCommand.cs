@@ -74,7 +74,7 @@ namespace TypingApp.Commands
             var validUser = userProvider.VerifyUser(credential.UserName, credential.Password);
 
             if (!validUser) return validUser;
-            
+                
             _userId = userProvider.GetUserId(credential.UserName);
             return validUser;
         }
