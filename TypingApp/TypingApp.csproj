@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <OutputType>Exe</OutputType>
+        <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
+        <RootNamespace>TypingApp</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Views\Nos.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ApplicationDefinition Include="Views\App.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+      </ApplicationDefinition>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.10" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="SSH.NET" Version="2020.0.2" />
+      <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Views\Nos.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="bin\.gitignore.txt" />
+      <Content Include="obj\.gitignore.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\Components\BindablePasswordBox.xaml">
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\Components\BindablePasswordBox.xaml.cs">
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+</Project>
