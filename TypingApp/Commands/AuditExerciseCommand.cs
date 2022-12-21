@@ -28,8 +28,7 @@ public class AuditExerciseCommand : CommandBase
      */
     public override void Execute(object? parameter)
     {
-        _input = _lessonViewModel
-            .UserInputText; // These need to be here for some reason, don't move them to the constructor.
+        _input = _lessonViewModel.UserInputText; // These need to be here for some reason, don't move them to the constructor.
         _expected = _lessonViewModel.Exercise.Text;
         _audited = new List<Character>();
         var pos = 0;

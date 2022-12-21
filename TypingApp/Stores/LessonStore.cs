@@ -76,7 +76,6 @@ public class LessonStore
     public void SetCurrentLesson(Lesson lesson)
     {
         if (_userStore.Student == null) return;
-        Console.WriteLine("oeps");
         
         var placeNumber = new StudentProvider().GetLessonById(lesson.Id, _userStore.Student.Id);
         if (placeNumber?["place_number"] != null)
@@ -88,8 +87,6 @@ public class LessonStore
             CurrentExercise = 0;
         }
         
-        Console.WriteLine(CurrentExercise);
-
         CurrentLesson = lesson;
 
         CurrentLessonUpdated?.Invoke(CurrentLesson);
@@ -98,9 +95,6 @@ public class LessonStore
     public void GoToNextExercise()
     {
         CurrentExercise = CurrentExercise < CurrentLesson.Exercises.Count - 1 ? CurrentExercise + 1 : 0;
-        
-        Console.WriteLine(CurrentLesson.Exercises.Count - 1);
-        Console.WriteLine(CurrentExercise);
         
         NextExercise?.Invoke(CurrentExercise);
     }

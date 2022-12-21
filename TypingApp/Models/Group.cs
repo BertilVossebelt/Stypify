@@ -33,7 +33,7 @@ namespace TypingApp.Models
         public void RefreshCode()
         {
             GroupCode = new GroupCodeService().GenerateCode();
-            new GroupCodeService().updateCodeInDatabase(GroupId, GroupCode);
+            new GroupCodeService().UpdateCodeInDatabase(GroupId, GroupCode);
         }
     }
 }
