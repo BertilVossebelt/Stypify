@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Security;
+using System.Text;
 
 namespace TypingApp.Services.DatabaseProviders;
 
@@ -29,17 +32,10 @@ public class TeacherProvider : BaseProvider
         return DbInterface?.Select(query)?[0];
     }
 
-    public Dictionary<string, object>? Create(string email, byte[] password, string firstName, string preposition, string lastName)
+    public Dictionary<string, object>? Create(string email, byte[] password, byte[] salt, string firstName, string? preposition, string lastName)
     {
-        var query = $"INSERT INTO [User] (teacher, email, password, first_name, preposition, last_name, admin) VALUES (true, '{email}', '{password}', '{firstName}', '{preposition}', '{lastName}', false)";
-        return DbInterface?.Insert(query);
+        var query = $"INSERT INTO [User] (teacher, email, password, salt, first_name, preposition, last_name, admin) VALUES (1, '{email}', CONVERT(VARBINARY, '{password}'), CONVERT(VARBINARY, '{salt}'), '{firstName}', '{preposition}', '{lastName}', 0)";
+        
+        return DbInterface?.SafeInsert(query);
     }
-    
-    public Dictionary<string, object>? Create(string email, byte[] password, string firstName, string lastName)
-    {
-        var query = $"INSERT INTO [User] (teacher, email, password, first_name, last_name, admin) VALUES (1, '{email}', '{password}', '{firstName}', '{lastName}', 0)";
-        return DbInterface?.Insert(query);
-    }
-    
-
 }

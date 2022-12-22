@@ -50,12 +50,12 @@ public class StudentProvider : BaseProvider
         command.Connection = DbInterface?.GetConnection();
 
         command.CommandText =
-            "INSERT INTO [User] (teacher, email, hashedpassword, salt, first_name, preposition, last_name, admin)" +
-            "VALUES (@teacher, @email, @hashedpassword, @salt, @first_name, @preposition, @last_name, @admin)";
+            "INSERT INTO [User] (teacher, email, password, salt, first_name, preposition, last_name, admin)" +
+            "VALUES (@teacher, @email, @password, @salt, @first_name, @preposition, @last_name, @admin)";
 
         command.Parameters.Add("@teacher", SqlDbType.TinyInt).Value = 0;
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
-        command.Parameters.Add("@hashedpassword", SqlDbType.VarBinary).Value = password;
+        command.Parameters.Add("@password", SqlDbType.VarBinary).Value = password;
         command.Parameters.Add("@salt", SqlDbType.VarBinary).Value = salt;
 
         if (!string.IsNullOrEmpty(preposition))

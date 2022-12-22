@@ -18,14 +18,14 @@ public class UserProvider : BaseProvider
     {
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
-        command.CommandText = "SELECT hashedpassword, salt FROM [User] WHERE email=@email";
+        command.CommandText = "SELECT password, salt FROM [User] WHERE email=@email";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
 
         using var reader = command.ExecuteReader();
         if (reader == null) return false;
         while (reader.Read())
         {
-            var hashedPassword = (byte[])reader["hashedpassword"];
+            var hashedPassword = (byte[])reader["password"];
             var salt = (byte[])reader["salt"];
             var hash = new PasswordHash(hashedPassword);
             return hash.Verify(password, salt);

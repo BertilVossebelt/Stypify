@@ -20,8 +20,8 @@ namespace TypingApp.Views
         {
             // Setup stores.
             _navigationStore = new NavigationStore();
-            _exerciseStore = new ExerciseStore();
             _userStore = new UserStore();
+            _exerciseStore = new ExerciseStore();
             _lessonStore = new LessonStore(_userStore); // Needs to be initialized after user store.
         }
         
@@ -47,13 +47,13 @@ namespace TypingApp.Views
 
         private LoginViewModel CreateLoginViewModel()
         {
-            var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
-            var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
-            var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
-            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
+            var registerNavigationService = new NavigationService(_navigationStore, CreateRegisterViewModel);
+            var adminDashboardNavigationService = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
+            var studentDashboardNavigationService = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            var teacherDashboardNavigationService = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
 
-            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel,
-                teacherDashboardViewModel, _userStore, _lessonStore);
+            return new LoginViewModel(registerNavigationService, adminDashboardNavigationService, studentDashboardNavigationService,
+                teacherDashboardNavigationService, _userStore, _lessonStore);
         }
 
         private AdminDashboardViewModel CreateAdminDashboardViewModel()
@@ -64,7 +64,9 @@ namespace TypingApp.Views
 
         private RegisterViewModel CreateRegisterViewModel()
         {
-            return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel));
+            var loginNavigationService = new NavigationService(_navigationStore, CreateRegisterViewModel);
+
+            return new RegisterViewModel(loginNavigationService);
         }
 
         private StudentDashboardViewModel CreateStudentDashboardViewModel()
