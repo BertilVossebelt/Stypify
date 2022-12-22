@@ -1,5 +1,4 @@
-﻿using System;
-using TypingApp.Services;
+﻿using TypingApp.Services;
 
 namespace TypingApp.Commands;
 

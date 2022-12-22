@@ -96,6 +96,34 @@ public class DatabaseService
         reader.Close();
         return dict;
     }
+    public Dictionary<string, object>? SafeInsert(string query)
+    {
+        query += "; SELECT SCOPE_IDENTITY()";
+        var command = new SqlCommand(query, _connection);
+        var id = command.ExecuteScalar();
+        var dict = new Dictionary<string, object>();
+        
+        // Get table from query
+        var pFrom  = query.IndexOf("INSERT INTO [", StringComparison.OrdinalIgnoreCase) + "INSERT INTO [".Length;
+        var pTo  = query.LastIndexOf("] (", StringComparison.OrdinalIgnoreCase);
+        var table = query.Substring(pFrom, pTo - pFrom);
+
+        // Get inserted record
+        query = $"SELECT * FROM [{table}] WHERE id = '{id}'"; 
+        command = new SqlCommand(query, _connection);
+        var reader = command.ExecuteReader();
+        
+        while (reader.Read())
+        {
+            for (var i = 0; i < reader.FieldCount; i++)
+            {
+                dict.Add(reader.GetName(i), reader[i]);
+            }
+        }
+    
+        reader.Close();
+        return dict;
+    }
     
     public SqlConnection? GetConnection()
     {

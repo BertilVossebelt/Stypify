@@ -21,7 +21,7 @@ public class AuthenticationTests
     [SetUp]
     public void Setup()
     {
-        _scope = new TransactionScope();
+        _scope = new TransactionScope(); // Prevents changes to the database from being committed.
         
         _userProvider = new UserProvider();
         _studentProvider = new StudentProvider();
@@ -37,16 +37,11 @@ public class AuthenticationTests
     [TearDown]
     public void TearDown()
     {
-        _scope.Dispose();
+        _scope.Dispose(); // Disposes the transaction scope, which rolls back the changes to the database.
     }
 
-    /*
-     * ====================
-     * Authentication tests
-     * ====================
-     */
     [Test]
-    public void Should_RegisterStudent_WhenDataCorrect()
+    public void StudentProvider_Create_Should_RegisterStudent_WhenDataCorrect()
     {
         // Arrange in setup
     
@@ -57,7 +52,7 @@ public class AuthenticationTests
         Assert.AreEqual(result, 1);
     }
     [Test]
-    public void Should_RegisterStudentWithPreposition_WhenDataCorrect()
+    public void StudentProvider_Create_Should_RegisterStudentWithPreposition_WhenDataCorrect()
     {
         // Arrange in setup
         const string preposition = "preposition";
@@ -70,7 +65,7 @@ public class AuthenticationTests
     }
 
     [Test]
-    public void Should_NotRegisterStudent_WhenEmailAlreadyExists()
+    public void StudentProvider_Create_Should_NotRegisterStudent_WhenEmailAlreadyExists()
     {
         // Arrange in setup
 
@@ -88,12 +83,11 @@ public class AuthenticationTests
     }
 
     [Test]
-    public void Should_Login_WhenEmailAndPasswordCorrect()
+    public void UserProvider_VerifyUser_Should_ReturnTrue_WhenEmailAndPasswordCorrect()
     {
         // Arrange in setup
         _studentProvider.Create(_email, _hashedPassword, _salt, null, _firstName, _lastName);
 
-        
         // Act
         var result = _userProvider.VerifyUser(_email, _password);
         
@@ -102,7 +96,7 @@ public class AuthenticationTests
     }
 
     [Test]
-    public void Should_NotLogin_WhenEmailAndPasswordIncorrect()
+    public void UserProvider_VerifyUser_Should_ReturnFalse_WhenEmailAndPasswordIncorrect()
     {
         // Arrange in setup
         _studentProvider.Create(_email, _hashedPassword, _salt, null, _firstName, _lastName);

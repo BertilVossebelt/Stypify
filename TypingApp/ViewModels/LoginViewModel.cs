@@ -18,7 +18,9 @@ namespace TypingApp.ViewModels
             NavigationService adminDashboardNavigationService, NavigationService studentDashboardNavigationService,
             NavigationService teacherDashboardNavigationService, UserStore userStore, LessonStore lessonStore)
         {
+            
             GoToRegisterButton = new NavigateCommand(registerNavigationService);
+
             LoginButton = new LoginCommand(this, studentDashboardNavigationService,
                 adminDashboardNavigationService, teacherDashboardNavigationService, userStore, lessonStore);
         }
