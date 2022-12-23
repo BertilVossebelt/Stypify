@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using TypingApp.Models;
 
 namespace TypingApp.Services.DatabaseProviders;
 

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using System.Transactions;
 using NUnit.Framework;
+using Tests.Attributes;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
 
-namespace Tests;
+namespace Tests.IntegrationTests;
 
+[TestFixture]
 public class AuthenticationTests
 {
-    private TransactionScope _scope = null!;
     private StudentProvider _studentProvider = null!;
     private string _email = null!;
     private string _password = null!;
@@ -22,8 +22,6 @@ public class AuthenticationTests
     [SetUp]
     public void Setup()
     {
-        _scope = new TransactionScope(); // Prevents changes to the database from being committed.
-
         _userProvider = new UserProvider();
         _studentProvider = new StudentProvider();
         _email = "unit@test.nl";
@@ -34,14 +32,8 @@ public class AuthenticationTests
         _firstName = "If you see this in the database,";
         _lastName = "Something went wrong with unit testing.,";
     }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _scope.Dispose(); // Disposes the transaction scope, which rolls back the changes to the database.
-    }
-
-    [Test]
+    
+    [Test, Rollback]
     public void StudentProvider_Create_Should_RegisterStudent_WhenDataCorrect()
     {
         // Arrange in setup
@@ -53,20 +45,20 @@ public class AuthenticationTests
         Assert.NotNull(result);
     }
 
-    [Test]
+    [Test, Rollback]
     public void StudentProvider_Create_Should_RegisterStudentWithPreposition_WhenDataCorrect()
     {
         // Arrange in setup
         const string preposition = "preposition";
 
         // Act
-        var result = _studentProvider.Create(_email, _hashedPassword, _salt, preposition, _firstName, _lastName);
+        var result = _studentProvider.Create(_email, _hashedPassword, _salt, _firstName, preposition, _lastName);
 
         // Assert
         Assert.NotNull(result);
     }
 
-    [Test]
+    [Test, Rollback]
     public void StudentProvider_Create_Should_NotRegisterStudent_WhenEmailAlreadyExists()
     {
         // Arrange in setup
@@ -84,7 +76,7 @@ public class AuthenticationTests
         Assert.Null(result);
     }
 
-    [Test]
+    [Test, Rollback]
     public void UserProvider_GetByCredentials_Should_ReturnTrue_WhenEmailAndPasswordCorrect()
     {
         // Arrange in setup
@@ -97,7 +89,7 @@ public class AuthenticationTests
         Assert.NotNull(result);
     }
 
-    [Test]
+    [Test, Rollback]
     public void UserProvider_GetByCredentials_Should_ReturnFalse_WhenEmailAndPasswordIncorrect()
     {
         // Arrange in setup

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Security;
 
 namespace TypingApp.Services.DatabaseProviders;
@@ -11,14 +9,14 @@ public class AdminProvider : BaseProvider
     public override Dictionary<string, object>? GetById(int id)
     {
         var cmd = GetSqlCommand();
-        cmd.CommandText = "SELECT * FROM Admin WHERE id = @id AND admin = 1";
+        cmd.CommandText = "SELECT * FROM [User] WHERE id = @id AND admin = 1";
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
 
         return ConvertToList(reader)?[0];
     }
 
-    // TODO: Refactor to make heavier use of DbInterface. Function is currently too complicated.
+    // TODO: This should e be removed, the create teacher method in the teacher provider should be used instead.
     public Dictionary<string, object>? RegisterTeacher(string email, SecureString password, string? preposition, string firstName, string lastName)
     {
         var cmd = GetSqlCommand();
