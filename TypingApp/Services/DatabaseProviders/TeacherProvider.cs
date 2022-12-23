@@ -18,7 +18,7 @@ public class TeacherProvider : BaseProvider
         return ConvertToList(reader)?[0];
     }
 
-    public List<Dictionary<string, object>?>? GetGroups(int teacherId)
+    public List<Dictionary<string, object>>? GetGroups(int teacherId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [Group] WHERE teacher_id = @teacher_id";
@@ -28,7 +28,7 @@ public class TeacherProvider : BaseProvider
         return ConvertToList(reader);
     }
     
-    public List<Dictionary<string, object>?>? GetLessons(int teacherId)
+    public List<Dictionary<string, object>>? GetLessons(int teacherId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [Lesson] WHERE teacher_id = @teacher_id";

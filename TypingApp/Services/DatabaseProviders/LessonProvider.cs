@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace TypingApp.Services.DatabaseProviders;
 
@@ -7,7 +9,7 @@ public class LessonProvider : BaseProvider
     public override Dictionary<string, object>? GetById(int id)
     {
         var cmd = GetSqlCommand();
-        cmd.CommandText = "SELECT * FROM Lessons WHERE id = @id";
+        cmd.CommandText = "SELECT * FROM [Lesson] WHERE id = @id";
         cmd.Parameters.AddWithValue("@id", id);
         var reader = cmd.ExecuteReader();
         
@@ -22,5 +24,34 @@ public class LessonProvider : BaseProvider
         var reader = cmd.ExecuteReader();
         
         return ConvertToList(reader);
+    }
+
+    public Dictionary<string, object>? Create(string name, int teacherId)
+    {
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "INSERT INTO [Lesson] (name, teacher_id) VALUES (@name, @teacherId); SELECT SCOPE_IDENTITY()";
+        cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = name;
+        cmd.Parameters.Add("@teacherId", SqlDbType.Int).Value = teacherId;
+        var id = (decimal)cmd.ExecuteScalar();
+        
+        return GetById((int)id);
+    }
+    
+    public Dictionary<string, object>? LinkToGroup(int groupId, int lessonId)
+    {
+        // Create link between student and group.
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "INSERT INTO [Group_Lesson] (group_id, lesson_id) VALUES (@groupId, @lessonId); SELECT SCOPE_IDENTITY()";
+        cmd.Parameters.Add("@groupId", SqlDbType.Int).Value = groupId;
+        cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
+        var id = (decimal)cmd.ExecuteScalar();
+        
+        // Retrieve the newly created link.
+        cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [Group_Lesson] WHERE id = @id";
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = (int)id;
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader)?[0];
     }
 }

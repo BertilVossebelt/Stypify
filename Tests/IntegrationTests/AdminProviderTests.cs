@@ -19,7 +19,7 @@ public class AdminProviderTests
         // Arrange
 
         /*This should be an admin account, but this is reliant on the database state,
-         given that there are no functions to create admin accounts.*/
+         given that there are currently no functions to create admin accounts.*/
         const int id = 92;
 
         // Act

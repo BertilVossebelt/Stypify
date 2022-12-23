@@ -62,7 +62,7 @@ public class StudentProvider : BaseProvider
         return GetLessonById(lessonId, studentId);
     }
     
-    public List<Dictionary<string, object>?>? GetGroups(int studentId)
+    public List<Dictionary<string, object>>? GetGroups(int studentId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT g.id, g.name, g.teacher_id, g.image FROM [Group] g JOIN [Group_Student] gl ON g.id = gl.group_id WHERE student_id = @studentId";
@@ -86,5 +86,23 @@ public class StudentProvider : BaseProvider
         var id = (decimal)cmd.ExecuteScalar();
         
         return GetById((int)id);
+    }
+    
+    public Dictionary<string, object>? LinkToGroup(int groupId, int studentId)
+    {
+        // Create link between student and group.
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "INSERT INTO [Group_Student] (group_id, student_id) VALUES (@groupId, @studentId); SELECT SCOPE_IDENTITY()";
+        cmd.Parameters.Add("@groupId", SqlDbType.Int).Value = groupId;
+        cmd.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
+        var id = (decimal)cmd.ExecuteScalar();
+        
+        // Retrieve the newly created link.
+        cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [Group_Student] WHERE id = @id";
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader)?[0];
     }
 }

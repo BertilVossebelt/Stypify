@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -28,10 +29,11 @@ public abstract class BaseProvider
         };
     }
 
-    protected List<Dictionary<string, object>?>? ConvertToList(SqlDataReader reader)
+    protected List<Dictionary<string, object>>? ConvertToList(SqlDataReader reader)
     {
         if (!reader.HasRows)
         {
+            Console.WriteLine("No rows found.");
             reader.Close();
             return null;
         }
