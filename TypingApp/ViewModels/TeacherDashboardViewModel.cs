@@ -88,7 +88,6 @@ public class TeacherDashboardViewModel : ViewModelBase
     public TeacherDashboardViewModel(NavigationService addGroupNavigationService,
         NavigationService myLessonsNavigationService, NavigationService loginNavigationService, UserStore userStore)
     {
-        Console.WriteLine("TeacherDashboardViewModel");
         _userStore = userStore;
 
         MyLessonsButton = new NavigateCommand(myLessonsNavigationService);
@@ -110,8 +109,6 @@ public class TeacherDashboardViewModel : ViewModelBase
         {
             Groups.Add(new Group(group));
         }
-
-        Console.WriteLine("aaaaaaaaaaaaaaaaaa");
     }
 
     private void GetStudentsFromGroup()

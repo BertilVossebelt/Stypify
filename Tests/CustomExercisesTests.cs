@@ -39,8 +39,6 @@ public class CustomExercisesTests
         const string exerciseText = "If you see this exercise in the database, it means something went wrong while unit testing";
         const string exerciseName = "UnitTest";
         Dictionary<string, object>? exercise = null;
-
-        Console.WriteLine(teacher);
         
         // Act
         if (teacher != null)

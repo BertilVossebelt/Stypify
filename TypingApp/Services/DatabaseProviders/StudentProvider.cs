@@ -83,9 +83,7 @@ public class StudentProvider : BaseProvider
         cmd.Parameters.Add("@firstName", SqlDbType.VarChar).Value = firstName;
         cmd.Parameters.Add("@preposition", SqlDbType.VarChar).Value = string.IsNullOrEmpty(preposition) ? DBNull.Value : preposition;
         cmd.Parameters.Add("@lastName", SqlDbType.VarChar).Value = lastName;
-        
         var id = (decimal)cmd.ExecuteScalar();
-        Console.WriteLine((string)GetById((int)id)?["first_name"]!);
         
         return GetById((int)id);
     }

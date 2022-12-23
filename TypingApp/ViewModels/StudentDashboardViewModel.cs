@@ -82,7 +82,6 @@ public class StudentDashboardViewModel : ViewModelBase
     
     private void SelectLesson(object? sender, PropertyChangedEventArgs e)
     {
-        Console.WriteLine("selected");
         _lessonStore.SetCurrentLesson(SelectedLesson);
         StartLessonCommand.Execute(this);
     }

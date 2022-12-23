@@ -61,7 +61,6 @@ public class LessonStore
                     : $"{(string)teacher["preposition"]} {(string)teacher["last_name"]}";
                 // Finally, create the lessons.
                 Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, exercises));
-                Console.WriteLine("lesson added");
             }
         }
 
