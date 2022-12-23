@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using TypingApp.Models;
-using List = System.Windows.Documents.List;
 
 namespace Tests;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows;
 using TypingApp.Models;
@@ -54,7 +55,7 @@ namespace TypingApp.Commands
             // Check if student is already linked to group.
             if (_userStore.Student != null)
             {
-                var student = new GroupProvider().GetStudent(_groupId, _userStore.Student.Id);
+                var student = new GroupProvider().GetStudentById(_groupId, _userStore.Student.Id);
                 if (student == null) return false;
             }
 

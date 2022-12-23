@@ -57,11 +57,11 @@ public class LessonStore
                 // Get the name of the teacher.
                 var teacher = new TeacherProvider().GetById((int)lesson["teacher_id"]);
                 var teacherName = teacher == null
-                    ? "Unknown"
+                    ? "Onbekend"
                     : $"{(string)teacher["preposition"]} {(string)teacher["last_name"]}";
-
                 // Finally, create the lessons.
                 Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, exercises));
+                Console.WriteLine("lesson added");
             }
         }
 
@@ -76,11 +76,12 @@ public class LessonStore
     public void SetCurrentLesson(Lesson lesson)
     {
         if (_userStore.Student == null) return;
+
+        var dbLesson = new StudentProvider().GetLessonById(lesson.Id, _userStore.Student.Id);
         
-        var placeNumber = new StudentProvider().GetLessonById(lesson.Id, _userStore.Student.Id);
-        if (placeNumber?["place_number"] != null)
+        if (dbLesson?["place_number"] != null)
         {
-            CurrentExercise = (byte)placeNumber["place_number"];
+            CurrentExercise = (byte)dbLesson["place_number"];
         }
         else
         {

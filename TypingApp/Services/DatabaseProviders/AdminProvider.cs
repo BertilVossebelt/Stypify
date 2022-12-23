@@ -10,38 +10,27 @@ public class AdminProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [User] WHERE id = {id} AND admin = true";
-        return DbInterface?.Select(query)?[0];
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM Admin WHERE id = @id AND admin = 1";
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+        var reader = cmd.ExecuteReader();
+
+        return ConvertToList(reader)?[0];
     }
 
     // TODO: Refactor to make heavier use of DbInterface. Function is currently too complicated.
-    public int RegisterTeacher(string email, SecureString password, string? preposition, string firstName, string lastName)
+    public Dictionary<string, object>? RegisterTeacher(string email, SecureString password, string? preposition, string firstName, string lastName)
     {
-        var command = new SqlCommand();
-        command.Connection = DbInterface?.GetConnection();
-
-        command.CommandText =
-            "INSERT INTO [User] (teacher, student, email, password, first_name, preposition, last_name, admin)" +
-            "VALUES (@teacher, @student, @email, @password, @first_name, @preposition, @last_name, @admin)";
-
-        command.Parameters.Add("@teacher", SqlDbType.TinyInt).Value = 1;
-        command.Parameters.Add("@student", SqlDbType.TinyInt).Value = 0;
-        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
-        command.Parameters.Add("@password", SqlDbType.NVarChar).Value = password;
-
-        if (!string.IsNullOrEmpty(preposition))
-        {
-            command.Parameters.Add("@preposition", SqlDbType.NVarChar).Value = preposition;
-        }
-        else
-        {
-            command.Parameters.AddWithValue("@preposition", DBNull.Value);
-        }
-
-        command.Parameters.Add("@first_name", SqlDbType.NVarChar).Value = firstName;
-        command.Parameters.Add("@last_name", SqlDbType.NVarChar).Value = lastName;
-        command.Parameters.Add("@admin", SqlDbType.TinyInt).Value = 0;
-
-        return command.ExecuteNonQuery();
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "INSERT INTO [User] (email, password, first_name, preposition, last_name, teacher, admin)" +
+                          "VALUES (@email, @password, @first_name, @preposition, @last_name, 1, 0)";
+        cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = email;
+        cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = password;
+        cmd.Parameters.Add("@first_name", SqlDbType.VarChar).Value = firstName;
+        cmd.Parameters.Add("@preposition", SqlDbType.VarChar).Value = preposition;
+        cmd.Parameters.Add("@last_name", SqlDbType.VarChar).Value = lastName;
+        var id = (int)cmd.ExecuteScalar();
+        
+        return GetById(id);
     }
 }

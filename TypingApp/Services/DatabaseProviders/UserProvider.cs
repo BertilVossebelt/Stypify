@@ -9,38 +9,21 @@ public class UserProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [User] WHERE id = {id}";
-        return DbInterface?.Select(query)?[0];
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [User] WHERE id = @id";
+        cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int)).Value = id;
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader)?[0];
     }
 
-    // Check if user credentials are correct.
-    public bool VerifyUser(string email, string password)
+    public Dictionary<string, object>? GetByCredentials(string email)
     {
-        var command = new SqlCommand();
-        command.Connection = DbInterface?.GetConnection();
-        command.CommandText = "SELECT password, salt FROM [User] WHERE email=@email";
-        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
-
-        using var reader = command.ExecuteReader();
-        if (reader == null) return false;
-        while (reader.Read())
-        {
-            var hashedPassword = (byte[])reader["password"];
-            var salt = (byte[])reader["salt"];
-            var hash = new PasswordHash(hashedPassword);
-            return hash.Verify(password, salt);
-        }
-        return false;
-    }
-    
-    // Get id of the user by email.
-    public int GetUserId(string email)
-    {
-        var command = new SqlCommand();
-        command.Connection = DbInterface?.GetConnection();
-
-        command.CommandText = "SELECT id FROM [User] WHERE email=@email";
-        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
-        return (int)command.ExecuteScalar();
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [User] WHERE email = @email";
+        cmd.Parameters.Add(new SqlParameter("@email", SqlDbType.VarChar)).Value = email;
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader)?[0];
     }
 }
