@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using TypingApp.Commands;
@@ -76,11 +77,11 @@ public class LessonViewModel : ViewModelBase
         _lessonStore = lessonStore;
         Lesson = lessonStore.CurrentLesson;
         Exercise = Lesson.Exercises[lessonStore.CurrentExercise];
-
+        
         BackButton = new NavigateCommand(studentDashboardViewModel);
         AuditButton = new AuditExerciseCommand(this, lessonStore, userStore);
         NextExerciseButton = new NextExerciseCommand(lessonStore);
-
+        
         lessonStore.AuditedExerciseCreated += AuditedExerciseCreatedHandler;
         lessonStore.NextExercise += NextExerciseHandler;
     }

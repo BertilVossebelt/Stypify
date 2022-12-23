@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -21,10 +22,11 @@ public class TeacherDashboardViewModel : ViewModelBase
     private Group _selectedItem;
     private ObservableCollection<Group> _groups;
     private ObservableCollection<Student> _students;
+    private int _amountOfExercises;
 
     public ICommand AddGroupButton { get; }
     public ICommand MyLessonsButton { get; }
-    public ICommand LogOutButton { get;  }
+    public ICommand LogOutButton { get; }
 
     public ICommand UpdateGroupsCodeButton { get; set; }
 
@@ -34,11 +36,10 @@ public class TeacherDashboardViewModel : ViewModelBase
         set
         {
             _selectedItem = value;
-            
+
             Students.Clear();
             GetStudentsFromGroup();
             OnPropertyChanged();
-         
         }
     }
 
@@ -73,44 +74,66 @@ public class TeacherDashboardViewModel : ViewModelBase
         }
     }
     
-    public TeacherDashboardViewModel(NavigationService addGroupNavigationService, NavigationService myLessonsNavigationService, NavigationService loginNavigationService, UserStore userStore)
+    public int AmountOfExercises
     {
+        get => _amountOfExercises;
+        set
+        {
+            _amountOfExercises = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    public TeacherDashboardViewModel(NavigationService addGroupNavigationService,
+        NavigationService myLessonsNavigationService, NavigationService loginNavigationService, UserStore userStore)
+    {
+        Console.WriteLine("TeacherDashboardViewModel");
         _userStore = userStore;
 
         MyLessonsButton = new NavigateCommand(myLessonsNavigationService);
         AddGroupButton = new NavigateCommand(addGroupNavigationService);
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
         UpdateGroupsCodeButton = new UpdateGroupsCodeCommand(this);
-
+        
         Groups = new ObservableCollection<Group>();
         Students = new ObservableCollection<Student>();
-        Students.Add(new Student(1, "test", "test", "'n", "test", false, false, 10));
 
-        if (_userStore.Teacher != null)
+        if (_userStore.Teacher == null) return;
+        WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName} " +
+                         $"{_userStore.Teacher.Preposition} " +
+                         $"{_userStore.Teacher.LastName}";
+        var groups = new TeacherProvider().GetGroups(_userStore.Teacher.Id);
+        
+        if (groups == null) return;
+        foreach (var group in groups)
         {
-            WelcomeMessage = $"Welkom {_userStore.Teacher.FirstName} {_userStore.Teacher.Preposition} {_userStore.Teacher.LastName}";
-
-            var teacherProvider = new TeacherProvider();
-            var groups = teacherProvider.GetGroups(_userStore.Teacher.Id);
-            
-
-            if (groups != null)
-            {
-                foreach (var group in groups) 
-                {
-                    Groups.Add(new Group(group)); 
-                }
-            }
+            Groups.Add(new Group(group));
         }
+
+        Console.WriteLine("aaaaaaaaaaaaaaaaaa");
     }
-    
+
     private void GetStudentsFromGroup()
     {
-        var tupleResult = new GroupProvider().GetStudents(SelectedItem.GroupId);
-        Students = tupleResult.Item1;
-        _selectedItem.AmountOfStudents = tupleResult.Item2;
-        if (Students == null) return;
-        
+        var students = new GroupProvider().GetStudents(SelectedItem.GroupId);
+
+        if (students == null) return;
+        // TODO: Should be queried from database.
+        var characters = new List<Character>
+        {
+            new('e'),
+            new('n'),
+            new('a'),
+            new('t'),
+        };
+
+        foreach (var student in students)
+        {
+            Students.Add(new Student(student, characters));
+        }
+
+        _selectedItem.AmountOfStudents = students.Count;
         Students = Students;
-    } 
+    }
 }

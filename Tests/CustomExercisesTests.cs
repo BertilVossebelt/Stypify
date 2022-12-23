@@ -10,7 +10,7 @@ namespace Tests;
 
 public class CustomExercisesTests
 {
-    private TransactionScope _scope;
+    private TransactionScope _scope = null!;
 
     [SetUp]
     public void Setup()
@@ -33,7 +33,6 @@ public class CustomExercisesTests
         
         var hash = new PasswordHash("UnitTest");
         var password = hash.ToArray();
-        Console.WriteLine(hash.Salt);
 
         var teacher = new TeacherProvider().Create("unit@test.nl", password, hash.Salt, firstName, null, lastName);
         

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Net;
@@ -49,7 +50,7 @@ namespace TypingApp.Commands
             var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
             var user = new UserProvider().GetById(_userId);
             if (user == null) return;
-
+            
             // Change login routine based on the role of the user.
             if ((byte)user["teacher"] == 1)
             {
@@ -65,6 +66,7 @@ namespace TypingApp.Commands
             {
                 _userStore.CreateStudent(user);
                 _lessonStore.LoadLessons(_userStore); // Fetch all available lessons for the student.
+
             }
 
             navigateCommand.Execute(this);
@@ -74,13 +76,19 @@ namespace TypingApp.Commands
         private bool AuthenticateUser(NetworkCredential credential)
         {
             var userProvider = new UserProvider();
-            var validUser = userProvider.VerifyUser(credential.UserName, credential.Password);
+            var user = userProvider.GetByCredentials(credential.UserName);
 
-            if (!validUser) return validUser;
-            
-            // TODO: Get userId from validUser instead.
-            _userId = userProvider.GetUserId(credential.UserName);
-            return validUser;
+            // Check if user exists.
+            if (user == null) return false;
+            var hashedPassword = (byte[])user["password"];
+            var salt = (byte[])user["salt"];
+            var correct = new PasswordHash(hashedPassword).Verify(credential.Password, salt);
+
+            // Exit if password is incorrect.
+            if (!correct) return false;
+            _userId = (int)user["id"];
+
+            return true;
         }
 
         // Display error message when given credentials are incorrect.

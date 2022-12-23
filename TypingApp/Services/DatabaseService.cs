@@ -34,95 +34,10 @@ public class DatabaseService
             Console.WriteLine(e.ToString());
         }
     }
-
-    public SqlDataReader ExecuteRaw(string query)
-    {
-        var command = new SqlCommand(query, _connection);
-        return command.ExecuteReader();
-    }
     
-    public List<Dictionary<string, object>>? Select(string query)
+    public void Insert()
     {
-        var command = new SqlCommand(query, _connection);
-        var reader = command.ExecuteReader();
-
-        if (!reader.HasRows)
-        {
-            reader.Close();
-            return null;
-        }
-
-        var list = new List<Dictionary<string, object>>();
-        while (reader.Read())
-        {
-            var dict = new Dictionary<string, object>();
-            for (var i = 0; i < reader.FieldCount; i++)
-            {
-                dict.Add(reader.GetName(i), reader[i]);
-            }
-
-            list.Add(dict);
-        }
-        
-        reader.Close();
-        return list;
-    }
-
-    public Dictionary<string, object>? Insert(string query)
-    {
-        query += "; SELECT SCOPE_IDENTITY()";
-        var command = new SqlCommand(query, _connection);
-        var id = command.ExecuteScalar();
-        var dict = new Dictionary<string, object>();
-        
-        // Get table from query
-        var pFrom  = query.IndexOf("INSERT INTO [", StringComparison.OrdinalIgnoreCase) + "INSERT INTO [".Length;
-        var pTo  = query.LastIndexOf("] (", StringComparison.OrdinalIgnoreCase);
-        var table = query.Substring(pFrom, pTo - pFrom);
-
-        // Get inserted record
-        query = $"SELECT * FROM [{table}] WHERE id = '{id}'"; 
-        command = new SqlCommand(query, _connection);
-        var reader = command.ExecuteReader();
-        
-        while (reader.Read())
-        {
-            for (var i = 0; i < reader.FieldCount; i++)
-            {
-                dict.Add(reader.GetName(i), reader[i]);
-            }
-        }
-    
-        reader.Close();
-        return dict;
-    }
-    public Dictionary<string, object>? SafeInsert(string query)
-    {
-        query += "; SELECT SCOPE_IDENTITY()";
-        var command = new SqlCommand(query, _connection);
-        var id = command.ExecuteScalar();
-        var dict = new Dictionary<string, object>();
-        
-        // Get table from query
-        var pFrom  = query.IndexOf("INSERT INTO [", StringComparison.OrdinalIgnoreCase) + "INSERT INTO [".Length;
-        var pTo  = query.LastIndexOf("] (", StringComparison.OrdinalIgnoreCase);
-        var table = query.Substring(pFrom, pTo - pFrom);
-
-        // Get inserted record
-        query = $"SELECT * FROM [{table}] WHERE id = '{id}'"; 
-        command = new SqlCommand(query, _connection);
-        var reader = command.ExecuteReader();
-        
-        while (reader.Read())
-        {
-            for (var i = 0; i < reader.FieldCount; i++)
-            {
-                dict.Add(reader.GetName(i), reader[i]);
-            }
-        }
-    
-        reader.Close();
-        return dict;
+        // ; SELECT SCOPE_IDENTITY();
     }
     
     public SqlConnection? GetConnection()
