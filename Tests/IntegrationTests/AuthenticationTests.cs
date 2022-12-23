@@ -22,8 +22,6 @@ public class AuthenticationTests
     [SetUp]
     public void Setup()
     {
-        // _userProvider = new UserProvider();
-        // _studentProvider = new StudentProvider();
         _email = "unit@test.nl";
         _password = "unitTest";
         _hash = new PasswordHash(_password);
@@ -64,12 +62,12 @@ public class AuthenticationTests
         // Arrange in setup
     
         // Act
-        _studentProvider.Create(_email, _hashedPassword, _salt, _firstName, null,_lastName);
+        new StudentProvider().Create(_email, _hashedPassword, _salt, _firstName, null,_lastName);
     
         Dictionary<string, object>? result = null;
-        if (_studentProvider.GetByEmail(_email) == null)
+        if (new StudentProvider().GetByEmail(_email) == null)
         {
-            result = _studentProvider.Create(_email, _hashedPassword, _salt, _firstName, null, _lastName);
+            result = new StudentProvider().Create(_email, _hashedPassword, _salt, _firstName, null, _lastName);
         }
     
         // Assert
@@ -80,10 +78,10 @@ public class AuthenticationTests
     public void UserProvider_GetByCredentials_Should_ReturnTrue_WhenEmailAndPasswordCorrect()
     {
         // Arrange in setup
-        _studentProvider.Create(_email, _hashedPassword, _salt, _firstName, null, _lastName);
+        new StudentProvider().Create(_email, _hashedPassword, _salt, _firstName, null, _lastName);
     
         // Act
-        var result = _userProvider.GetByCredentials(_email);
+        var result = new UserProvider().GetByCredentials(_email);
     
         // Assert
         Assert.NotNull(result);
@@ -93,11 +91,11 @@ public class AuthenticationTests
     public void UserProvider_GetByCredentials_Should_ReturnFalse_WhenEmailAndPasswordIncorrect()
     {
         // Arrange in setup
-        _studentProvider.Create(_email, _hashedPassword, _salt, _firstName, null, _lastName);
+        new StudentProvider().Create(_email, _hashedPassword, _salt, _firstName, null, _lastName);
         const string password = "incorrectPassword";
     
         // Act
-        var result = _userProvider.GetByCredentials(_email);
+        var result = new UserProvider().GetByCredentials(_email);
     
         // Assert
         Assert.NotNull(result);
