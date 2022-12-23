@@ -11,7 +11,6 @@ public class TeacherProviderTests
     {
     }
 
-
     [Test, Rollback]
     public void Class_Method_Should_DoSomething_When_Situation()
     {

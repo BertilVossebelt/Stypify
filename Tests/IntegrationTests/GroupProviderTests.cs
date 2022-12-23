@@ -6,7 +6,6 @@ namespace Tests.IntegrationTests;
 [TestFixture]
 public class GroupProviderTests
 {
-
     [SetUp]
     public void Setup()
     {

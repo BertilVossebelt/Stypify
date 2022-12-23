@@ -10,8 +10,7 @@ public class StudentProviderTests
     public void Setup()
     {
     }
-
-
+    
     [Test, Rollback]
     public void Class_Method_Should_DoSomething_When_Situation()
     {

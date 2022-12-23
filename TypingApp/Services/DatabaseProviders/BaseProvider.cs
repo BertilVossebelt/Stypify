@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace TypingApp.Services.DatabaseProviders;
 
@@ -16,6 +14,12 @@ public abstract class BaseProvider
     
     public abstract Dictionary<string, object>? GetById(int id);
 
+    public static void ResetDatabaseConnection()
+    {
+        DatabaseService?.CloseConnection();
+        DatabaseService = null;
+    }
+    
     protected SqlCommand GetSqlCommand()
     {
         return new SqlCommand()

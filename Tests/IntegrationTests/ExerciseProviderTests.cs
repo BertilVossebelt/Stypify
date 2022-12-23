@@ -11,7 +11,6 @@ public class ExerciseProviderTests
     private TeacherProvider _teacherProvider = null!;
     private ExerciseProvider _exerciseProvider = null!;
 
-    
     [SetUp]
     public void Setup()
     {

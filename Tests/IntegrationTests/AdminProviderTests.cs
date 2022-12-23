@@ -8,20 +8,11 @@ namespace Tests;
 [TestFixture]
 public class AdminProviderTests
 {
-    private TransactionScope _scope;
-
     [SetUp]
     public void Setup()
     {
-        _scope = new TransactionScope(); // Prevents changes to the database from being committed.
     }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _scope.Dispose(); // Disposes the transaction scope, which rolls back the changes to the database.
-    }
-
+    
     [Test, Rollback]
     public void AdminProvider_GetById_Should_FetchCorrectAdminAccount_When_GivenId()
     {
