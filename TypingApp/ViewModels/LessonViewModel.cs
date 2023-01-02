@@ -84,7 +84,6 @@ public class LessonViewModel : ViewModelBase
         NextExerciseButton = new NextExerciseCommand(lessonStore);
         
         lessonStore.AuditedExerciseCreated += AuditedExerciseCreatedHandler;
-        lessonStore.NextExercise -= NextExerciseHandler;
         lessonStore.NextExercise = NextExerciseHandler;
     }
 
