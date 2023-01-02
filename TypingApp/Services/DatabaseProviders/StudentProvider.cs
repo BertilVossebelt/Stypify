@@ -14,7 +14,7 @@ public class StudentProvider : BaseProvider
         cmd.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
         var reader = cmd.ExecuteReader();
 
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "StudentProvider.GetById")?[0];
     }
     
     public Dictionary<string, object>? GetByEmail(string email)
@@ -24,7 +24,7 @@ public class StudentProvider : BaseProvider
         cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = email;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "StudentProvider.GetByEmail")?[0];
     }
     
     public Dictionary<string, object>? GetLessonById(int lessonId, int studentId)
@@ -35,7 +35,7 @@ public class StudentProvider : BaseProvider
         cmd.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
         var reader = cmd.ExecuteReader();
 
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "StudentProvider.GetLessonById")?[0];
     }
     
     public Dictionary<string, object>? UpdateLesson(int lessonId, int studentId, int placeNumber)
@@ -69,7 +69,7 @@ public class StudentProvider : BaseProvider
         cmd.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "StudentProvider.GetGroups");
     }
     
     public Dictionary<string, object>? Create(string email, byte[] password, byte[] salt, string firstName, string? preposition, string lastName)
@@ -103,6 +103,6 @@ public class StudentProvider : BaseProvider
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "StudentProvider.LinkToGroup")?[0];
     }
 }

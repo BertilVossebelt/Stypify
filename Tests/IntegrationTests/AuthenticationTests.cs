@@ -81,7 +81,7 @@ public class AuthenticationTests
         new StudentProvider().Create(_email, _hashedPassword, _salt, _firstName, null, _lastName);
     
         // Act
-        var result = new UserProvider().GetByCredentials(_email);
+        var result = new UserProvider().GetByEmail(_email);
     
         // Assert
         Assert.NotNull(result);
@@ -95,7 +95,7 @@ public class AuthenticationTests
         const string password = "incorrectPassword";
     
         // Act
-        var result = new UserProvider().GetByCredentials(_email);
+        var result = new UserProvider().GetByEmail(_email);
     
         // Assert
         Assert.NotNull(result);

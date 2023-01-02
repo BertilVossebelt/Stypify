@@ -10,20 +10,20 @@ public class LessonProvider : BaseProvider
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [Lesson] WHERE id = @id";
-        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "LessonProvider.GetById")?[0];
     }
     
-    public  List<Dictionary<string, object>?>? GetExercises(int lessonId)
+    public  List<Dictionary<string, object>>? GetExercises(int lessonId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT e.id, e.name, e.text FROM [Exercise] e JOIN [Lesson_Exercise] le ON e.id = le.exercise_id WHERE le.lesson_id = @lessonId";
-        cmd.Parameters.AddWithValue("@lessonId", lessonId);
+        cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "LessonProvider.GetExercises");
     }
 
     public Dictionary<string, object>? Create(string name, int teacherId)
@@ -52,6 +52,6 @@ public class LessonProvider : BaseProvider
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = (int)id;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "LessonProvider.LinkToGroup")?[0];
     }
 }
