@@ -18,7 +18,7 @@ public class LessonStore
     public event Action<List<Lesson>>? LessonsLoaded;
 
     public event Action<Lesson>? CurrentLessonUpdated;
-    public event Action<int>? NextExercise;
+    public Action<int>? NextExercise;
 
     public List<Lesson> Lessons { get; private set; }
 
@@ -46,12 +46,14 @@ public class LessonStore
             // Get the lessons of the group.
             var lessons = new GroupProvider().GetLessons((int)group["id"]);
 
-            if (lessons == null) continue;
+            if (lessons == null) return;
             foreach (var lesson in lessons)
             {
                 // Get the exercises of the lesson.
                 var exercises = new List<Exercise>();
                 var result = new LessonProvider().GetExercises((int)lesson["id"]);
+                
+                
                 result?.ForEach(r => exercises.Add(new Exercise((string)r["text"], (string)r["name"])));
 
                 // Get the name of the teacher.
@@ -59,12 +61,12 @@ public class LessonStore
                 var teacherName = teacher == null
                     ? "Onbekend"
                     : $"{(string)teacher["preposition"]} {(string)teacher["last_name"]}";
+                
                 // Finally, create the lessons.
                 Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, exercises));
             }
+            LessonsLoaded?.Invoke(Lessons);
         }
-
-        LessonsLoaded?.Invoke(Lessons);
     }
 
     /*
@@ -77,7 +79,6 @@ public class LessonStore
         if (_userStore.Student == null) return;
 
         var dbLesson = new StudentProvider().GetLessonById(lesson.Id, _userStore.Student.Id);
-        
         if (dbLesson?["place_number"] != null)
         {
             CurrentExercise = (byte)dbLesson["place_number"];
@@ -95,7 +96,6 @@ public class LessonStore
     public void GoToNextExercise()
     {
         CurrentExercise = CurrentExercise < CurrentLesson.Exercises.Count - 1 ? CurrentExercise + 1 : 0;
-        
         NextExercise?.Invoke(CurrentExercise);
     }
 

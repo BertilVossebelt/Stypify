@@ -13,7 +13,7 @@ public class AdminProvider : BaseProvider
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
 
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "AdminProvider.GetById")?[0];
     }
 
     // TODO: This should e be removed, the create teacher method in the teacher provider should be used instead.

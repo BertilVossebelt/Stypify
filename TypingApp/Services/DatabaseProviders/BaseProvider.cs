@@ -29,11 +29,11 @@ public abstract class BaseProvider
         };
     }
 
-    protected List<Dictionary<string, object>>? ConvertToList(SqlDataReader reader)
+    protected static List<Dictionary<string, object>>? ConvertToList(SqlDataReader reader, string sender)
     {
         if (!reader.HasRows)
         {
-            Console.WriteLine("No rows found.");
+            Console.WriteLine($"No rows found by {sender}");
             reader.Close();
             return null;
         }

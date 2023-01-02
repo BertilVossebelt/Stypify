@@ -13,7 +13,7 @@ public class GroupProvider : BaseProvider
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "GroupProvider.GetById")?[0];
     }
 
     public Dictionary<string, object>? GetByCode(string groupCode)
@@ -23,7 +23,7 @@ public class GroupProvider : BaseProvider
         cmd.Parameters.AddWithValue("@code", groupCode);     
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "GroupProvider.GetByCode")?[0];
     }
 
     public List<Dictionary<string, object>>? GetLessons(int groupId)
@@ -33,7 +33,7 @@ public class GroupProvider : BaseProvider
         cmd.Parameters.Add("@groupId", SqlDbType.Int).Value = groupId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "GroupProvider.GetLessons");
     }
     
     public List<Dictionary<string, object>>? GetStudents(int groupId)
@@ -46,7 +46,7 @@ public class GroupProvider : BaseProvider
         cmd.Parameters.Add("@groupId", SqlDbType.Int).Value = groupId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "GroupProvider.GetStudents");
     }
     
     public List<Dictionary<string, object>>? GetStudentById(int groupId, int studentId)
@@ -57,7 +57,7 @@ public class GroupProvider : BaseProvider
         cmd.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader,  "GroupProvider.GetStudentById");
     }
 
     public Dictionary<string, object>? Create(int teacherId, string groupName, string groupCode)

@@ -1,4 +1,5 @@
-﻿using TypingApp.Services;
+﻿using System;
+using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
@@ -35,14 +36,15 @@ public class AuditExerciseCommand : CommandBase
     private void UpdateDatabase()
     {
         // If the user is not a student, do nothing.
-        if (_userStore.Student == null) return; 
-        
+        if (_userStore.Student == null) return;
+
         // Initialize variables.
         var lessonId = _lessonStore.CurrentLesson.Id;
         var studentId = _userStore.Student.Id;
         var currentExercise = _lessonStore.CurrentExercise;
-        var placeNumber = currentExercise <= _lessonStore.Lessons.Count ? currentExercise + 1 : 0;
-
+        
+        var placeNumber = currentExercise < _lessonStore.CurrentLesson.Exercises.Count - 1 ? currentExercise + 1 : 0;
+        
         // Get the lesson from the database.
         var studentProvider = new StudentProvider();
         var lesson = studentProvider.GetLessonById(lessonId, studentId);
