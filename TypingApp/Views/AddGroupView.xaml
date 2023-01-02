@@ -78,6 +78,9 @@
                         Content="Annuleren"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        BorderThickness="0"
+                        Background="Gray"
+                        Foreground="White"
                         Width="75"
                         Grid.Column="1" Grid.Row="1"
                         >
@@ -86,18 +89,26 @@
                                     <Setter Property="CornerRadius" Value="10"></Setter>
                                 </Style>
                             </Button.Resources>
+                            <Button.BitmapEffect>
+                                <DropShadowBitmapEffect Color="DarkGray" Direction="250" Softness="0" ShadowDepth="2"
+                                                    Opacity="1" />
+                            </Button.BitmapEffect>
                         </Button>
 
                         <Button Command="{Binding SaveButton}"
                         Content="Opslaan"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Background="#ac31a9"
+                        Background="Purple"
                         Foreground="White"
-                        Width="63"
+                        BorderThickness="0"
+                        Width="70"
                         Margin="5"
-                        Grid.Column="1" Grid.Row="1"
-                    >
+                        >
+                            <Button.BitmapEffect>
+                                <DropShadowBitmapEffect Color="#9A0098" Direction="250" Softness="0" ShadowDepth="2"
+                                                    Opacity="1" />
+                            </Button.BitmapEffect>
                             <Button.Resources>
                                 <Style TargetType="Border">
                                     <Setter Property="CornerRadius" Value="10"></Setter>
@@ -111,11 +122,17 @@
                 <TextBox Text="{Binding GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      MaxLength="16"
                      TextWrapping="NoWrap"
-                     Width="120"
+                     Width="186"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Canvas.Left="231" Canvas.Top="188"
-                     />
+                     
+                     Canvas.Left="200" Canvas.Top="177" Height="28" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="15"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
 
                 <TextBlock Text="{Binding GroupName}"
                        HorizontalAlignment="Left"
@@ -126,6 +143,6 @@
                        />
             </Canvas>
         </Viewbox>
-        
+
     </Grid>
 </UserControl>
