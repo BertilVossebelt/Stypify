@@ -63,6 +63,4 @@ public class TeacherProvider : BaseProvider
         
         return GetById((int)id);
     }
-    
-
 }

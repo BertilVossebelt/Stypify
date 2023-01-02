@@ -27,6 +27,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
     private string _lastName;
     private SecureString _password;
     private SecureString _passwordConfirm;
+    private string _deleteEmail = "Vul email in om te verwijderen";
     
     private ObservableCollection<Teacher> _teachers;
 
@@ -125,9 +126,19 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
             OnPropertyChanged(nameof(CanCreateAccount));
         }
     }
+
+    public string DeleteEmail
+    {
+        get => _deleteEmail;
+        set
+        {
+            _deleteEmail = value;
+            OnPropertyChanged();
+        }
+    }
     
     public string WelcomeMessage { get; set; }
-    
+    public ICommand DeleteTeacherButton { get; }
     public ICommand RegisterTeacherButton { get; }
     public ICommand LogOutButton { get; }
 
@@ -140,6 +151,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         
         RegisterTeacherButton = new RegisterTeacherCommand(this);
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+        DeleteTeacherButton = new DeleteTeacherCommand(this);
         
         _propertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
     }

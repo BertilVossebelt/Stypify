@@ -66,14 +66,16 @@
                        FontWeight="Bold"
                        Foreground="#FFD07FCD"/>
             
-            <StackPanel Grid.Row="3" Grid.Column="0" Margin="20">
+            <StackPanel Grid.Row="3" Grid.Column="0" Margin="10">
                 <ItemsControl ItemsSource="{Binding Teachers}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="#964496" BorderThickness="1" Height="35" VerticalAlignment="Top" Background="#f6defe" CornerRadius="8" Margin="0,0,0,5">
                                 <Grid>
                                     <StackPanel Height="25" Orientation="Horizontal">
-                                        <Label Content="{Binding Path=FullName}"/>
+                                        <Label Content="{Binding Path=FirstName}"/>
+                                        <Label Content="{Binding Path=Preposition}"/>
+                                        <Label Content="{Binding Path=LastName}"/>
                                         <Label Content="{Binding Path=Email}"/>
                                     </StackPanel>
                                 </Grid>
@@ -81,8 +83,23 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                
+                <TextBox x:Name="DeleteEmailBox"
+                         Padding="3"
+                         FontFamily="Helvetica"
+                         FontWeight="Light"
+                         Text="{Binding DeleteEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         FontSize="17"
+                         Foreground="Gray"
+                         BorderThickness="1"
+                         Width="250"
+                         Height="25"
+                         FontStyle="Italic"
+                         Margin="0,0,0,5"/>
+              
                 <Button
                     x:Name="DeleteTeacher"
+                    Command="{Binding DeleteTeacherButton}"
                     FontFamily="Helvetica"
                     FontSize="17"
                     BorderBrush="Black"
@@ -93,8 +110,20 @@
                     BorderThickness="0"
                     Width="250"
                     Height="30"
-                    Content="Verwijder een docent"/>
+                    Content="Verwijder een docent">
+                    
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="15"></Setter>
+                        </Style>
+                    </Button.Resources>
+                    <Button.BitmapEffect>
+                        <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4"
+                                                Opacity="1" />
+                    </Button.BitmapEffect>
+                </Button>
             </StackPanel>
+
             
             <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock
@@ -241,9 +270,13 @@
 
                     <Button.Resources>
                         <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="15" />
+                            <Setter Property="CornerRadius" Value="15"></Setter>
                         </Style>
                     </Button.Resources>
+                    <Button.BitmapEffect>
+                        <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4"
+                                                Opacity="1" />
+                    </Button.BitmapEffect>
                 </Button>
             </StackPanel>
 
