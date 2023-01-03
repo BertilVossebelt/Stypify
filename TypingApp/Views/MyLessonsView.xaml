@@ -246,7 +246,7 @@
                                        />
 
                             <TextBlock Text="{Binding Path=Text}"/>
-
+                            
                             <TextBlock Text="{Binding Path=AmountOfCharacters,StringFormat='Aantal karakters: {0}'}" 
                                        HorizontalAlignment="Right"
                                        FontStyle="Italic"/>
