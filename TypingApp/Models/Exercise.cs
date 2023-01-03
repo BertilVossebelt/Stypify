@@ -8,11 +8,13 @@ public class Exercise
 {
     public string Name { get; }
     public string Text { get; }
+    public int AmountOfCharacters { get; }
 
     public Exercise(string text, string name)
     {
         Name = name;
         Text = text;
+        AmountOfCharacters = Text.Length;
     }
 
     // Generate exercise.
@@ -21,7 +23,7 @@ public class Exercise
         var random = new Random();
         const int words = 20;
         var text = "";
-        
+
         for (var i = 0; i < words; i++)
         {
             var wordLength = random.Next(1, 15);
@@ -32,7 +34,7 @@ public class Exercise
                 var letter = subset[index].Char;
                 text += letter;
             }
-            
+
             text += " ";
         }
 
