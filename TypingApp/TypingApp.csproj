@@ -8,6 +8,7 @@
         <OutputType>Exe</OutputType>
         <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
         <RootNamespace>TypingApp</RootNamespace>
+        <ApplicationIcon>Views\Images\S.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>

@@ -10,7 +10,6 @@ public class CustomExercisesTests
     public void Setup()
     {
     }
-
     
     [Test]
     public void AuditExerciseService_Audit_Should_MarkMissingB_When_InputAExpectedAB()

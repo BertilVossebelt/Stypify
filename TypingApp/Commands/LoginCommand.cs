@@ -66,7 +66,6 @@ namespace TypingApp.Commands
             {
                 _userStore.CreateStudent(user);
                 _lessonStore.LoadLessons(_userStore); // Fetch all available lessons for the student.
-
             }
 
             navigateCommand.Execute(this);
@@ -76,8 +75,8 @@ namespace TypingApp.Commands
         private bool AuthenticateUser(NetworkCredential credential)
         {
             var userProvider = new UserProvider();
-            var user = userProvider.GetByCredentials(credential.UserName);
-
+            var user = userProvider.GetByEmail(credential.UserName);
+            
             // Check if user exists.
             if (user == null) return false;
             var hashedPassword = (byte[])user["password"];

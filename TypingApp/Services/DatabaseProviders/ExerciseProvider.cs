@@ -12,7 +12,7 @@ public class ExerciseProvider : BaseProvider
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "ExerciseProvider.GetById")?[0];
     }
 
     public Dictionary<string, object>? Create(int teacherId, string exerciseName, string exerciseText)
@@ -27,13 +27,13 @@ public class ExerciseProvider : BaseProvider
         return GetById((int)id);
     }
 
-    public List<Dictionary<string, object>?>? GetAll(int teacherId)
+    public List<Dictionary<string, object>>? GetAll(int teacherId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [Exercise] WHERE teacher_id = @teacherId";
         cmd.Parameters.Add("@teacherId", SqlDbType.Int).Value = teacherId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "ExerciseProvider.GetAll");
     }
 }

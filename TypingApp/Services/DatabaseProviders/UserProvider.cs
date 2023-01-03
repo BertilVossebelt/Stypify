@@ -14,16 +14,16 @@ public class UserProvider : BaseProvider
         cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int)).Value = id;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "UserProvider.GetById")?[0];
     }
 
-    public Dictionary<string, object>? GetByCredentials(string email)
+    public Dictionary<string, object>? GetByEmail(string email)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [User] WHERE email = @email";
         cmd.Parameters.Add(new SqlParameter("@email", SqlDbType.VarChar)).Value = email;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "UserProvider.GetByEmail")?[0];
     }
 }

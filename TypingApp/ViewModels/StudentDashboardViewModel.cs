@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Channels;
-using System.Windows.Controls;
 using TypingApp.Models;
-using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
@@ -77,6 +72,7 @@ public class StudentDashboardViewModel : ViewModelBase
         AddToGroupButton = new NavigateCommand(linkToGroupNavigationService); 
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
 
+        PropertyChanged -= SelectLesson;
         PropertyChanged += SelectLesson;
     }
     

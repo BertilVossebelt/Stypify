@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Models;
@@ -83,7 +84,7 @@ public class LessonViewModel : ViewModelBase
         NextExerciseButton = new NextExerciseCommand(lessonStore);
         
         lessonStore.AuditedExerciseCreated += AuditedExerciseCreatedHandler;
-        lessonStore.NextExercise += NextExerciseHandler;
+        lessonStore.NextExercise = NextExerciseHandler;
     }
 
     private void AuditedExerciseCreatedHandler(List<Character> characters)
@@ -94,6 +95,7 @@ public class LessonViewModel : ViewModelBase
 
     private void NextExerciseHandler(int currentExercise)
     {
+        Console.WriteLine("NextExerciseHandler");
         Exercise = Lesson.Exercises[currentExercise];
         UserInputText = "";
         Audited = false;

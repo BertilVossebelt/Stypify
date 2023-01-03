@@ -30,6 +30,11 @@ public class CreateGroupCommand : CommandBase
             MessageBox.Show("Je moet een naam invullen", "Geen naam", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
+        if (_addGroupViewModel.GroupCode is "" or null)
+        {
+            MessageBox.Show("Je moet een groepcode genereren", "Geen groepcode", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
 
         var saveMessageBox = MessageBox.Show("Weet je zeker dat je deze groep wilt opslaan", "Opslaan", MessageBoxButton.YesNo, MessageBoxImage.Question);
         
