@@ -40,6 +40,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
             OnPropertyChanged();
         }
     }
+    
     public string Email
     {
         get => _email;
@@ -156,20 +157,18 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         _propertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
     }
 
-    // Haal alle docentenaccounts op.
+    // Get all teacher accounts.
     private void GetTeachers()
     {
-        var teachers = new AdminProvider().GetTeachers();
-        if (teachers != null)
+        var teachers = new TeacherProvider().GetAll();
+        if (teachers == null) return;
+        foreach (var teacher in teachers) 
         {
-            foreach (var teacher in teachers) 
-            {
-                Teachers.Add(new Teacher(teacher)); 
-            }
+            Teachers.Add(new Teacher(teacher)); 
         }
     }
     
-    // Naam voor welkomsbericht
+    // Get name for welcome message.
     private string GetName()
     {
         if (_userStore.Admin?.Preposition != null)
@@ -182,7 +181,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
             : "Error, admin = Null";
     }
 
-    // Events voor data validation
+    // Events for data validation
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
     private void OnErrorsChanged(string propertyName)
@@ -215,7 +214,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         return _propertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
     }
 
-    // Clear de errors om te checken of de data nu wel correct is.
+    // Clear the errors to check if the data is correct this time.
     private void ClearErrors(string propertyName)
     {
         _propertyNameToErrorsDictionary.Remove(propertyName);
@@ -223,7 +222,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         OnErrorsChanged(propertyName);
     }
 
-    // Voeg een error toe aan de dictionary om dit bij te houden.
+    // Add an error to the dictionary.
     private void AddError(string errorMessage, string propertyName)
     {
         if (!_propertyNameToErrorsDictionary.ContainsKey(propertyName))
@@ -234,7 +233,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         OnErrorsChanged(propertyName);
     }
 
-    // Check of er errors zijn die de email kan hebben.
+    // Validate Email.
     private void CheckEmailErrors()
     {
         if (string.IsNullOrWhiteSpace(Email))
@@ -244,7 +243,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         else if (!isValidEmail(Email)) AddError("Voer een correct emailadres in.", nameof(Email));
     }
 
-    // Check of er errors zijn die de voornaam kan hebben.
+    // Validate firstName.
     private void CheckFirstNameErrors()
     {
         if (string.IsNullOrWhiteSpace(FirstName))
@@ -253,7 +252,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
             AddError("Voornaam mag alleen letters bevatten.", nameof(FirstName));
     }
 
-    // Check of er errors zijn die de achternaam kan hebben.
+    // Validate lastName.
     private void CheckLastNameErrors()
     {
         if (string.IsNullOrWhiteSpace(LastName))
@@ -262,7 +261,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
             AddError("Achternaam mag alleen letters bevatten.", nameof(LastName));
     }
 
-    //Check of er errors zijn die het wachtwoord kan hebben.
+    // Validate Password.
     private void CheckPasswordErrors()
     {
         if (!PasswordConfirmCorrect(Password, PasswordConfirm))
@@ -280,7 +279,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
 
-    // Check of er een correct emailadres gebruikt wordt (niet strict).
+    // Validate Email (not strict).
     private bool isValidEmail(string email)
     {
         var pattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" +
@@ -290,7 +289,7 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         return regex.IsMatch(email);
     }
 
-    // Check of de twee ingevoerde wachtwoorden gelijk zijn.
+    // Validate Control password.
     private bool PasswordConfirmCorrect(SecureString password, SecureString passwordConfirm)
     {
         var bstr1 = IntPtr.Zero;

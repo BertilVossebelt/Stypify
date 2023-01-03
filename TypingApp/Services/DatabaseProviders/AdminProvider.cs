@@ -18,24 +18,24 @@ public class AdminProvider : BaseProvider
         return ConvertToList(reader, "AdminProvider.GetById")?[0];
     }
     
-    // Haalt alle teachers op voor in het admindashboard.
-    public List<Dictionary<string, object>?>? GetTeachers()
+    // Requests all teachers for the AdminDashboard.
+    public List<Dictionary<string, object>>? GetTeachers()
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [User] WHERE teacher = 1";
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "AdminProvider.GetTeachers");
     }
     
-    // Verwijdert een teacher.
-    public Dictionary<string, object> RemoveTeacher(string email)
+    // Removes a teacher.
+    public Dictionary<string, object>? RemoveTeacher(string email)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "DELETE FROM [User] WHERE email = @email";
         cmd.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
         var reader = cmd.ExecuteReader();
 
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "AdminProvider.RemoveTeacher")?[0];
     }
 }

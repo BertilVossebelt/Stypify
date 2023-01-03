@@ -25,7 +25,6 @@ namespace TypingApp.Views
             // Setup stores.
             _navigationStore = new NavigationStore();
             _exerciseStore = new ExerciseStore();
-            _lessonStore = new LessonStore();
             _userStore = new UserStore();
             _exerciseStore = new ExerciseStore();
             _lessonStore = new LessonStore(_userStore); // Needs to be initialized after user store.
