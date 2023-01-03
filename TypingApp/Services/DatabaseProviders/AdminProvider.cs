@@ -10,38 +10,32 @@ public class AdminProvider : BaseProvider
 {
     public override Dictionary<string, object>? GetById(int id)
     {
-        var query = $"SELECT * FROM [User] WHERE id = {id} AND admin = true";
-        return DbInterface?.Select(query)?[0];
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [User] WHERE id = @id AND admin = 1";
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+        var reader = cmd.ExecuteReader();
+
+        return ConvertToList(reader, "AdminProvider.GetById")?[0];
     }
-
-    // TODO: Refactor to make heavier use of DbInterface. Function is currently too complicated.
-    public int RegisterTeacher(string email, SecureString password, string? preposition, string firstName, string lastName)
+    
+    // Haalt alle teachers op voor in het admindashboard.
+    public List<Dictionary<string, object>?>? GetTeachers()
     {
-        var command = new SqlCommand();
-        command.Connection = DbInterface?.GetConnection();
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [User] WHERE teacher = 1";
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader);
+    }
+    
+    // Verwijdert een teacher.
+    public Dictionary<string, object> RemoveTeacher(string email)
+    {
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "DELETE FROM [User] WHERE email = @email";
+        cmd.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
+        var reader = cmd.ExecuteReader();
 
-        command.CommandText =
-            "INSERT INTO [User] (teacher, student, email, password, first_name, preposition, last_name, admin)" +
-            "VALUES (@teacher, @student, @email, @password, @first_name, @preposition, @last_name, @admin)";
-
-        command.Parameters.Add("@teacher", SqlDbType.TinyInt).Value = 1;
-        command.Parameters.Add("@student", SqlDbType.TinyInt).Value = 0;
-        command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
-        command.Parameters.Add("@password", SqlDbType.NVarChar).Value = password;
-
-        if (!string.IsNullOrEmpty(preposition))
-        {
-            command.Parameters.Add("@preposition", SqlDbType.NVarChar).Value = preposition;
-        }
-        else
-        {
-            command.Parameters.AddWithValue("@preposition", DBNull.Value);
-        }
-
-        command.Parameters.Add("@first_name", SqlDbType.NVarChar).Value = firstName;
-        command.Parameters.Add("@last_name", SqlDbType.NVarChar).Value = lastName;
-        command.Parameters.Add("@admin", SqlDbType.TinyInt).Value = 0;
-
-        return command.ExecuteNonQuery();
+        return ConvertToList(reader)?[0];
     }
 }

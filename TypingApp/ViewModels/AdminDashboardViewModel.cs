@@ -1,105 +1,321 @@
-﻿using System.Security;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using TypingApp.Commands;
+using TypingApp.Models;
 using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 
-namespace TypingApp.ViewModels
+namespace TypingApp.ViewModels;
+
+public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
 {
-    public class AdminDashboardViewModel : ViewModelBase
+    private readonly UserStore _userStore;
+    
+    // Properties
+    private string _email;
+    private string _firstName;
+    private string? _preposition;
+    private string _lastName;
+    private SecureString _password;
+    private SecureString _passwordConfirm;
+    private string _deleteEmail = "Vul email in om te verwijderen";
+    
+    private ObservableCollection<Teacher> _teachers;
+
+    public ObservableCollection<Teacher> Teachers
     {
-        private string _email;
-        private string _firstName;
-        private string? _preposition;
-        private string _lastName;
-        private SecureString _password;
-        private SecureString _passwordConfirm;
-
-        public string Email
+        get => _teachers;
+        set
         {
-            get
+            _teachers = value;
+            OnPropertyChanged();
+        }
+    }
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            _email = value;
+            OnPropertyChanged();
+            ClearErrors(nameof(Email));
+
+            CheckEmailErrors();
+
+            OnPropertyChanged(nameof(CanCreateAccount));
+        }
+    }
+
+    public string FirstName
+    {
+        get => _firstName;
+        set
+        {
+            _firstName = value;
+            OnPropertyChanged();
+            ClearErrors(nameof(FirstName));
+
+            CheckFirstNameErrors();
+
+            OnPropertyChanged(nameof(CanCreateAccount));
+        }
+    }
+
+    public string? Preposition
+    {
+        get => _preposition;
+        set
+        {
+            _preposition = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string LastName
+    {
+        get => _lastName;
+        set
+        {
+            _lastName = value;
+            OnPropertyChanged();
+            ClearErrors(nameof(LastName));
+
+            CheckLastNameErrors();
+
+            OnPropertyChanged(nameof(CanCreateAccount));
+        }
+    }
+
+    public SecureString Password
+    {
+        get => _password;
+        set
+        {
+            _password = value;
+            OnPropertyChanged();
+            ClearErrors(nameof(Password));
+            ClearErrors(nameof(PasswordConfirm));
+
+            CheckPasswordErrors();
+
+            OnPropertyChanged(nameof(CanCreateAccount));
+        }
+    }
+
+    public SecureString PasswordConfirm
+    {
+        get => _passwordConfirm;
+        set
+        {
+            _passwordConfirm = value;
+            OnPropertyChanged();
+            ClearErrors(nameof(Password));
+            ClearErrors(nameof(PasswordConfirm));
+
+            CheckPasswordErrors();
+
+            OnPropertyChanged(nameof(CanCreateAccount));
+        }
+    }
+
+    public string DeleteEmail
+    {
+        get => _deleteEmail;
+        set
+        {
+            _deleteEmail = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public string WelcomeMessage { get; set; }
+    public ICommand DeleteTeacherButton { get; }
+    public ICommand RegisterTeacherButton { get; }
+    public ICommand LogOutButton { get; }
+
+    public AdminDashboardViewModel(UserStore userStore, NavigationService loginNavigationService)
+    {
+        _userStore = userStore;
+        WelcomeMessage = GetName();
+        Teachers = new ObservableCollection<Teacher>();
+        GetTeachers();
+        
+        RegisterTeacherButton = new RegisterTeacherCommand(this);
+        LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+        DeleteTeacherButton = new DeleteTeacherCommand(this);
+        
+        _propertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
+    }
+
+    // Haal alle docentenaccounts op.
+    private void GetTeachers()
+    {
+        var teachers = new AdminProvider().GetTeachers();
+        if (teachers != null)
+        {
+            foreach (var teacher in teachers) 
             {
-                return _email;
-            }
-            set
-            {
-                _email = value;
-                OnPropertyChanged();
+                Teachers.Add(new Teacher(teacher)); 
             }
         }
-
-        public string FirstName
+    }
+    
+    // Naam voor welkomsbericht
+    private string GetName()
+    {
+        if (_userStore.Admin?.Preposition != null)
         {
-            get
-            {
-                return _firstName;
-            }
-            set
-            {
-                _firstName = value;
-                OnPropertyChanged();
-            }
+            return $"Welkom {_userStore.Admin.FirstName} {_userStore.Admin.Preposition} {_userStore.Admin.LastName}";
         }
 
-        public string? Preposition
+        return _userStore.Admin?.Preposition == null
+            ? $"Welkom {_userStore.Admin?.FirstName} {_userStore.Admin?.LastName}"
+            : "Error, admin = Null";
+    }
+
+    // Events voor data validation
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+    private void OnErrorsChanged(string propertyName)
+    {
+        ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+    }
+
+    // Data validation
+    private readonly Dictionary<string, List<string>> _propertyNameToErrorsDictionary;
+    private string _errorMessage;
+
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set
         {
-            get
-            {
-                return _preposition;
-            }
-            set
-            {
-                _preposition = value;
-                OnPropertyChanged();
-            }
+            _errorMessage = value;
+
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(HasErrorMessage));
         }
+    }
 
-        public string LastName
+    public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+    public bool HasErrors => _propertyNameToErrorsDictionary.Any();
+    public bool CanCreateAccount => !HasErrors;
+
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        return _propertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
+    }
+
+    // Clear de errors om te checken of de data nu wel correct is.
+    private void ClearErrors(string propertyName)
+    {
+        _propertyNameToErrorsDictionary.Remove(propertyName);
+        ErrorMessage = null;
+        OnErrorsChanged(propertyName);
+    }
+
+    // Voeg een error toe aan de dictionary om dit bij te houden.
+    private void AddError(string errorMessage, string propertyName)
+    {
+        if (!_propertyNameToErrorsDictionary.ContainsKey(propertyName))
+            _propertyNameToErrorsDictionary.Add(propertyName, new List<string>());
+
+        _propertyNameToErrorsDictionary[propertyName].Add(errorMessage);
+        ErrorMessage = errorMessage;
+        OnErrorsChanged(propertyName);
+    }
+
+    // Check of er errors zijn die de email kan hebben.
+    private void CheckEmailErrors()
+    {
+        if (string.IsNullOrWhiteSpace(Email))
+            AddError("Email mag niet leeg zijn.", nameof(Email));
+        else if (Email.Contains(' '))
+            AddError("Email mag geen spaties bevatten.", nameof(Email));
+        else if (!isValidEmail(Email)) AddError("Voer een correct emailadres in.", nameof(Email));
+    }
+
+    // Check of er errors zijn die de voornaam kan hebben.
+    private void CheckFirstNameErrors()
+    {
+        if (string.IsNullOrWhiteSpace(FirstName))
+            AddError("Voornaam mag niet leeg zijn.", nameof(FirstName));
+        else if (!Regex.IsMatch(FirstName, @"^[a-zA-Z]+$"))
+            AddError("Voornaam mag alleen letters bevatten.", nameof(FirstName));
+    }
+
+    // Check of er errors zijn die de achternaam kan hebben.
+    private void CheckLastNameErrors()
+    {
+        if (string.IsNullOrWhiteSpace(LastName))
+            AddError("Achternaam mag niet leeg zijn.", nameof(LastName));
+        else if (!Regex.IsMatch(LastName, @"^[a-zA-Z]+$"))
+            AddError("Achternaam mag alleen letters bevatten.", nameof(LastName));
+    }
+
+    //Check of er errors zijn die het wachtwoord kan hebben.
+    private void CheckPasswordErrors()
+    {
+        if (!PasswordConfirmCorrect(Password, PasswordConfirm))
         {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                _lastName = value;
-                OnPropertyChanged();
-            }
+            AddError("Wachtwoorden moeten gelijk zijn", nameof(Password));
+            AddError("Wachtwoorden moeten gelijk zijn", nameof(PasswordConfirm));
         }
-
-        public SecureString Password
+        else if (Password.Length == 0)
         {
-            get
-            {
-                return _password;
-            }
-            set
-            {
-                _password = value;
-                OnPropertyChanged();
-            }
+            AddError("Wachtwoord mag niet leeg zijn.", nameof(Password));
         }
-
-        public SecureString PasswordConfirm
+        else if (Password.Length < 6)
         {
-            get
-            {
-                return _passwordConfirm;
-            }
-            set
-            {
-                _passwordConfirm = value;
-                OnPropertyChanged();
-            }
+            AddError("Wachtwoord moet minimaal 6 karakters bevatten.", nameof(Password));
         }
+    }
 
-        public ICommand RegisterTeacherButton { get;}
-        public ICommand LogOutButton { get;}
+    // Check of er een correct emailadres gebruikt wordt (niet strict).
+    private bool isValidEmail(string email)
+    {
+        var pattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" +
+                      @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)" +
+                      @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+        var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+        return regex.IsMatch(email);
+    }
 
-        public AdminDashboardViewModel(UserStore userStore, NavigationService loginNavigationService)
+    // Check of de twee ingevoerde wachtwoorden gelijk zijn.
+    private bool PasswordConfirmCorrect(SecureString password, SecureString passwordConfirm)
+    {
+        var bstr1 = IntPtr.Zero;
+        var bstr2 = IntPtr.Zero;
+        try
         {
-            RegisterTeacherButton = new RegisterTeacherCommand(this);
-            LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+            bstr1 = Marshal.SecureStringToBSTR(password);
+            bstr2 = Marshal.SecureStringToBSTR(passwordConfirm);
+            var length1 = Marshal.ReadInt32(bstr1, -4);
+            var length2 = Marshal.ReadInt32(bstr2, -4);
+            if (length1 == length2)
+                for (var x = 0; x < length1; ++x)
+                {
+                    var b1 = Marshal.ReadByte(bstr1, x);
+                    var b2 = Marshal.ReadByte(bstr2, x);
+                    if (b1 != b2) return false;
+                }
+            else return false;
+
+            return true;
+        }
+        finally
+        {
+            if (bstr2 != IntPtr.Zero) Marshal.ZeroFreeBSTR(bstr2);
+            if (bstr1 != IntPtr.Zero) Marshal.ZeroFreeBSTR(bstr1);
         }
     }
 }

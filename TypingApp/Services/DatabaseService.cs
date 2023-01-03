@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using Renci.SshNet;
 
 namespace TypingApp.Services;
@@ -11,14 +8,15 @@ public class DatabaseService
 {
     private readonly SqlConnectionStringBuilder _builder = new();
     private readonly SqlConnection? _connection;
+    private readonly SshClient? _sshClient;
 
     public DatabaseService()
     {
-        var cSsh = new SshClient("145.44.233.157", "student", "UB22TypApp");
-        cSsh.Connect();
+        _sshClient = new SshClient("145.44.233.157", "student", "UB22TypApp");
+        _sshClient.Connect();
 
         var forwardedPortLocal = new ForwardedPortLocal("127.0.0.1", 1433, "127.0.0.1", 1433);
-        cSsh.AddForwardedPort(forwardedPortLocal);
+        _sshClient.AddForwardedPort(forwardedPortLocal);
         forwardedPortLocal.Start();
 
         try
@@ -27,6 +25,7 @@ public class DatabaseService
             _builder.UserID = "SA";
             _builder.Password = "<MSSQL22TypApp>";
             _builder.InitialCatalog = "typapp";
+            _builder.TransactionBinding = "Explicit Unbind";
 
             _connection = new SqlConnection(_builder.ConnectionString);
             _connection.Open();
@@ -36,74 +35,11 @@ public class DatabaseService
             Console.WriteLine(e.ToString());
         }
     }
-
-    public SqlDataReader ExecuteRaw(string query)
-    {
-        var command = new SqlCommand(query, _connection);
-        return command.ExecuteReader();
-    }
-    public void VoidExecuteRaw(string query)
-    {
-        var command = new SqlCommand(query, _connection);
-        var reader = command.ExecuteReader();
-        reader.Close();
-
-    }
-
-    public List<Dictionary<string, object>>? Select(string query)
-    {
-        var command = new SqlCommand(query, _connection);
-        var reader = command.ExecuteReader();
-
-        if (!reader.HasRows)
-        {
-            reader.Close();
-            return null;
-        }
-
-        var list = new List<Dictionary<string, object>>();
-        while (reader.Read())
-        {
-            var dict = new Dictionary<string, object>();
-            for (var i = 0; i < reader.FieldCount; i++)
-            {
-                dict.Add(reader.GetName(i), reader[i]);
-            }
-
-            list.Add(dict);
-        }
-        
-        reader.Close();
-        return list;
-    }
-
-    public Dictionary<string, object>? Insert(string query)
-    {
-        query += "; SELECT SCOPE_IDENTITY()";
-        var command = new SqlCommand(query, _connection);
-        var id = command.ExecuteScalar();
-        var dict = new Dictionary<string, object>();
-        
-        // Get table from query
-        var pFrom  = query.IndexOf("INSERT INTO [", StringComparison.OrdinalIgnoreCase) + "INSERT INTO [".Length;
-        var pTo  = query.LastIndexOf("] (", StringComparison.OrdinalIgnoreCase);
-        var table = query.Substring(pFrom, pTo - pFrom);
-
-        // Get inserted record
-        query = $"SELECT * FROM [{table}] WHERE id = '{id}'"; 
-        command = new SqlCommand(query, _connection);
-        var reader = command.ExecuteReader();
-        
-        while (reader.Read())
-        {
-            for (var i = 0; i < reader.FieldCount; i++)
-            {
-                dict.Add(reader.GetName(i), reader[i]);
-            }
-        }
     
-        reader.Close();
-        return dict;
+    public void CloseConnection()
+    {
+        _sshClient?.Disconnect();
+        _connection?.Dispose();
     }
     
     public SqlConnection? GetConnection()

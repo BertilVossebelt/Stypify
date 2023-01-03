@@ -5,16 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TypingApp"
              mc:Ignorable="d"
-             Height="700"
-             Width="1200">
+             d:DesignHeight="800" d:DesignWidth="1200">
 
     <Grid>
-        <!-- <Grid.RowDefinitions> -->
-        <!--     <RowDefinition Height="40"/> -->
-        <!--     <RowDefinition Height="*"/> -->
-        <!-- </Grid.RowDefinitions> -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="350" />
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Background="#EFDEFE" Height="40" VerticalAlignment="Top">
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="#EFDEFE">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -22,87 +26,144 @@
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Command="{Binding BackButton}"
-                        Width="70"
+                        Content="Terug" 
+                        Width="60" 
+                        Margin="10" 
+                        VerticalAlignment="Top"
                         HorizontalAlignment="Left"
-                        Margin="10"
-                        Background="Transparent"
-                        BorderThickness="0">
-                    Terug
-                </Button>
+                        Background="Transparent" 
+                        BorderBrush="Transparent" 
+                        BorderThickness="0" />
+
             </Grid>
         </StackPanel>
+        <Viewbox Grid.Row="1" Grid.Column="1" MaxHeight="500" MaxWidth="900">
+            <Canvas Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="400" Height="250">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <Button Command="{Binding UpdateGroupCodeButton}"
+                            Content="⟳"
+                            FontSize="18"
+                            Height="25"
+                            Width="18"
+                            Background="Transparent"
+                            BorderThickness="0"
+                        >
+                            <Button.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <ContentPresenter />
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <TextBlock Text="{Binding GroupCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=':Nieuwe groepcode '}"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           FontStyle="Italic"
+                           Grid.Column="1" Grid.Row="1"
+                       >
+                        </TextBlock>
 
-        
-        <Border BorderThickness="1" Height="136" Width="280" VerticalAlignment="Center" HorizontalAlignment="Center"
-                CornerRadius="15" BorderBrush="#d390d3" Background="#f6e0fe">
-        </Border>
-        
-            <Border BorderBrush="#ac31a9"
-                    CornerRadius="15,15,15,15"
-                    BorderThickness="15"
-                    Margin="450,282,615,282" />
+                    </StackPanel>
+                    <Border BorderThickness="1"
+                        Height="200" Width="400" 
+                        CornerRadius="15" 
+                        BorderBrush="#d390d3" 
+                        Background="#f6e0fe"
+                        >
+                        <Border BorderBrush="#ac31a9"
+                        CornerRadius="15,15,15,15"
+                        Background="#ac31a9"
+                        Margin="-1,-1,213,-1"
+                    />
+                    </Border>
 
-            <Rectangle HorizontalAlignment="Center"
-                       Height="116" Width="115"
-                       Margin="0,0,173,0"
-                       Fill="#ac31a9" />
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <Button Command="{Binding CancelButton}"
+                        Content="Annuleren"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        BorderThickness="0"
+                        Background="Gray"
+                        Foreground="White"
+                        Width="75"
+                        Grid.Column="1" Grid.Row="1"
+                        >
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"></Setter>
+                                </Style>
+                            </Button.Resources>
+                            <Button.BitmapEffect>
+                                <DropShadowBitmapEffect Color="DarkGray" Direction="250" Softness="0" ShadowDepth="2"
+                                                    Opacity="1" />
+                            </Button.BitmapEffect>
+                        </Button>
 
-            <TextBlock Text="{Binding GroupName}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       VerticalAlignment="Center"
-                       Foreground="White"
-                       Margin="0,100,170,0" />
+                        <Button Command="{Binding SaveButton}"
+                        Content="Opslaan"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Purple"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Width="70"
+                        Margin="5"
+                        >
+                            <Button.BitmapEffect>
+                                <DropShadowBitmapEffect Color="#9A0098" Direction="250" Softness="0" ShadowDepth="2"
+                                                    Opacity="1" />
+                            </Button.BitmapEffect>
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="10"></Setter>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
 
-            <Button Command="{Binding SaveButton}"
-                    Content="Opslaan"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="#ac31a9"
-                    Foreground="White"
-                    Width="63"
-                    Margin="50,175,0,0">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="10"></Setter>
-                    </Style>
-                </Button.Resources>
-            </Button>
+                </StackPanel>
 
-            <Button Command="{Binding CancelButton}"
-                    Content="Annuleren"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="75"
-                    Margin="200,175,0,0">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="10"></Setter>
-                    </Style>
-                </Button.Resources>
-            </Button>
-
-            <TextBox Text="{Binding GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      MaxLength="16"
-                     HorizontalAlignment="Left"
                      TextWrapping="NoWrap"
-                     VerticalAlignment="Top"
-                     Width="120"
+                     Width="186"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Margin="594,382,0,0" />
-
-            <TextBlock Text="{Binding GroupCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                       HorizontalAlignment="Center"
+                     
+                     Canvas.Left="200" Canvas.Top="177" Height="28" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="15"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <TextBlock Text="Groep naam:"
+                       HorizontalAlignment="Left"
                        TextWrapping="Wrap"
                        VerticalAlignment="Center"
-                       Margin="150,0,0,150" />
+                       Foreground="Gray"
+                       Canvas.Left="205" Canvas.Top="156"
+                       />
 
-        <Button Command="{Binding UpdateGroupCodeButton}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Height="9"
-                    Width="17"
-                    Margin="250,0,0,150" />
-        </Grid>
+                <TextBlock Text="{Binding GroupName}"
+                       HorizontalAlignment="Left"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Top"
+                       Foreground="White"
+                       Canvas.Left="10" Canvas.Top="189"
+                       />
+            </Canvas>
+        </Viewbox>
+
+    </Grid>
 </UserControl>

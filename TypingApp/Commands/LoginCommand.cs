@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Net;
@@ -18,6 +19,7 @@ namespace TypingApp.Commands
     {
         private readonly LoginViewModel _loginViewModel;
         private readonly UserStore _userStore;
+        private readonly LessonStore _lessonStore;
         private readonly NavigationService _studentDashboardNavigationService;
         private readonly NavigationService _adminDashboardNavigationService;
         private readonly NavigationService _teacherDashboardNavigationService;
@@ -26,13 +28,14 @@ namespace TypingApp.Commands
 
         public LoginCommand(LoginViewModel loginViewModel,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
-            NavigationService teacherDashboardNavigationService, UserStore userStore)
+            NavigationService teacherDashboardNavigationService, UserStore userStore, LessonStore lessonStore)
         {
             _loginViewModel = loginViewModel;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
             _teacherDashboardNavigationService = teacherDashboardNavigationService;
             _userStore = userStore;
+            _lessonStore = lessonStore;
         }
 
         public override void Execute(object? parameter)
@@ -43,12 +46,12 @@ namespace TypingApp.Commands
                 ShowIncorrectCredentialsMessage();
                 return;
             }
-            
+
             var navigateCommand = new NavigateCommand(_studentDashboardNavigationService);
             var user = new UserProvider().GetById(_userId);
             if (user == null) return;
-
-            // Check of de user een docent, admin of student is.
+            
+            // Change login routine based on the role of the user.
             if ((byte)user["teacher"] == 1)
             {
                 _userStore.CreateTeacher(user);
@@ -62,24 +65,32 @@ namespace TypingApp.Commands
             else
             {
                 _userStore.CreateStudent(user);
+                _lessonStore.LoadLessons(_userStore); // Fetch all available lessons for the student.
             }
-            
+
             navigateCommand.Execute(this);
         }
 
-        // Check of de ingevulde account gegevens kloppen.
+        // Check if given credentials match.
         private bool AuthenticateUser(NetworkCredential credential)
         {
             var userProvider = new UserProvider();
-            var validUser = userProvider.VerifyUser(credential.UserName, credential.Password);
+            var user = userProvider.GetByEmail(credential.UserName);
+            
+            // Check if user exists.
+            if (user == null) return false;
+            var hashedPassword = (byte[])user["password"];
+            var salt = (byte[])user["salt"];
+            var correct = new PasswordHash(hashedPassword).Verify(credential.Password, salt);
 
-            if (!validUser) return validUser;
-                
-            _userId = userProvider.GetUserId(credential.UserName);
-            return validUser;
+            // Exit if password is incorrect.
+            if (!correct) return false;
+            _userId = (int)user["id"];
+
+            return true;
         }
 
-        // Laat een error message zien als de accountgegevens niet kloppen.
+        // Display error message when given credentials are incorrect.
         private static void ShowIncorrectCredentialsMessage()
         {
             const string message = "Email of wachtwoord incorrect.";

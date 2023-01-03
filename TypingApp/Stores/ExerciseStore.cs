@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TypingApp.Models;
 
 namespace TypingApp.Stores;
@@ -16,18 +15,23 @@ public class ExerciseStore
     {
         TextAsCharList = new List<Character>();
     }
-    
+
+    /*
+     * ====================
+     * Generated exercises
+     * ====================
+     */
     public void CreateExercise(string text)
     {
         TextAsCharList = text.Select(c => new Character(c)).ToList();
         OnExerciseCreated();
     }
-    
+
     private void OnExerciseCreated()
     {
         ExerciseCreated?.Invoke(TextAsCharList);
     }
-    
+
     public void UpdateExercise(List<Character> characters)
     {
         TextAsCharList = characters;
