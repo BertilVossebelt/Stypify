@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using Renci.SshNet;
 
@@ -9,14 +8,15 @@ public class DatabaseService
 {
     private readonly SqlConnectionStringBuilder _builder = new();
     private readonly SqlConnection? _connection;
+    private readonly SshClient? _sshClient;
 
     public DatabaseService()
     {
-        var cSsh = new SshClient("145.44.233.157", "student", "UB22TypApp");
-        cSsh.Connect();
+        _sshClient = new SshClient("145.44.233.157", "student", "UB22TypApp");
+        _sshClient.Connect();
 
         var forwardedPortLocal = new ForwardedPortLocal("127.0.0.1", 1433, "127.0.0.1", 1433);
-        cSsh.AddForwardedPort(forwardedPortLocal);
+        _sshClient.AddForwardedPort(forwardedPortLocal);
         forwardedPortLocal.Start();
 
         try
@@ -25,6 +25,7 @@ public class DatabaseService
             _builder.UserID = "SA";
             _builder.Password = "<MSSQL22TypApp>";
             _builder.InitialCatalog = "typapp";
+            _builder.TransactionBinding = "Explicit Unbind";
 
             _connection = new SqlConnection(_builder.ConnectionString);
             _connection.Open();
@@ -35,9 +36,10 @@ public class DatabaseService
         }
     }
     
-    public void Insert()
+    public void CloseConnection()
     {
-        // ; SELECT SCOPE_IDENTITY();
+        _sshClient?.Disconnect();
+        _connection?.Dispose();
     }
     
     public SqlConnection? GetConnection()

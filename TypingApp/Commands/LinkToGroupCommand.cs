@@ -41,7 +41,7 @@ namespace TypingApp.Commands
             // Link to group.
             if (_userStore.Student != null)
             {
-                var student = new GroupProvider().LinkStudent(_groupId, _userStore.Student.Id);
+                var student = new StudentProvider().LinkToGroup(_groupId, _userStore.Student.Id);
                 if (student != null) ShowLinkedMessage();
             }
             

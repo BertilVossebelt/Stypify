@@ -2,11 +2,6 @@
 
 public class Character
 {
-    public Character(char c)
-    {
-        Char = c;
-    }
-    
     public char Char { get; }
     
     public byte? Accuracy { get; set; }
@@ -19,4 +14,9 @@ public class Character
     public int Pos { get; set; }
     public bool Extra { get; set; }
     public bool Missing { get; set; }
+    
+    public Character(char c)
+    {
+        Char = c;
+    }
 }

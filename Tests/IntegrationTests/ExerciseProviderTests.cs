@@ -8,15 +8,9 @@ namespace Tests.IntegrationTests;
 [TestFixture]
 public class ExerciseProviderTests
 {
-    private TeacherProvider _teacherProvider = null!;
-    private ExerciseProvider _exerciseProvider = null!;
-
-    
     [SetUp]
     public void Setup()
     {
-        _teacherProvider = new TeacherProvider();
-        _exerciseProvider = new ExerciseProvider();
     }
     
     [Test, Rollback]
@@ -28,11 +22,11 @@ public class ExerciseProviderTests
             var hash = new PasswordHash("UnitTest");
             var password = hash.ToArray();
 
-            var teacher = _teacherProvider.Create("unit@test.nl", password, hash.Salt, firstName, null, lastName);
+            var teacher = new TeacherProvider().Create("unit@test.nl", password, hash.Salt, firstName, null, lastName);
             if (teacher == null) Assert.Fail("Teacher could not be created");
 
             // Act
-            var exercise = _exerciseProvider.Create((int)teacher?["id"], "UnitTest", "UnitTest");
+            var exercise = new ExerciseProvider().Create((int)teacher?["id"], "UnitTest", "UnitTest");
 
             // Assert
             Assert.AreEqual("UnitTest", exercise?["name"]);
@@ -47,17 +41,17 @@ public class ExerciseProviderTests
         var hash = new PasswordHash("UnitTest");
         var password = hash.ToArray();
 
-        var teacher = _teacherProvider.Create("unit@test.nl", password, hash.Salt, firstName, null, lastName);
+        var teacher = new TeacherProvider().Create("unit@test.nl", password, hash.Salt, firstName, null, lastName);
         if (teacher == null) Assert.Fail("Teacher could not be created");
 
         const string exerciseName = "UnitTest";
         const string exerciseText =
             "If you see this exercise in the database, it means something went wrong while unit testing";
-        var newExercise = _exerciseProvider.Create((int)teacher?["id"], exerciseName, exerciseText);
+        var newExercise = new ExerciseProvider().Create((int)teacher?["id"], exerciseName, exerciseText);
         if (newExercise == null) Assert.Fail("Exercise could not be created");
 
         // Act
-        var exercise = _exerciseProvider.GetById((int)newExercise["id"]);
+        var exercise = new ExerciseProvider().GetById((int)newExercise["id"]);
 
         // Assert
         Assert.AreEqual("UnitTest", exercise?["name"]);
@@ -72,17 +66,17 @@ public class ExerciseProviderTests
         var hash = new PasswordHash("UnitTest");
         var password = hash.ToArray();
 
-        var teacher = _teacherProvider.Create("unit@test.nl", password, hash.Salt, firstName, null, lastName);
+        var teacher = new TeacherProvider().Create("unit@test.nl", password, hash.Salt, firstName, null, lastName);
         if (teacher == null) Assert.Fail("Teacher could not be created");
 
         const string exerciseName = "UnitTest";
         const string exerciseText =
             "If you see this exercise in the database, it means something went wrong while unit testing";
-        var newExercise = _exerciseProvider.Create((int)teacher?["id"], exerciseName, exerciseText);
+        var newExercise = new ExerciseProvider().Create((int)teacher?["id"], exerciseName, exerciseText);
         if (newExercise == null) Assert.Fail("Exercise could not be created");
 
         // Act
-        var exercises = _exerciseProvider.GetAll((int)teacher?["id"]);
+        var exercises = new ExerciseProvider().GetAll((int)teacher?["id"]);
 
         // Assert
         Assert.AreEqual(1, exercises.Count);

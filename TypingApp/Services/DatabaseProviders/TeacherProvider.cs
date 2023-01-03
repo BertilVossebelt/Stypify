@@ -15,27 +15,27 @@ public class TeacherProvider : BaseProvider
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "TeacherProvider.GetById")?[0];
     }
 
-    public List<Dictionary<string, object>?>? GetGroups(int teacherId)
+    public List<Dictionary<string, object>>? GetGroups(int teacherId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [Group] WHERE teacher_id = @teacher_id";
         cmd.Parameters.Add("@teacher_id", SqlDbType.Int).Value = teacherId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "TeacherProvider.GetGroups");
     }
     
-    public List<Dictionary<string, object>?>? GetLessons(int teacherId)
+    public List<Dictionary<string, object>>? GetLessons(int teacherId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT * FROM [Lesson] WHERE teacher_id = @teacher_id";
         cmd.Parameters.Add("@teacher_id", SqlDbType.Int).Value = teacherId;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader);
+        return ConvertToList(reader, "TeacherProvider.GetLessons");
     }
 
     public Dictionary<string, object>? GetByEmail(string email)
@@ -45,7 +45,7 @@ public class TeacherProvider : BaseProvider
         cmd.Parameters.Add("@email", SqlDbType.VarChar).Value = email;
         var reader = cmd.ExecuteReader();
         
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "TeacherProvider.GetByEmail")?[0];
     }
 
     public Dictionary<string, object>? Create(string email, byte[] password, byte[] salt, string firstName, string? preposition, string lastName)

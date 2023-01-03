@@ -1,12 +1,10 @@
-﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=416624bf_002Da7f8_002D4d6d_002Da7e3_002D2d28518135b5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_StoreCustomExerciseInDatabase_When_ExerciseCreated" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::B054402D-D716-43EE-A931-3A7997B66C15::net6.0-windows::Tests.CustomExercisesTests.Should_StoreCustomExerciseInDatabase_When_ExerciseCreated&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\berti\AppData\Local\JetBrains\Rider2022.3\resharper-host\temp\Rider\vAny\CoverageData\_TypingApp.221139545\Snapshot\snapshot.utdcvr</s:String>
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=011ae52f_002Deae4_002D49af_002D9d25_002D1da04be897e1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7e648976_002D1cdd_002D464b_002D88de_002Dae533777b967/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Should_StoreCustomExerciseInDatabase_When_ExerciseCreated #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::B054402D-D716-43EE-A931-3A7997B66C15::net6.0-windows::Tests.CustomExercisesTests.Should_StoreCustomExerciseInDatabase_When_ExerciseCreated&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::B054402D-D716-43EE-A931-3A7997B66C15::net6.0-windows::Tests.AuthenticationTests.Should_RegisterStudent_WhenDataCorrect&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=74b6bf58_002D4267_002D4122_002Db872_002D9c53f59abe55/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="StudentProvider_Create_Should_RegisterStudent_WhenDataCorrect" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+</wpf:ResourceDictionary>

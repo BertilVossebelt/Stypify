@@ -15,7 +15,7 @@ public class AdminProvider : BaseProvider
         cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
         var reader = cmd.ExecuteReader();
 
-        return ConvertToList(reader)?[0];
+        return ConvertToList(reader, "AdminProvider.GetById")?[0];
     }
     
     // Haalt alle teachers op voor in het admindashboard.

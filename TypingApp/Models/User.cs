@@ -8,13 +8,14 @@ public class User
 {
     public int Id { get; }
     public string Email { get; }
-
-    public string FullName { get; }
     public string FirstName { get; }
     public string? Preposition { get; }
     public string LastName { get; }
     public bool IsTeacher { get; }
     public bool IsAdmin { get; }
+    
+    // Not in database
+    public string FullName { get; }
 
     public User(Dictionary<string, object>? props)
     {
@@ -28,7 +29,7 @@ public class User
         if (props["preposition"].ToString().Length > 0) Preposition = (string)props["preposition"];
     }
 
-    public User(int id, string email, string firstName,string preposition, string lastName, bool isTeacher, bool isAdmin)
+    public User(int id, string email, string firstName,string? preposition, string lastName, bool isTeacher, bool isAdmin)
     {
         Id = id;
         Email = email;
@@ -37,6 +38,6 @@ public class User
         LastName = lastName;
         IsTeacher = isTeacher;
         IsAdmin = isAdmin;
-        FullName = firstName + " " + Preposition+ " " +LastName;
+        FullName = firstName + " " + Preposition+ " " + LastName;
     }
 }

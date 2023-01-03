@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace TypingApp.Services.DatabaseProviders;
 
@@ -16,6 +15,12 @@ public abstract class BaseProvider
     
     public abstract Dictionary<string, object>? GetById(int id);
 
+    public static void ResetDatabaseConnection()
+    {
+        DatabaseService?.CloseConnection();
+        DatabaseService = null;
+    }
+    
     protected SqlCommand GetSqlCommand()
     {
         return new SqlCommand()
@@ -24,10 +29,11 @@ public abstract class BaseProvider
         };
     }
 
-    protected List<Dictionary<string, object>?>? ConvertToList(SqlDataReader reader)
+    protected static List<Dictionary<string, object>>? ConvertToList(SqlDataReader reader, string sender)
     {
         if (!reader.HasRows)
         {
+            Console.WriteLine($"No rows found by {sender}");
             reader.Close();
             return null;
         }
