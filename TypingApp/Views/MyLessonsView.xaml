@@ -115,7 +115,7 @@
                                         </Border.Background>
                                     </Border>
 
-                                    <Label x:Name="LessonNameLabel" Content="{Binding Path=LessonName}"
+                                    <Label x:Name="LessonNameLabel" Content="{Binding Path=Name, FallbackValue='Geen naam'}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                                    HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
                                                    Margin="9,0,0,30" Foreground="White" FontSize="18"
@@ -218,11 +218,11 @@
                          ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
                          HorizontalContentAlignment="Stretch"
                          Grid.Row="5" Grid.Column="1"
-                         Grid.RowSpan="2" Grid.ColumnSpan="2"
+                         Grid.RowSpan="2" Grid.ColumnSpan="1"
                          HorizontalAlignment="Stretch"   >
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="5" VerticalAlignment="Top"/>
+                    <UniformGrid Columns="4" VerticalAlignment="Top"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
@@ -234,18 +234,25 @@
                             CornerRadius="7"
                             Height="100"
                             VerticalAlignment="Top"
-                            Padding="10">
+                            Padding="10"
+                            >
                         <Border.Background>
                             <SolidColorBrush Color="#EFDEFE"/>
                         </Border.Background>
 
                         <StackPanel>
                             <TextBlock Text="{Binding Path=Name}" 
+                                       HorizontalAlignment="Left"
                                        Margin="0, 0, 0 , 7" 
                                        FontSize="20"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxWidth="200"
                                        />
 
-                            <TextBlock Text="{Binding Path=Text}"/>
+                            <TextBlock Text="{Binding Path=Text}" 
+                                       HorizontalAlignment="Left"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxWidth="200"/>
 
                             <TextBlock Text="{Binding Path=AmountOfCharacters,StringFormat='Aantal karakters: {0}'}" 
                                        HorizontalAlignment="Right"
