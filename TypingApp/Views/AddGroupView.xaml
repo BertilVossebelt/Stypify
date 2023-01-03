@@ -42,20 +42,34 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                         <Button Command="{Binding UpdateGroupCodeButton}"
-                        Content="⟳"
-                        FontSize="18"
-                        Height="25"
-                        Width="18"
-                        Background="Transparent"
-                        BorderThickness="0"
+                            Content="⟳"
+                            FontSize="18"
+                            Height="25"
+                            Width="18"
+                            Background="Transparent"
+                            BorderThickness="0"
                         >
+                            <Button.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <ContentPresenter />
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Resources>
                         </Button>
-                        <TextBlock Text="{Binding GroupCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       VerticalAlignment="Center"
-                       FontStyle="Italic"
-                       Grid.Column="1" Grid.Row="1"
+                        <TextBlock Text="{Binding GroupCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=':Nieuwe groepcode '}"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           FontStyle="Italic"
+                           Grid.Column="1" Grid.Row="1"
                        >
                         </TextBlock>
 
@@ -133,6 +147,13 @@
                         </Style>
                     </TextBox.Resources>
                 </TextBox>
+                <TextBlock Text="Groep naam:"
+                       HorizontalAlignment="Left"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       Foreground="Gray"
+                       Canvas.Left="205" Canvas.Top="156"
+                       />
 
                 <TextBlock Text="{Binding GroupName}"
                        HorizontalAlignment="Left"
