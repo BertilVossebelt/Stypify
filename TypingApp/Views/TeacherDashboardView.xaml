@@ -178,7 +178,7 @@
                                                     VerticalAlignment="Center" BorderThickness="5" CornerRadius="20"
                                                     Visibility="Visible" IsManipulationEnabled="True" Height="170">
                                                 <Border.Background>
-                                                    <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
+                                                    <ImageBrush Stretch="Fill" ImageSource="/Views/Images/Nos.png" />
                                                 </Border.Background>
                                             </Border>
 

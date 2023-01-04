@@ -18,6 +18,15 @@ public class TeacherProvider : BaseProvider
         return ConvertToList(reader, "TeacherProvider.GetById")?[0];
     }
 
+    public List<Dictionary<string, object>>? GetAll()
+    {
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [User] WHERE teacher = 1";
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader, "TeacherProvider.GetAll");
+    }
+
     public List<Dictionary<string, object>>? GetGroups(int teacherId)
     {
         var cmd = GetSqlCommand();

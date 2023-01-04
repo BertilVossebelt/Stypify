@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -11,15 +12,18 @@ namespace TypingApp.ViewModels;
 
 public class MyLessonsViewModel : ViewModelBase
 {
-    private ObservableCollection<Lesson>? _lessons;
+    private List<Lesson>? _lessons;
     private List<Exercise>? _exercises;
     private Lesson? _selectedLesson;
     private Exercise? _selectedExercise;
+    private NavigationService _createLessonNavigationService;
+    private LessonStore _lessonStore;
 
     public ICommand BackButton { get; }
     public ICommand CreateExerciseButton { get; }
-    
-    public ObservableCollection<Lesson>? Lessons
+    public ICommand CreateLessonButton { get; }
+
+    public List<Lesson>? Lessons
     {
         get => _lessons;
         set
@@ -46,6 +50,10 @@ public class MyLessonsViewModel : ViewModelBase
         set
         {
             _selectedLesson = value;
+            _lessonStore.SetCurrentLesson(value);
+            //Test if lessonstore has correct lesson:
+            Console.WriteLine(_lessonStore.CurrentLesson.Name);
+            new NavigateCommand(_createLessonNavigationService);
             OnPropertyChanged();
         }
     }
@@ -60,30 +68,25 @@ public class MyLessonsViewModel : ViewModelBase
         }
     }
 
-    public MyLessonsViewModel(NavigationService teacherDashboardNavigationService, NavigationService createExerciseNavigationService, UserStore userStore)
+    public MyLessonsViewModel(NavigationService teacherDashboardNavigationService, NavigationService createExerciseNavigationService, NavigationService createLessonNavigationService, UserStore userStore, LessonStore lessonStore)
     {
+        _createLessonNavigationService = createLessonNavigationService;
+        _lessonStore = lessonStore;
         BackButton = new NavigateCommand(teacherDashboardNavigationService);
         CreateExerciseButton = new NavigateCommand(createExerciseNavigationService);
+        CreateLessonButton = new NavigateCommand(createLessonNavigationService);
         Exercises = new List<Exercise>();
-        Lessons = new ObservableCollection<Lesson>();
+        Lessons = new List<Lesson>();
+
+        // Check if user is a teacher.
+        if (userStore.Teacher == null) return;
 
         // Populate Exercises
-        if (userStore.Teacher == null) return;
         var exercises = new ExerciseProvider().GetAll(userStore.Teacher.Id);
         exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"])));
 
-        
-        //Test Lessons
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
-        Lessons.Add(new Lesson(1, "Test", "TestTeacher", Exercises));
+        // Populate lessons
+        lessonStore.GetLessonsForTeacher();
+        Lessons = lessonStore.Lessons;
     }
 }
