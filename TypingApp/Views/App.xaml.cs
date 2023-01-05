@@ -1,7 +1,7 @@
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Windows;
-using TypingApp.Commands;
 using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
@@ -18,13 +18,22 @@ namespace TypingApp.Views
         private readonly NavigationStore _navigationStore;
         private readonly ExerciseStore _exerciseStore;
         private readonly UserStore _userStore;
+        private readonly LessonStore _lessonStore;
 
         public App()
         {
+            // Setup stores.
             _navigationStore = new NavigationStore();
             _exerciseStore = new ExerciseStore();
             _userStore = new UserStore();
-            
+            _exerciseStore = new ExerciseStore();
+            _lessonStore = new LessonStore(_userStore); // Needs to be initialized after user store.
+        }
+        
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("Error" + Environment.NewLine + e.Exception.Message, "Error");
+            e.Handled = true;
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -43,14 +52,13 @@ namespace TypingApp.Views
 
         private LoginViewModel CreateLoginViewModel()
         {
-            var registerViewModel = new NavigationService(_navigationStore, CreateRegisterViewModel);
-            var adminDashboardViewModel = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
-            var studentDashboardViewModel = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
-            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
-            var createLessonViewModel = new NavigationService(_navigationStore, CreateLessonViewModel);
+            var registerNavigationService = new NavigationService(_navigationStore, CreateRegisterViewModel);
+            var adminDashboardNavigationService = new NavigationService(_navigationStore, CreateAdminDashboardViewModel);
+            var studentDashboardNavigationService = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            var teacherDashboardNavigationService = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
 
-            return new LoginViewModel(registerViewModel, adminDashboardViewModel, studentDashboardViewModel,
-                teacherDashboardViewModel, _userStore, createLessonViewModel);
+            return new LoginViewModel(registerNavigationService, adminDashboardNavigationService, studentDashboardNavigationService,
+                teacherDashboardNavigationService, _userStore, _lessonStore);
         }
 
         private AdminDashboardViewModel CreateAdminDashboardViewModel()
@@ -61,7 +69,9 @@ namespace TypingApp.Views
 
         private RegisterViewModel CreateRegisterViewModel()
         {
-            return new RegisterViewModel(new NavigationService(_navigationStore, CreateLoginViewModel));
+            var loginNavigationService = new NavigationService(_navigationStore, CreateRegisterViewModel);
+
+            return new RegisterViewModel(loginNavigationService);
         }
 
         private StudentDashboardViewModel CreateStudentDashboardViewModel()
@@ -69,9 +79,17 @@ namespace TypingApp.Views
             var exerciseNavigationService = new NavigationService(_navigationStore, CreateExerciseViewModel);
             var linkToGroupNavigationService = new NavigationService(_navigationStore, CreateLinkToGroupViewModel);
             var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
+            var lessonNavigationService = new NavigationService(_navigationStore, CreateLessonViewModel);
 
-            return new StudentDashboardViewModel(_userStore, exerciseNavigationService, linkToGroupNavigationService,
-                loginNavigationService);
+            return new StudentDashboardViewModel(_userStore, _lessonStore, exerciseNavigationService, linkToGroupNavigationService,
+                loginNavigationService, lessonNavigationService);
+        }
+
+        private LessonViewModel CreateLessonViewModel()
+        {
+            var studentDashboardNavigationService = new NavigationService(_navigationStore, CreateStudentDashboardViewModel);
+            
+            return new LessonViewModel(studentDashboardNavigationService, _lessonStore, _userStore);
         }
 
         private ExerciseViewModel CreateExerciseViewModel()
@@ -93,8 +111,9 @@ namespace TypingApp.Views
         {
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
+            var createLessonExerciseViewModel = new NavigationService(_navigationStore, CreateCreateLessonViewModel);
             
-            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel, _userStore);
+            return new MyLessonsViewModel(teacherDashboardViewModel, createExerciseViewModel, createLessonExerciseViewModel, _userStore,_lessonStore);
         }
 
         private AddGroupViewModel CreateAddGroupViewModel()
@@ -119,15 +138,23 @@ namespace TypingApp.Views
 
             return new CreateExerciseViewModel(myLessonsNavigationService, _userStore);
         }
+
         private CreateLessonViewModel CreateLessonViewModel()
         {
-
-            var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
-            var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
             var myLessonsViewmodel = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
             
-
             return new CreateLessonViewModel(_userStore, myLessonsViewmodel);
+        }    
+
+        // Viewmodel does not exist yet so this a temp viewmodel because it will throw notImplemented
+        private TeacherDashboardViewModel CreateCreateLessonViewModel()
+        {
+            var myLessonNavigationService = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
+
+            throw new NotImplementedException();
+            //Gives lessonStore to AddLessonViewModel (Which adds and edits lessons) so AddLessonViewModel knows which lessons it is editing,
+            //Should return somethinng like this:
+            //return new CreateLessonViewModel(myLessonNavigationService, _userStore, _lessonStore);
         }
     }
 }

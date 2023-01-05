@@ -8,7 +8,7 @@ public class Teacher : User
     {
     }
 
-    public Teacher(int id, string email, string firstName, string preposition, string lastName, bool isTeacher, bool isAdmin) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
+    public Teacher(int id, string email, string firstName, string? preposition, string lastName, bool isTeacher, bool isAdmin) : base(id, email, firstName, preposition, lastName, isTeacher, isAdmin)
     {
     }
 }

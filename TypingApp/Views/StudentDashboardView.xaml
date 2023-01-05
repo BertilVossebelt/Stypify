@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1200">
+    
     <UserControl.Resources>
         <Style x:Key="_ListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Template">
@@ -30,25 +31,27 @@
             <StackPanel Background="#EFDEFE">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0"
-                                Text="Stypify"
-                                FontSize="18"
-                                Width="100"
-                                Padding="2"
-                                FontStyle="Italic"
-                                FontWeight="Bold"
-                                Margin="5"
-                                HorizontalAlignment="Left"
-                                Foreground="#FFD07FCD" />
+                               Text="Stypify"
+                               FontSize="18"
+                               Width="100"
+                               Padding="2"
+                               FontStyle="Italic"
+                               FontWeight="Bold"
+                               Margin="5"
+                               HorizontalAlignment="Left"
+                               Foreground="#FFD07FCD" />
 
-                <Button Grid.Column="2" Content="Uitloggen" Margin="10" Command="{Binding LogOutButton}" VerticalAlignment="Top"
-                        Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
-                <Button Grid.Column="1" Content="Nieuwe Groep" Margin="10" Command="{Binding AddToGroupButton}" VerticalAlignment="Top"
-                        Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
+                    <Button Grid.Column="2" Content="Uitloggen" Margin="10" Command="{Binding LogOutButton}"
+                            VerticalAlignment="Top"
+                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
+                    <Button Grid.Column="1" Content="Nieuwe Groep" Margin="10" Command="{Binding AddToGroupButton}"
+                            VerticalAlignment="Top"
+                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" />
                 </Grid>
             </StackPanel>
 
@@ -72,7 +75,8 @@
                                     </Style>
                                 </Button.Resources>
                                 <Button.BitmapEffect>
-                                    <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4" Opacity="1" />
+                                    <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0"
+                                                            ShadowDepth="4" Opacity="1" />
                                 </Button.BitmapEffect>
                             </Button>
                             <TextBlock Text="{Binding CompletedExercisesText}" FontStyle="Italic" Margin="5"
@@ -151,7 +155,7 @@
                     <ScrollViewer x:Name="ScrollViewer" VerticalScrollBarVisibility="Hidden"
                                   HorizontalScrollBarVisibility="Hidden">
                         <ListBox ItemsSource="{Binding Lessons}"
-                                 SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+                                 SelectedItem="{Binding Path=SelectedLesson, Mode=TwoWay}"
                                  SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                  BorderBrush="Transparent" Background="Transparent"
                                  ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" SelectedIndex="2">
@@ -160,51 +164,38 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
-
+                            
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderThickness="1" Margin="0,0,10,0" HorizontalAlignment="Left"
-                                            Width="170" Height="200" Background="Transparent" CornerRadius="10">
-                                        <Grid>
-                                            <Border x:Name="Testborder" BorderBrush="Transparent"
-                                                    VerticalAlignment="Center" BorderThickness="5" CornerRadius="20"
-                                                    Visibility="Visible" IsManipulationEnabled="True" Height="200">
-                                                <Border.Background>
-                                                    <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
-                                                </Border.Background>
-                                            </Border>
+                                        <Border BorderThickness="1" Margin="0,0,10,0" HorizontalAlignment="Left"
+                                                Width="170" Height="200" Background="Transparent" CornerRadius="10">
+                                            <Grid>
+                                                <Border x:Name="Testborder" BorderBrush="Transparent"
+                                                        VerticalAlignment="Center" BorderThickness="5"
+                                                        CornerRadius="20"
+                                                        Visibility="Visible" IsManipulationEnabled="True" Height="200">
+                                                    <Border.Background>
+                                                        <ImageBrush Stretch="Fill" ImageSource="/Views/Images/Nos.png" />
+                                                    </Border.Background>
+                                                </Border>
 
-                                            <StatusBar Width="100" Height="7" HorizontalAlignment="Center"
-                                                       VerticalAlignment="Top" Margin="0,15,0,0" />
-                                            <Label Content="0%" Foreground="White" VerticalAlignment="Top"
-                                                   HorizontalAlignment="Center" Margin="80,17,0,0">
-                                            </Label>
-                                            <Label x:Name="StudentAmountLabel" Content="{Binding Path=Teacher}"
-                                                   Foreground="White" FontSize="11" HorizontalAlignment="Left"
-                                                   VerticalAlignment="Bottom" Margin="10,0,0,15" FontStyle="Italic"
-                                                   FontWeight="Medium" FontStretch="Normal" />
-                                            <Label x:Name="GroupNameLabel" Content="{Binding Path=LessonName}"
-                                                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
-                                                   Margin="9,0,0,30" Foreground="White" FontSize="18"
-                                                   FontWeight="Medium" FontStyle="Normal" FontStretch="Normal"
-                                                   OpacityMask="Black" BorderBrush="Black" />
-                                        </Grid>
-                                    </Border>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding
-                                                RelativeSource={RelativeSource
-                                                Mode=FindAncestor,
-                                                AncestorType={x:Type ListBoxItem}},
-                                                Path=IsSelected}"
-                                            Value="True">
-                                            <Setter
-                                                TargetName="Testborder"
-                                                Property="BorderBrush"
-                                                Value="Purple" />
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
+                                                <StatusBar Width="100" Height="7" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Top" Margin="0,15,0,0" />
+                                                <Label Content="0%" Foreground="White" VerticalAlignment="Top"
+                                                       HorizontalAlignment="Center" Margin="80,17,0,0">
+                                                </Label>
+                                                <Label x:Name="StudentAmountLabel" Content="{Binding TeacherName}"
+                                                       Foreground="White" FontSize="11" HorizontalAlignment="Left"
+                                                       VerticalAlignment="Bottom" Margin="10,0,0,15" FontStyle="Italic"
+                                                       FontWeight="Medium" FontStretch="Normal" />
+                                                <Label x:Name="GroupNameLabel" Content="{Binding Name}"
+                                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                       HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
+                                                       Margin="9,0,0,30" Foreground="White" FontSize="18"
+                                                       FontWeight="Medium" FontStyle="Normal" FontStretch="Normal"
+                                                       OpacityMask="Black" BorderBrush="Black" />
+                                            </Grid>
+                                        </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

@@ -18,4 +18,9 @@ public partial class MyLessonsView : UserControl
     {
         Scrollviewer.PageLeft();
     }
+
+    private void Button_Click()
+    {
+
+    }
 }

@@ -1,22 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TypingApp.Models
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace TypingApp.Models;
+
+public class Lesson
 {
-    public class Lesson
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string TeacherName { get; set; }
+
+    public List<Exercise> Exercises { get; set; }
+
+    public Lesson(int id, string name, string teacherName, List<Exercise> exercises)
     {
-        public string LessonName { get; set; }
-        public string Teacher { get; set; }
-        public int LessonID { get; set; }
-        public Lesson(string lessonName, string teacher, int id)
-        {
-            LessonName = lessonName;
-            Teacher = teacher;
-            LessonID = id;
-        }
+        Id = id;
+        Name = name;
+        TeacherName = teacherName;
+        Exercises = exercises;
     }
 }

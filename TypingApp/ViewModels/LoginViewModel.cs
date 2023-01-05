@@ -9,39 +9,20 @@ namespace TypingApp.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        private string _email;
-        private SecureString _password;
-
-        public string Email
-        {
-            get { return _email; }
-            set
-            {
-                _email = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public SecureString Password
-        {
-            get { return _password; }
-            set
-            {
-                _password = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ICommand GoToRegisterButton { get; }
         public ICommand LoginButton { get; }
+        public string Email { get; set; }
+        public SecureString Password { get; set; }
 
         public LoginViewModel(NavigationService registerNavigationService,
             NavigationService adminDashboardNavigationService, NavigationService studentDashboardNavigationService,
-            NavigationService teacherDashboardNavigationService, UserStore userStore, NavigationService createLessonViewModel )
+            NavigationService teacherDashboardNavigationService, UserStore userStore, LessonStore lessonStore)
         {
+            
             GoToRegisterButton = new NavigateCommand(registerNavigationService);
+
             LoginButton = new LoginCommand(this, studentDashboardNavigationService,
-                adminDashboardNavigationService, teacherDashboardNavigationService, userStore, createLessonViewModel);
+                adminDashboardNavigationService, teacherDashboardNavigationService, userStore, lessonStore);
         }
     }
 }
