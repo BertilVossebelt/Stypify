@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 
 namespace TypingApp.Models;
 
 public class Exercise
 {
-    public string Name { get; }
+    public string? Name { get; }
     public string Text { get; }
     public int AmountOfCharacters { get; }
 
-    public Exercise(string text, string name)
+    public Exercise(string text, string? name)
     {
         Name = name;
         Text = text;
@@ -21,7 +20,7 @@ public class Exercise
     public Exercise(IReadOnlyList<Character> subset)
     {
         var random = new Random();
-        const int words = 20;
+        const int words = 15;
         var text = "";
 
         for (var i = 0; i < words; i++)

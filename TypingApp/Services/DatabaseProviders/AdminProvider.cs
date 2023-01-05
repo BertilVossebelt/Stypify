@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Security;
 
 namespace TypingApp.Services.DatabaseProviders;
 
@@ -18,18 +15,8 @@ public class AdminProvider : BaseProvider
         return ConvertToList(reader, "AdminProvider.GetById")?[0];
     }
     
-    // Requests all teachers for the AdminDashboard.
-    public List<Dictionary<string, object>>? GetTeachers()
-    {
-        var cmd = GetSqlCommand();
-        cmd.CommandText = "SELECT * FROM [User] WHERE teacher = 1";
-        var reader = cmd.ExecuteReader();
-        
-        return ConvertToList(reader, "AdminProvider.GetTeachers");
-    }
-    
     // Removes a teacher.
-    public Dictionary<string, object>? RemoveTeacher(string email)
+    public Dictionary<string, object>? Delete(string email)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "DELETE FROM [User] WHERE email = @email";

@@ -21,7 +21,7 @@ public class DeleteTeacherCommand : CommandBase
         else if (TeacherAccountExists())
             try
             {
-                new AdminProvider().RemoveTeacher(_adminDashboardViewModel.DeleteEmail);
+                new AdminProvider().Delete(_adminDashboardViewModel.DeleteEmail);
                 ShowTeacherAccountDeletedMessage();
             }
             catch (Exception ex)
