@@ -23,7 +23,7 @@ public class UserProvider : BaseProvider
         var command = new SqlCommand();
         command.Connection = DbInterface?.GetConnection();
 
-        command.CommandText = "SELECT hashedpassword, salt FROM [User] WHERE email=@email";
+        command.CommandText = "SELECT password, salt FROM [User] WHERE email=@email";
         command.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
         
         using (SqlDataReader reader = command.ExecuteReader())
@@ -32,7 +32,7 @@ public class UserProvider : BaseProvider
             {
                 while (reader.Read())
                 {
-                    byte[] hashedpassword = (byte[])reader["hashedpassword"];
+                    byte[] hashedpassword = (byte[])reader["password"];
                     byte[] salt = (byte[])reader["salt"];
                     PasswordHash hash = new PasswordHash(hashedpassword);
                     return (hash.Verify(password, salt));

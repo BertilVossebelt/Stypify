@@ -21,18 +21,21 @@ namespace TypingApp.Views
     /// </summary>
     public partial class CreateLessonView : UserControl
     {
-        public static ListBox? ListBox;
+        public static ListBox? ExerciseListBox;
+        public static ListBox? GroupListbox;
         public static CreateLessonView? createLessonView;
         public CreateLessonView()
         {
             InitializeComponent();
-            ListBox = ListBox1;
+            ExerciseListBox = ListBox1;
+            GroupListbox = ListBox2;
             createLessonView = this;
             Loaded += CreateLessonView_Loaded;
         }
         private void CreateLessonView_Loaded(object sender, RoutedEventArgs e)
         {
             CreateLessonViewModel.createLessonViewModel.SelectItems();
+            //CreateLessonViewModel.createLessonViewModel.SelectItems(CreateLessonViewModel.createLessonViewModel.GetExercises(90));
         }
     }
 }

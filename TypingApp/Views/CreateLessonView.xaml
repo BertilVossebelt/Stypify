@@ -28,27 +28,120 @@
             </Setter>
 
         </Style>
+        <Style x:Key="_ListBoxItemStyle2" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border"
+                                Padding="2"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="#00FFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
     </UserControl.Resources>
     <StackPanel>
-        <Border Height="150" Width="350" Margin="0,50,0,0" BorderBrush="#994698" CornerRadius="6" BorderThickness="4">
+        <Border Height="150" Width="450" Margin="0,50,0,0" BorderBrush="#994698" CornerRadius="6" BorderThickness="4">
             <StackPanel Orientation="Horizontal" Background="#f5ddfd">
                 <Border Width="100" BorderBrush="#994698" CornerRadius="6" BorderThickness="2" Margin="-2,-2,-2,-2">
-                    <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="35" Margin="0,0,0,5" Content="test" FontSize="20" Foreground="Black" FontWeight="Normal" />
+                    <Viewbox Margin="4" HorizontalAlignment="Left" VerticalAlignment="Bottom" Stretch="Uniform" StretchDirection="Both">
+                        <Label Content="{Binding Name, Mode=TwoWay}" Foreground="Black" FontWeight="Normal" />
+                    </Viewbox>
                 </Border>
-                    
+
                 <StackPanel Margin="25,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                    <TextBox TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="18" Height="30"/>
                     
-                    <TextBox TextWrapping="Wrap" Text="TextBox" Width="200" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="18" Height="30"/>
-                    <Button Width="200" Height="35" Margin="0,10,0,0" Content="Afbeelding Toevoegen" Background="#994698" Foreground="White"/>
+                    <Button Width="200" Height="35" Margin="0,10,0,0" Content="Afbeelding Toevoegen" Background="#994698" Foreground="White">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"></Setter>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                 </StackPanel>
+                <Border Width="110" BorderBrush="#994698" CornerRadius="6" BorderThickness="2" Margin="15,-2,-2,-2">
+                    <WrapPanel >
+
+                        <ScrollViewer VerticalScrollBarVisibility="Visible" 
+                          Height="250" HorizontalScrollBarVisibility="Hidden" Width="110">
+
+                            <ListBox Name="ListBox2" ItemsSource="{Binding Groups}"
+                         SelectionMode="Multiple" 
+                         BorderBrush="Transparent" 
+                         Background="Transparent"
+                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle2}" 
+                         HorizontalContentAlignment="Stretch">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="ExerciseBorderItem" 
+                                        BorderThickness="1"
+                                        BorderBrush="Purple"
+                                        CornerRadius="1"
+                                        Height="20">
+
+                                            <TextBlock Text="{Binding Path=GroupName}" />
+
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger 
+                                         Binding="{Binding 
+                                                     RelativeSource={RelativeSource 
+                                                     Mode=FindAncestor, 
+                                                     AncestorType={x:Type ListBoxItem}}, 
+                                                     Path=IsSelected}" 
+                                         Value="True">
+                                                <Setter 
+                                             TargetName="ExerciseBorderItem"
+                                             Property="BorderBrush" 
+                                             Value="Purple" />
+                                                <Setter
+                                        TargetName="ExerciseBorderItem" 
+                                        Property="BorderThickness"
+                                        Value="3" />
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </ScrollViewer>
+                    </WrapPanel>
+                </Border>
             </StackPanel>
         </Border>
         <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="160,5,0,5">
-            <Button Height="25" Width="75" Background="#994698" Content="Opslaan" />
-            <Button Height="25" Width="75" Margin="5,0,0,0" Command="{Binding Test}" Background="#FFD4C6C6" Content="Cancel" FontSize="12"/>
+            <Button Height="25" Width="75" Background="#994698" Content="Opslaan" Command="{Binding SaveLessonCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Height="25" Width="75" Margin="5,0,0,0" Command="{Binding CancelCommand}" Background="#FFD4C6C6" Content="Cancel" FontSize="12">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" Height="10" Width="1150">
             <Line Stretch="Fill" Stroke="Gray" X2="1" Height="10" StrokeDashArray="2 2" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="25,0,0,0" VerticalAlignment="Stretch" >
+            <Label Content="Mijn Oefeningen" FontSize="26" />
+            <Label Content="aantal:" FontSize="15" VerticalAlignment="Bottom" />
+            <Label Content="{Binding AmountOfExercises}" FontSize="15" VerticalAlignment="Bottom" Margin="-8,0,0,0" />
         </StackPanel>
         <WrapPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center">
 

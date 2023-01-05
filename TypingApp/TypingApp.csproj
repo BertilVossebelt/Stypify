@@ -37,10 +37,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Include="bin\.gitignore.txt" />
       <Content Include="obj\.gitignore.txt" />
     </ItemGroup>

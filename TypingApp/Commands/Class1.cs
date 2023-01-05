@@ -24,7 +24,7 @@ namespace TypingApp.Commands
         public override void Execute(object? parameter)
         {
             //CreateLessonView.ListBox.SelectedItems.Add(CreateLessonView.ListBox.Items.GetItemAt(CreateLessonView.ListBox.Items.IndexOf(EXERCISE)));
-            foreach (Exercise ex in CreateLessonView.ListBox.SelectedItems)
+            foreach (Exercise ex in CreateLessonView.ExerciseListBox.SelectedItems)
             {
                 Console.WriteLine(ex.Name);
  

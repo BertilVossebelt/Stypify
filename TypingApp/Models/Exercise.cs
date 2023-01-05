@@ -8,6 +8,7 @@ public class Exercise
 {
     public string Name { get; }
     public string Text { get; }
+    public int Id { get; }
     public bool IsSelected { get; }
 
 
@@ -17,7 +18,13 @@ public class Exercise
         Text = text;
         IsSelected = true;
     }
-
+    public Exercise(string text, string name, int id)
+    {
+        Name = name;
+        Text = text;
+        IsSelected = true;
+        Id = id;
+    }
     // Generate exercise.
     public Exercise(IReadOnlyList<Character> subset)
     {

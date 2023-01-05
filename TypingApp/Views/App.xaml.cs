@@ -124,9 +124,10 @@ namespace TypingApp.Views
 
             var teacherDashboardViewModel = new NavigationService(_navigationStore, CreateTeacherDashboardViewModel);
             var createExerciseViewModel = new NavigationService(_navigationStore, CreateCreateExerciseViewModel);
+            var myLessonsViewmodel = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
             
 
-            return new CreateLessonViewModel(_userStore);
+            return new CreateLessonViewModel(_userStore, myLessonsViewmodel);
         }
     }
 }

@@ -21,4 +21,6 @@ public class ExerciseProvider : BaseProvider
         var query = $"SELECT * FROM [Exercise] WHERE teacher_id = '{teacherId}'";
         return DbInterface?.Select(query);
     }
+    
+
 }
