@@ -25,11 +25,13 @@ namespace TypingApp.Commands
         private readonly NavigationService _teacherDashboardNavigationService;
 
         private int _userId { get; set; }
+        public NavigationService bla { get; }
 
         public LoginCommand(LoginViewModel loginViewModel,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
             NavigationService teacherDashboardNavigationService, UserStore userStore, LessonStore lessonStore)
         {
+            bla = createLessonViewModel;
             _loginViewModel = loginViewModel;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
@@ -55,7 +57,7 @@ namespace TypingApp.Commands
             if ((byte)user["teacher"] == 1)
             {
                 _userStore.CreateTeacher(user);
-                navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
+                navigateCommand = new NavigateCommand(bla);
             }
             else if ((byte)user["admin"] == 1)
             {

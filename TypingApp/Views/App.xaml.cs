@@ -38,7 +38,7 @@ namespace TypingApp.Views
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _navigationStore.CurrentViewModel = CreateLoginViewModel();
+            _navigationStore.CurrentViewModel = CreateLoginViewModel(); //CreateLessonViewModel();
 
             MainWindow = new MainWindow(_exerciseStore, _userStore)
             {
@@ -139,7 +139,14 @@ namespace TypingApp.Views
             return new CreateExerciseViewModel(myLessonsNavigationService, _userStore);
         }
 
-        //Viewmodel does not exist yet so this a temp viewmodel because it will throw notImplemented
+        private CreateLessonViewModel CreateLessonViewModel()
+        {
+            var myLessonsViewmodel = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
+            
+            return new CreateLessonViewModel(_userStore, myLessonsViewmodel);
+        }    
+
+        // Viewmodel does not exist yet so this a temp viewmodel because it will throw notImplemented
         private TeacherDashboardViewModel CreateCreateLessonViewModel()
         {
             var myLessonNavigationService = new NavigationService(_navigationStore, CreateMyLessonsViewModel);

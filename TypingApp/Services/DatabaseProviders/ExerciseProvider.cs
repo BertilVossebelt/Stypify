@@ -36,4 +36,6 @@ public class ExerciseProvider : BaseProvider
         
         return ConvertToList(reader, "ExerciseProvider.GetAll");
     }
+    
+
 }

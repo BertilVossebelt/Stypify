@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -6,20 +6,34 @@ namespace TypingApp.Models;
 
 public class Exercise
 {
+    public int Id { get; }
     public string Name { get; }
     public string Text { get; }
+
+    // Not in database
     public int AmountOfCharacters { get; }
 
     public Exercise(string text, string name)
     {
         Name = name;
         Text = text;
+        IsSelected = true;
         AmountOfCharacters = Text.Length;
     }
-
+    
+    public Exercise(string text, string name, int id)
+    {
+        Name = name;
+        Text = text;
+        IsSelected = true;
+        Id = id;
+        AmountOfCharacters = Text.Length;
+    }
+    
     // Generate exercise.
     public Exercise(IReadOnlyList<Character> subset)
     {
+        IsSelected = true;
         var random = new Random();
         const int words = 20;
         var text = "";
