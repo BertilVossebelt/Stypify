@@ -49,7 +49,27 @@
 
         </Style>
     </UserControl.Resources>
+    
     <StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="#EFDEFE">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Command="{Binding BackButton}"
+                        Content="Terug" 
+                        Width="60" 
+                        Margin="10" 
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Background="Transparent" 
+                        BorderBrush="Transparent" 
+                        BorderThickness="0" />
+
+            </Grid>
+        </StackPanel>
         <Border Height="150" Width="450" Margin="0,50,0,0" BorderBrush="#994698" CornerRadius="6" BorderThickness="4">
             <StackPanel Orientation="Horizontal" Background="#f5ddfd">
                 <Border Width="100" BorderBrush="#994698" CornerRadius="6" BorderThickness="2" Margin="-2,-2,-2,-2">
@@ -143,73 +163,75 @@
             <Label Content="aantal:" FontSize="15" VerticalAlignment="Bottom" />
             <Label Content="{Binding AmountOfExercises}" FontSize="15" VerticalAlignment="Bottom" Margin="-8,0,0,0" />
         </StackPanel>
-        <WrapPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center">
+        
 
-            <ScrollViewer VerticalScrollBarVisibility="Visible" 
-                          Height="250" HorizontalScrollBarVisibility="Hidden">
-
-                <ListBox Name="ListBox1" ItemsSource="{Binding Exercises}"
+            <ListBox Name="ListBox1" ItemsSource="{Binding Exercises}"
+                         SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
                          SelectionMode="Multiple" 
-                         SelectedItem="{Binding SelectedExercises}"
                          BorderBrush="Transparent" 
                          Background="Transparent"
-                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" 
-                         SelectedIndex="2"
-                         HorizontalContentAlignment="Stretch">
-                    
-                    
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="3"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
+                         HorizontalContentAlignment="Stretch"
+                         Grid.Row="5" Grid.Column="1"
+                         Grid.RowSpan="2" Grid.ColumnSpan="1"
+                         HorizontalAlignment="Stretch" Margin="50,0,50,0"   >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4" VerticalAlignment="Top"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border x:Name="ExerciseBorderItem" 
-                                        BorderThickness="1"
-                                        BorderBrush="Purple"
-                                        CornerRadius="7"
-                                        Height="100"
-                                        VerticalAlignment="Top"
-                                        Padding="10">
-                                <Border.Background>
-                                    <SolidColorBrush Color="#EFDEFE"/>
-                                </Border.Background>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="ExerciseBorderItem" 
+                            BorderThickness="1"
+                            BorderBrush="Purple"
+                            CornerRadius="7"
+                            Height="100"
+                            VerticalAlignment="Top"
+                            Padding="10"
+                            >
+                            <Border.Background>
+                                <SolidColorBrush Color="#EFDEFE"/>
+                            </Border.Background>
 
-                                <StackPanel Width="300">
-                                    <TextBlock Text="{Binding Path=Name}" 
-                                               Margin="0, 0, 0 , 7" 
-                                               FontSize="20" />
-                                    <TextBlock Text="{Binding Path=Text}"/>
-                                    <TextBlock Text="Aantal karakters: 35" 
-                                               Margin="0, 7, 0 , 0" 
-                                               HorizontalAlignment="Right"
-                                               FontStyle="Italic"/>
-                                </StackPanel>
-                            </Border>
-                            <DataTemplate.Triggers>
-                                <DataTrigger 
-                                         Binding="{Binding 
-                                                     RelativeSource={RelativeSource 
-                                                     Mode=FindAncestor, 
-                                                     AncestorType={x:Type ListBoxItem}}, 
-                                                     Path=IsSelected}" 
-                                         Value="True">
-                                    <Setter 
-                                             TargetName="ExerciseBorderItem"
-                                             Property="BorderBrush" 
-                                             Value="Purple" />
-                                    <Setter
-                                        TargetName="ExerciseBorderItem" 
-                                        Property="BorderThickness"
-                                        Value="6" />
-                                </DataTrigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
-        </WrapPanel>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Path=Name}" 
+                                       HorizontalAlignment="Left"
+                                       Margin="0, 0, 0 , 7" 
+                                       FontSize="20"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxWidth="200"
+                                       />
+
+                                <TextBlock Text="{Binding Path=Text}" 
+                                       HorizontalAlignment="Left"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxWidth="200"/>
+
+                                <TextBlock Text="{Binding Path=AmountOfCharacters,StringFormat='Aantal karakters: {0}'}" 
+                                       HorizontalAlignment="Right"
+                                       FontStyle="Italic"/>
+                            </StackPanel>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger 
+                            Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" 
+                            Value="True">
+                                <Setter TargetName="ExerciseBorderItem"
+                                    Property="BorderBrush" 
+                                    Value="Purple" />
+                                <Setter
+                                    TargetName="ExerciseBorderItem" 
+                                    Property="BorderThickness"
+                                    Value="6" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+           
+        
     </StackPanel>
 </UserControl>

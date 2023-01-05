@@ -27,6 +27,7 @@ namespace TypingApp.ViewModels
         public bool LessonAlreadyExists { get; set; }
         public ICommand SaveLessonCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+        public ICommand BackButton { get; set; }
 
         public int test = 0;
         public UserStore UserStore
@@ -81,9 +82,7 @@ namespace TypingApp.ViewModels
                 OnPropertyChanged();
             }
         }
-        // IN exercise model een bool toevoegen en dan foreach exercise en kijken of hij true of false is.
-        // Kijken hoe je Create if not exist kan doen met een value in mssql, anders moet je eerst het verwijderen en dan aanmaken, of select, update/aanmaken
-
+       
         public CreateLessonViewModel(UserStore userStore, NavigationService MylessonsService)
         {
             _userStore = userStore;
@@ -91,48 +90,21 @@ namespace TypingApp.ViewModels
             createLessonViewModel = this;
             SaveLessonCommand = new SaveLessonCommand(MylessonsService);
             CancelCommand = new CancelCommand(MylessonsService);
+            BackButton = new CancelCommand(MylessonsService);
 
-            if (userStore != null)
-            {
-
-            }
-
-           
-            Console.WriteLine("tst");
-            Test = new Class1(this);
-            test = 20;
-            // Populate Exercises
-            if (userStore.Teacher == null)
-            {
-                Console.WriteLine("failed");
-                return;
-            }
-            Console.WriteLine(userStore.Teacher.Id);
-            AmountOfExercises = new LessonProvider().GetAmountOfExercisesFromTeacher(userStore.Teacher.Id);
-            var groups = new LessonProvider().GetGroups(userStore.Teacher.Id);
             Groups = new ObservableCollection<Group>();
+
+            AmountOfExercises = new LessonProvider().GetAmountOfExercisesFromTeacher(userStore.Teacher.Id);
+
+            var groups = new LessonProvider().GetGroups(userStore.Teacher.Id);
             groups?.ForEach(g => Groups?.Add(new Group( (int)g["id"], (string)g["name"],(string)g["code"] )));
 
             var exercises = new ExerciseProvider().GetAll(userStore.Teacher.Id);
-
-            if (exercises != null)
-            {
-                foreach (var exercise in exercises)
-                {
-                    if(exercise != null)
-                    {
-                        Exercise ex = new Exercise((string)exercise["text"], (string)exercise["name"], (int)exercise["id"]);
-                        Exercises?.Add(ex);
-                    }
-                }
-            }
-            Console.WriteLine(CreateLessonView.ExerciseListBox);
-
-            //CreateLessonView.ListBox.SelectedItems.Add(CreateLessonView.ListBox.Items.GetItemAt(0));
-            //exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"])));
+            exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"], (int)e["id"])));
 
 
         }
+
         public ObservableCollection<Exercise> GetExercises(int id)
         {
             var exercises = new ExerciseProvider().GetAll(id);
