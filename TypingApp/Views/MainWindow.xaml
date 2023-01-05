@@ -54,6 +54,10 @@
                 <views:MyLessonsView />
             </DataTemplate>
             
+            <DataTemplate DataType="{x:Type viewModels:CreateLessonViewModel}">
+                <views:CreateLessonView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewModels:LessonViewModel}">
                 <views:LessonView />
             </DataTemplate>

@@ -54,4 +54,46 @@ public class LessonProvider : BaseProvider
         
         return ConvertToList(reader, "LessonProvider.LinkToGroup")?[0];
     }
+    
+    public List<Dictionary<string, object>>? GetLinkedGroups(int lessonId)
+        {
+            var cmd = GetSqlCommand();
+            cmd.CommandText = "SELECT g.* FROM [Group] g JOIN [Group_Lesson] gl ON g.id = gl.group_id WHERE gl.lesson_id = @lessonId";
+            cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
+            var reader = cmd.ExecuteReader();
+            
+            return ConvertToList(reader, "LessonProvider.GetLinkedGroups");
+        }
+            
+        public Dictionary<string, object>? DeleteLinksToGroups(int lessonId)
+        {
+            var cmd = GetSqlCommand();
+            cmd.CommandText = "DELETE FROM [Group_Lesson] WHERE lesson_id = @lessonId";
+            cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
+            var reader = cmd.ExecuteReader();
+
+            return ConvertToList(reader, "AdminProvider.DeleteLinksToGroups")?[0];
+        }
+        
+        public void DeleteLinksToExercises(int lessonId)
+        {
+            var cmd = GetSqlCommand();
+            cmd.CommandText = "DELETE FROM [Lesson_Exercise] WHERE lesson_id = @lessonId";
+            cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
+            var reader = cmd.ExecuteReader();
+            
+            ConvertToList(reader, "AdminProvider.DeleteLinksToExercises");
+        }
+        
+        public Dictionary<string, object>? UpdateLesson(int lessonId, string name, int teacherId)
+        {
+            var cmd = GetSqlCommand();
+            cmd.CommandText = "UPDATE [Lesson] SET name = @name, teacher_id = @teacherId WHERE id = @lessonId; SELECT SCOPE_IDENTITY()";
+            cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
+            cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = name;
+            cmd.Parameters.Add("@teacherId", SqlDbType.Int).Value = teacherId;
+            var id = (decimal)cmd.ExecuteScalar();
+            
+            return GetById((int)id);
+        }
 }

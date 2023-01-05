@@ -24,7 +24,13 @@ public class UserStore
     public Student? Student { get; private set; }
     public Teacher? Teacher { get; private set; }
     public Admin? Admin { get; private set; }
+
+    public int? LessonId { get; set; }
     
+    public UserStore()
+    {
+       LessonId = 78;
+    }
     public void CreateStudent(Dictionary<string, object>? props)
     {
         var characters = new List<Character>

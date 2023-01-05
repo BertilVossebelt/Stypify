@@ -50,10 +50,12 @@ public class MyLessonsViewModel : ViewModelBase
         set
         {
             _selectedLesson = value;
+            Console.WriteLine(value.Name);
             _lessonStore.SetCurrentLesson(value);
             //Test if lessonstore has correct lesson:
+            Console.WriteLine("asdasdasd");
             Console.WriteLine(_lessonStore.CurrentLesson.Name);
-            new NavigateCommand(_createLessonNavigationService);
+            new NavigateCommand(_createLessonNavigationService).Execute(this);
             OnPropertyChanged();
         }
     }

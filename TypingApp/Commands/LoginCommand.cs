@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Windows;
 using TypingApp.Models;
-using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
@@ -25,6 +18,7 @@ namespace TypingApp.Commands
         private readonly NavigationService _teacherDashboardNavigationService;
 
         private int _userId { get; set; }
+        public NavigationService bla { get; }
 
         public LoginCommand(LoginViewModel loginViewModel,
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
