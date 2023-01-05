@@ -112,20 +112,20 @@ public class LessonStore
     */
     public void SetCurrentLesson(Lesson lesson)
     {
-        if (_userStore.Student == null) return;
+        if (_userStore.Student != null)
+        {
+            var dbLesson = new StudentProvider().GetLessonById(lesson.Id, _userStore.Student.Id);
+            if (dbLesson?["place_number"] != null)
+            {
+                CurrentExercise = (byte)dbLesson["place_number"];
+            }
+            else
+            {
+                CurrentExercise = 0;
+            }
+        }
 
-        var dbLesson = new StudentProvider().GetLessonById(lesson.Id, _userStore.Student.Id);
-        if (dbLesson?["place_number"] != null)
-        {
-            CurrentExercise = (byte)dbLesson["place_number"];
-        }
-        else
-        {
-            CurrentExercise = 0;
-        }
-        
         CurrentLesson = lesson;
-
         CurrentLessonUpdated?.Invoke(CurrentLesson);
     }
 

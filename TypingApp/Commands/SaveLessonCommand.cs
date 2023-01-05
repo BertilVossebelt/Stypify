@@ -26,8 +26,9 @@ namespace TypingApp.Commands
         }
         public override void Execute(object? parameter)
         {
-            var test = new LessonProvider();
-            test.DeleteLesson(73);
+            var lessonProvider = new LessonProvider();
+            lessonProvider.DeleteLinksToGroups(73);
+            lessonProvider.DeleteLinksToExercises(73);
             createLessonViewModel = CreateLessonViewModel.createLessonViewModel;
             if (CreateLessonView.ExerciseListBox.SelectedItems.Count > 0 && CreateLessonView.GroupListbox.SelectedItems.Count > 0)
             {
@@ -39,32 +40,30 @@ namespace TypingApp.Commands
                 //SelectedExercises = CreateLessonView.ExerciseListBox.SelectedItems;
                 if (createLessonViewModel.UserStore.LessonId == null)
                 {
-                    var lessonProvider = new LessonProvider();
-                    var lesson = lessonProvider.CreateLesson(Name, createLessonViewModel.UserStore.Teacher.Id);
+                    var lesson = lessonProvider.Create(Name, createLessonViewModel.UserStore.Teacher.Id);
 
                     foreach (Exercise exercise in CreateLessonView.ExerciseListBox.SelectedItems)
                     {
-                        lessonProvider.CreateLessonExerciseLink((int)lesson["id"], exercise.Id);
+                        new ExerciseProvider().LinkToLesson((int)lesson?["id"], exercise.Id);
                     }
                     foreach (Group group in CreateLessonView.GroupListbox.SelectedItems)
                     {
-                        lessonProvider.CreateGroupLessonLink(group.GroupId, (int)lesson["id"]);
+                        lessonProvider.LinkToGroup(group.GroupId, (int)lesson["id"]);
                     }
-                    
                 }
                 else
                 {
-                    var lessonProvider = new LessonProvider();
-                    lessonProvider.DeleteLesson((int)createLessonViewModel.UserStore.LessonId);
+                    lessonProvider.DeleteLinksToGroups(73);
+                    lessonProvider.DeleteLinksToExercises(73);
                     lessonProvider.UpdateLesson((int)createLessonViewModel.UserStore.LessonId, Name, createLessonViewModel.UserStore.Teacher.Id);
 
                     foreach (Exercise exercise in CreateLessonView.ExerciseListBox.SelectedItems)
                     {
-                        lessonProvider.CreateLessonExerciseLink((int)createLessonViewModel.UserStore.LessonId, exercise.Id);
+                        new ExerciseProvider().LinkToLesson((int)createLessonViewModel.UserStore.LessonId, exercise.Id);
                     }
                     foreach (Group group in CreateLessonView.GroupListbox.SelectedItems)
                     {
-                        lessonProvider.CreateGroupLessonLink(group.GroupId, (int)createLessonViewModel.UserStore.LessonId);
+                        lessonProvider.LinkToGroup(group.GroupId, (int)createLessonViewModel.UserStore.LessonId);
                     }
                 }
                 var savedMessagebox = MessageBox.Show("De les is opgeslagen", "Opgeslagen", MessageBoxButton.OK);
@@ -76,7 +75,6 @@ namespace TypingApp.Commands
             {
                 var errorMessageBox = MessageBox.Show("Een les moet minimaal 1 groep, 1 les en een naam hebben", "Error", MessageBoxButton.OK);
             }
-
         }
     }
 }

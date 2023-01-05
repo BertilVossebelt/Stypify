@@ -37,5 +37,16 @@ public class ExerciseProvider : BaseProvider
         return ConvertToList(reader, "ExerciseProvider.GetAll");
     }
     
+    public Dictionary<string, object>? LinkToLesson(int lesson_id, int exercise_id)
+    {
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "INSERT INTO [LessonExercise] (lesson_id, exercise_id) VALUES (@lesson_id, @exercise_id); SELECT SCOPE_IDENTITY()";
+        cmd.Parameters.Add("@lesson_id", SqlDbType.Int).Value = lesson_id;
+        cmd.Parameters.Add("@exercise_id", SqlDbType.Int).Value = exercise_id;
+        var id = (decimal)cmd.ExecuteScalar();
+        
+        return GetById((int)id);
+
+    }
 
 }

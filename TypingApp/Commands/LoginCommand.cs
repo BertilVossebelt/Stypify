@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Windows;
 using TypingApp.Models;
-using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
@@ -31,7 +24,6 @@ namespace TypingApp.Commands
             NavigationService studentDashboardNavigationService, NavigationService adminDashboardNavigationService,
             NavigationService teacherDashboardNavigationService, UserStore userStore, LessonStore lessonStore)
         {
-            bla = createLessonViewModel;
             _loginViewModel = loginViewModel;
             _studentDashboardNavigationService = studentDashboardNavigationService;
             _adminDashboardNavigationService = adminDashboardNavigationService;
@@ -57,7 +49,7 @@ namespace TypingApp.Commands
             if ((byte)user["teacher"] == 1)
             {
                 _userStore.CreateTeacher(user);
-                navigateCommand = new NavigateCommand(bla);
+                navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
             }
             else if ((byte)user["admin"] == 1)
             {

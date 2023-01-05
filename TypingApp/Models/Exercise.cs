@@ -12,6 +12,7 @@ public class Exercise
 
     // Not in database
     public int AmountOfCharacters { get; }
+    public bool IsSelected { get; }
 
     public Exercise(string text, string name)
     {
@@ -35,7 +36,7 @@ public class Exercise
     {
         IsSelected = true;
         var random = new Random();
-        const int words = 20;
+        const int words = 15;
         var text = "";
 
         for (var i = 0; i < words; i++)
