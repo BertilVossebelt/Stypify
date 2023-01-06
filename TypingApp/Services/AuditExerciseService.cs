@@ -84,7 +84,7 @@ public class AuditExerciseService
     }
 
     /*
-    * Adds incorrect, missing character to the audited list and remove it from the expected string.
+    * Adds incorrect, missing character to the audited list and removes it from the expected string.
     */
     private void HandleMissingCharacters(int pos)
     {

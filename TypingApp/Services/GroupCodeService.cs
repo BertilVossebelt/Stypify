@@ -37,6 +37,7 @@ public class GroupCodeService
         var group = new GroupProvider().GetByCode(groupCode);
         return group == null;
     }
+    
     public void UpdateCodeInDatabase(int groupId, string groupCode)
     {
         new GroupProvider().UpdateGroupCode(groupId, groupCode);

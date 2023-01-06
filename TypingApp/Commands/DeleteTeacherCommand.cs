@@ -14,59 +14,44 @@ public class DeleteTeacherCommand : CommandBase
         _adminDashboardViewModel = adminDashboardViewModel;
     }
 
+    /*
+     * Delete teacher from database.
+     * --------------------------------------
+     * Method should only be used for admins.
+     */
     public override void Execute(object? parameter)
     {
+        string? message;
+        
+        // Check if email is empty.
         if (_adminDashboardViewModel.DeleteEmail.Length == 0)
-            ShowDeleteEmailEmptyErrorMessage();
-        else if (TeacherAccountExists())
+        {
+            message = "Het e-mailveld mag niet leeg zijn.";
+            MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+        
+        // Check if teacher exists and try to remove the teacher.
+        var teacher = new TeacherProvider().GetByEmail(_adminDashboardViewModel.DeleteEmail);
+        if (teacher != null)
+        {
             try
             {
+                // Remove teacher from database and notify user.
                 new AdminProvider().RemoveTeacher(_adminDashboardViewModel.DeleteEmail);
-                ShowTeacherAccountDeletedMessage();
+                message = "Account is succesvol verwijderd.";
+                MessageBox.Show(message, "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(e.ToString());
             }
-        else
-            ShowTeacherAccountNotFoundErrorMessage();
-    }
-
-    // Check of het docentaccount bestaat.
-    private bool TeacherAccountExists()
-    {
-        var teacher = new TeacherProvider().GetByEmail(_adminDashboardViewModel.DeleteEmail);
-        return teacher != null;
-    }
-    
-    // Laat een informatiebericht zien als een docentaccount succesvol is verwijderd.
-    private void ShowTeacherAccountDeletedMessage()
-    {
-        const string message = "Docentaccount is succesvol verwijderd.";
-        const MessageBoxButton type = MessageBoxButton.OK;
-        const MessageBoxImage icon = MessageBoxImage.Information;
-
-        MessageBox.Show(message, "Account verwijderd", type, icon);
-    }
-    
-    // Laat een errorbericht zien als het emailveld leeg is.
-    private void ShowDeleteEmailEmptyErrorMessage()
-    {
-        const string message = "Het emailveld voor het verwijderen mag niet leeg zijn.";
-        const MessageBoxButton type = MessageBoxButton.OK;
-        const MessageBoxImage icon = MessageBoxImage.Error;
-
-        MessageBox.Show(message, "Emailveld leeg", type, icon);
-    }
-
-    // Laat een errorbericht zien als een docentaccount niet gevonden kan worden.
-    private void ShowTeacherAccountNotFoundErrorMessage()
-    {
-        const string message = "Docentaccount bestaat niet.";
-        const MessageBoxButton type = MessageBoxButton.OK;
-        const MessageBoxImage icon = MessageBoxImage.Error;
-
-        MessageBox.Show(message, "Docentaccount niet gevonden", type, icon);
+            return;
+        }
+        
+        // Show error message if teacher doesn't exist.
+        message = "Er is geen docent gevonden met dit e-mailadres.";
+        MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
     }
 }
 

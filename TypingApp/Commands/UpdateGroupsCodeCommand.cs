@@ -1,52 +1,45 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Data;
-using System.Net;
-using System.Windows;
-using TypingApp.Models;
-using TypingApp.Services;
-using TypingApp.Services.DatabaseProviders;
-using TypingApp.Stores;
+﻿using TypingApp.Services;
 using TypingApp.ViewModels;
 
-namespace TypingApp.Commands
-{
-    public class UpdateGroupsCodeCommand : CommandBase
-    {
-        public int id;
-        public string code;
-        public TeacherDashboardViewModel dashs;
-        public AddGroupViewModel viewmodel;
+namespace TypingApp.Commands;
 
-        public UpdateGroupsCodeCommand(TeacherDashboardViewModel dash)
+public class UpdateGroupsCodeCommand : CommandBase
+{
+    private readonly TeacherDashboardViewModel _teacherDashboardViewModel;
+    private readonly AddGroupViewModel _addGroupViewModel;
+
+    /*
+     * For usage on the TeacherDashboardViewModel.
+     */
+    public UpdateGroupsCodeCommand(TeacherDashboardViewModel dash)
+    {
+        _teacherDashboardViewModel = dash;
+    }
+
+    /*
+     * For usage on the AddGroupViewModel.
+     */
+    public UpdateGroupsCodeCommand(AddGroupViewModel dash)
+    {
+        _addGroupViewModel = dash;
+    }
+
+    /*
+     * This method is used to update the code of a group.
+     * --------------------------------------------------
+     * Method should only be used for teachers.
+     */
+    public override void Execute(object? parameter)
+    {
+        if (_teacherDashboardViewModel != null)
         {
-            dashs = dash;
+            if (_teacherDashboardViewModel.SelectedItem is null) return;
+            _teacherDashboardViewModel.SelectedItem.RefreshCode();
+            _teacherDashboardViewModel.SelectedItem = _teacherDashboardViewModel.SelectedItem;
         }
-        public UpdateGroupsCodeCommand(AddGroupViewModel dash)
+        else
         {
-            viewmodel = dash;
+            _addGroupViewModel.GroupCode = new GroupCodeService().GenerateCode();
         }
-        public override void Execute(object? parameter)
-        {
-            if (dashs != null)
-            {
-                if (dashs.SelectedItem is not null)
-                {
-                    dashs.SelectedItem.RefreshCode();
-                    dashs.SelectedItem = dashs.SelectedItem;
-                }
-            }
-            else
-            {
-                viewmodel.GroupCode = new GroupCodeService().GenerateCode();
-            }
-            
-            
-        }
-        /*public override (int id, string code)
-        {
-            this.id = id;
-            this.code = code;
-        }*/
     }
 }

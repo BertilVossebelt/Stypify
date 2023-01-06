@@ -88,7 +88,7 @@ public class MyLessonsViewModel : ViewModelBase
         exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"])));
 
         // Populate lessons
-        lessonStore.GetLessonsForTeacher();
+        lessonStore.GetLessons();
         Lessons = lessonStore.Lessons;
     }
 }

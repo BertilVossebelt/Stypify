@@ -1,5 +1,4 @@
-﻿using System;
-using TypingApp.Services;
+﻿using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
@@ -19,11 +18,17 @@ public class AuditExerciseCommand : CommandBase
         _userStore = userStore;
     }
 
+    /*
+     * Method is used to audit an exercise and updates the place number of the user.
+     * -----------------------------------------------------------------------------
+     * Method is only used for students.
+     */
     public override void Execute(object? parameter)
     {
         var input = _lessonViewModel.UserInputText;
         var expected = _lessonViewModel.Exercise.Text;
         
+        // Check if the input is correct using the AuditExerciseService.
         var auditedExercise = new AuditExerciseService().Audit(input, expected);
         
         _lessonStore.CreateAuditedExercise(auditedExercise); // Save the audited exercise.
