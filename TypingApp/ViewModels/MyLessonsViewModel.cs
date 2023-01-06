@@ -50,11 +50,7 @@ public class MyLessonsViewModel : ViewModelBase
         set
         {
             _selectedLesson = value;
-            Console.WriteLine(value.Name);
             _lessonStore.SetCurrentLesson(value);
-            //Test if lessonstore has correct lesson:
-            Console.WriteLine("asdasdasd");
-            Console.WriteLine(_lessonStore.CurrentLesson.Name);
             new NavigateCommand(_createLessonNavigationService).Execute(this);
             OnPropertyChanged();
         }
@@ -80,6 +76,7 @@ public class MyLessonsViewModel : ViewModelBase
         Exercises = new List<Exercise>();
         Lessons = new List<Lesson>();
 
+        lessonStore.CurrentLesson = null;
         // Check if user is a teacher.
         if (userStore.Teacher == null) return;
 

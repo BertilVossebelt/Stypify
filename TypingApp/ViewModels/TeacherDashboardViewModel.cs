@@ -109,6 +109,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         {
             Groups.Add(new Group(group));
         }
+        SelectedItem = Groups.First();
     }
 
     private void GetStudentsFromGroup()
@@ -128,6 +129,7 @@ public class TeacherDashboardViewModel : ViewModelBase
         foreach (var student in students)
         {
             Students.Add(new Student(student, characters));
+
         }
 
         _selectedItem.AmountOfStudents = students.Count;

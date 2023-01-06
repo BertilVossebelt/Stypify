@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TypingApp.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1200">
+             d:DesignHeight="800" d:DesignWidth="1400">
     <UserControl.Resources>
         <Style x:Key="_ListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="0"/>
@@ -30,6 +30,7 @@
         </Style>
         <Style x:Key="_ListBoxItemStyle2" TargetType="ListBoxItem">
             <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="-2"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
@@ -40,7 +41,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="true">
-                                <Setter TargetName="_Border" Property="Background" Value="#00FFFFFF" />
+                                <Setter TargetName="_Border" Property="Background" Value="White" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -70,31 +71,31 @@
 
             </Grid>
         </StackPanel>
-        <Border Height="150" Width="450" Margin="0,50,0,0" BorderBrush="#994698" CornerRadius="6" BorderThickness="4">
-            <StackPanel Orientation="Horizontal" Background="#f5ddfd">
-                <Border Width="100" BorderBrush="#994698" CornerRadius="6" BorderThickness="2" Margin="-2,-2,-2,-2">
+        <Border Height="150" Width="500" Margin="0,50,0,0" BorderBrush="#994698" CornerRadius="15" BorderThickness="2"  Background="#f5ddfd">
+            <StackPanel Orientation="Horizontal">
+                <Border Width="120" BorderBrush="#994698" CornerRadius="20" BorderThickness="2" Margin="-3" Background="#994698">
                     <Viewbox Margin="4" HorizontalAlignment="Left" VerticalAlignment="Bottom" Stretch="Uniform" StretchDirection="Both">
                         <Label Content="{Binding Name, Mode=TwoWay}" Foreground="Black" FontWeight="Normal" />
                     </Viewbox>
                 </Border>
 
-                <StackPanel Margin="25,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Margin="25,-15,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                    <TextBox TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="18" Height="30"/>
-                    
-                    <Button Width="200" Height="35" Margin="0,10,0,0" Content="Afbeelding Toevoegen" Background="#994698" Foreground="White">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="5"></Setter>
+                    <TextBox TextWrapping="Wrap" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="40" Width="200" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="25">
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="10"/>
                             </Style>
-                        </Button.Resources>
-                    </Button>
+                        </TextBox.Resources>
+                    </TextBox>
+
+
                 </StackPanel>
-                <Border Width="110" BorderBrush="#994698" CornerRadius="6" BorderThickness="2" Margin="15,-2,-2,-2">
+                <Border Width="140" BorderBrush="#994698" CornerRadius="15" BorderThickness="2" Margin="19,-2,-2,-2" Background="White" Padding="10">
                     <WrapPanel >
 
                         <ScrollViewer VerticalScrollBarVisibility="Visible" 
-                          Height="250" HorizontalScrollBarVisibility="Hidden" Width="110">
+                          Height="250" HorizontalScrollBarVisibility="Hidden" Width="120">
 
                             <ListBox Name="ListBox2" ItemsSource="{Binding Groups}"
                          SelectionMode="Multiple" 
@@ -104,15 +105,22 @@
                          HorizontalContentAlignment="Stretch">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border x:Name="ExerciseBorderItem" 
-                                        BorderThickness="1"
-                                        BorderBrush="Purple"
-                                        CornerRadius="1"
-                                        Height="20">
-
-                                            <TextBlock Text="{Binding Path=GroupName}" />
-
-                                        </Border>
+                                        <StackPanel Width="100">
+                                            <Border x:Name="ExerciseBorderItem" 
+                                            Height="15">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="5" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Path=GroupName}" />
+                                                    <CheckBox Name="checkbox" HorizontalAlignment="Right"  IsChecked="False" Margin="0,0,0,0" IsEnabled="False"></CheckBox>
+                                                </Grid>
+                                            </Border>
+                                            <StackPanel DockPanel.Dock="Top" Height="6" Width="90">
+                                                <Line Stretch="Fill" Stroke="Gray" X2="1" Height="6" StrokeDashArray="2 2"  />
+                                            </StackPanel>
+                                        </StackPanel>
                                         <DataTemplate.Triggers>
                                             <DataTrigger 
                                          Binding="{Binding 
@@ -121,14 +129,8 @@
                                                      AncestorType={x:Type ListBoxItem}}, 
                                                      Path=IsSelected}" 
                                          Value="True">
-                                                <Setter 
-                                             TargetName="ExerciseBorderItem"
-                                             Property="BorderBrush" 
-                                             Value="Purple" />
-                                                <Setter
-                                        TargetName="ExerciseBorderItem" 
-                                        Property="BorderThickness"
-                                        Value="3" />
+                                                
+                                                <Setter TargetName="checkbox" Property="IsChecked" Value="True" />
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
@@ -139,15 +141,15 @@
                 </Border>
             </StackPanel>
         </Border>
-        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="160,5,0,5">
-            <Button Height="25" Width="75" Background="#994698" Content="Opslaan" Command="{Binding SaveLessonCommand}">
+        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="300,5,0,5">
+            <Button Height="25" Width="75" Background="#994698" Content="Opslaan" Command="{Binding SaveLessonCommand}" Foreground="White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"></Setter>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Height="25" Width="75" Margin="5,0,0,0" Command="{Binding CancelCommand}" Background="#FFD4C6C6" Content="Cancel" FontSize="12">
+            <Button Height="25" Width="75" Margin="5,0,0,0" Command="{Binding CancelCommand}" Background="#FFC5B9B9" Content="Cancel" FontSize="12" Foreground="White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"></Setter>
@@ -155,7 +157,7 @@
                 </Button.Resources>
             </Button>
         </StackPanel>
-        <StackPanel DockPanel.Dock="Top" Height="10" Width="1150">
+        <StackPanel DockPanel.Dock="Top" Height="10" Width="Auto" Margin="25,3,25,3">
             <Line Stretch="Fill" Stroke="Gray" X2="1" Height="10" StrokeDashArray="2 2" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="25,0,0,0" VerticalAlignment="Stretch" >

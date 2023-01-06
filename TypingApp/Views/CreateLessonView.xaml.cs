@@ -30,12 +30,14 @@ namespace TypingApp.Views
             ExerciseListBox = ListBox1;
             GroupListbox = ListBox2;
             createLessonView = this;
+
+            //Runs CreateLessonView_Loaded if the view is loaded
             Loaded += CreateLessonView_Loaded;
         }
+        
         private void CreateLessonView_Loaded(object sender, RoutedEventArgs e)
         {
-            CreateLessonViewModel.createLessonViewModel.SelectItems();
-            //CreateLessonViewModel.createLessonViewModel.SelectItems(CreateLessonViewModel.createLessonViewModel.GetExercises(90));
+            CreateLessonViewModel.createLessonViewModel.SelectItems();  
         }
     }
 }
