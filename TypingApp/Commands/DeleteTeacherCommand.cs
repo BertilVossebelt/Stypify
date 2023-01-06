@@ -38,7 +38,7 @@ public class DeleteTeacherCommand : CommandBase
             try
             {
                 // Remove teacher from database and notify user.
-                new AdminProvider().RemoveTeacher(_adminDashboardViewModel.DeleteEmail);
+                new AdminProvider().DeleteTeacher(_adminDashboardViewModel.DeleteEmail);
                 message = "Account is succesvol verwijderd.";
                 MessageBox.Show(message, "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
             }
