@@ -1,7 +1,5 @@
 using System.Windows;
-using System.Windows.Input;
 using TypingApp.Services;
-using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 
@@ -21,31 +19,26 @@ public class CreateExerciseCommand : CommandBase
         _userStore = userStore;
     }
 
+    /*
+     * Creates a new exercise and adds it to the database.
+     * ---------------------------------------------------
+     * Method should only be used for teachers.
+     */
     public override void Execute(object? parameter)
     {
         string? message;
-        // Check if name is provided.
-        if (_createExerciseViewModel.ExerciseName is "" or null)
+
+        // Validate input.
+        if (ValidateExerciseData())
         {
-            message = "Er is geen naam ingevoerd.";
-            MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            message = "Er is geen naam of geen tekst ingevoerd."; 
+            MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
         
-        // Check if exercise text is provided.
-        if (_createExerciseViewModel.ExerciseText is "" or null)
-        {
-            message = "Er is geen tekst ingevoerd.";
-            MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            return;
-        }
-        
-        // Store exercise if user is a teacher
+        // Store exercise if user is a teacher.
         if (_userStore.Teacher != null)
         {
-            new ExerciseProvider().Create(_userStore.Teacher.Id, _createExerciseViewModel.ExerciseName,
-                _createExerciseViewModel.ExerciseText);
-            
             message = $"{_createExerciseViewModel.ExerciseName} is opgeslagen.";
             MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -53,5 +46,14 @@ public class CreateExerciseCommand : CommandBase
         // Return back to previous page.
         var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
         navigateCommand.Execute(this);
+    }
+
+    /*
+     * Validates the input from the user.
+     */
+    private bool ValidateExerciseData()
+    {
+        if (_createExerciseViewModel.ExerciseName is "" or null) return false;
+        return _createExerciseViewModel.ExerciseText is not ("" or null);
     }
 }

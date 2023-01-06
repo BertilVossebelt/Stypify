@@ -13,6 +13,8 @@ public class NextExerciseCommand : CommandBase
 
     /*
      * Moves to the next exercise in the lesson.
+     * -----------------------------------------
+     * Method is only used for students.
      */
     public override void Execute(object? parameter)
     {

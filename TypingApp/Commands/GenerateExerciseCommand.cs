@@ -14,6 +14,11 @@ public class GenerateExerciseCommand : CommandBase
         _characters = characters;
     }
 
+    /*
+     * Created a new exercise with a random character from the list of characters.
+     * ---------------------------------------------------------------------------
+     * Method is used for students.
+     */
     public override void Execute(object? parameter)
     {
         var text = new Exercise(_characters).Text;
