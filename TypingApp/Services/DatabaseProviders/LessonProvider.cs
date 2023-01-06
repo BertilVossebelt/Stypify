@@ -88,12 +88,12 @@ public class LessonProvider : BaseProvider
         public Dictionary<string, object>? UpdateLesson(int lessonId, string name, int teacherId)
         {
             var cmd = GetSqlCommand();
-            cmd.CommandText = "UPDATE [Lesson] SET name = @name, teacher_id = @teacherId WHERE id = @lessonId; SELECT SCOPE_IDENTITY()";
+            cmd.CommandText = "UPDATE [Lesson] SET [name] = @name, teacher_id = @teacherId WHERE id = @lessonId; SELECT SCOPE_IDENTITY()";
             cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
             cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = name;
             cmd.Parameters.Add("@teacherId", SqlDbType.Int).Value = teacherId;
-            var id = (decimal)cmd.ExecuteScalar();
-            
-            return GetById((int)id);
+            var reader = cmd.ExecuteReader();
+            reader.Close();
+        return null;
         }
 }

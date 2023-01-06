@@ -25,6 +25,7 @@ public class User
         LastName = (string)props["last_name"];
         IsTeacher = (byte)props["teacher"] == 1;
         IsAdmin = (byte)props["admin"] == 1;
+        FullName = FirstName + " " + Preposition + " " + LastName;
 
         if (props["preposition"].ToString().Length > 0) Preposition = (string)props["preposition"];
     }
@@ -38,6 +39,6 @@ public class User
         LastName = lastName;
         IsTeacher = isTeacher;
         IsAdmin = isAdmin;
-        FullName = firstName + " " + Preposition+ " " + LastName;
+        FullName = FirstName + " " + Preposition+ " " + LastName;
     }
 }

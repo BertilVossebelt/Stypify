@@ -40,7 +40,7 @@ public class ExerciseProvider : BaseProvider
     public Dictionary<string, object>? LinkToLesson(int lesson_id, int exercise_id)
     {
         var cmd = GetSqlCommand();
-        cmd.CommandText = "INSERT INTO [LessonExercise] (lesson_id, exercise_id) VALUES (@lesson_id, @exercise_id); SELECT SCOPE_IDENTITY()";
+        cmd.CommandText = "INSERT INTO [Lesson_Exercise] (lesson_id, exercise_id, place_number) VALUES (@lesson_id, @exercise_id, 0); SELECT SCOPE_IDENTITY()";
         cmd.Parameters.Add("@lesson_id", SqlDbType.Int).Value = lesson_id;
         cmd.Parameters.Add("@exercise_id", SqlDbType.Int).Value = exercise_id;
         var id = (decimal)cmd.ExecuteScalar();

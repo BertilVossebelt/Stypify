@@ -217,7 +217,7 @@
                 </Grid>
             </DockPanel>
 
-            <!--  HIER IMPLEMENTEREN VAN LESSEN (er moet dan boven en onder ook nog wat aangepast/verwijderd/aangemaakt worden) -->
+            
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Nog geen groep geselecteerd', TargetNullValue= 'Nog geen groep geselecteerd'}"  Margin="21,0,15,0" FontSize="25" />
                 <TextBox Background="Transparent"
@@ -257,7 +257,7 @@
                                         <ColumnDefinition Width="300" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Height="25" Orientation="Horizontal">
-                                        <Label Content="{Binding Path=FullName}" Width="340" />
+                                        <Label Content="{Binding Path=.FullName}" Width="340" />
                                         <Label Content="{Binding Path=AmountOfExercises}"  />
                                     </StackPanel>
                                     <!--

@@ -147,6 +147,6 @@ public partial class App : Application
     {
         var myLessonsViewmodel = new NavigationService(_navigationStore, CreateMyLessonsViewModel);
 
-        return new CreateLessonViewModel(_userStore, myLessonsViewmodel);
+        return new CreateLessonViewModel(_userStore, _lessonStore, myLessonsViewmodel);
     }
 }

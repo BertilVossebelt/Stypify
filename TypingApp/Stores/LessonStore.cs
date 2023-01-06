@@ -22,7 +22,7 @@ public class LessonStore
 
     public List<Lesson> Lessons { get; private set; }
 
-    public Lesson CurrentLesson { get; private set; }
+    public Lesson CurrentLesson { get;  set; }
 
     public int CurrentExercise { get; private set; }
 
@@ -97,12 +97,39 @@ public class LessonStore
                 
                 // Get the name of the teacher.
                 var name = $"{_userStore.Teacher?.Preposition} {_userStore.Teacher?.LastName}";
-
+                //Console.WriteLine((int)lesson["id"]+" "+ (string)lesson["name"] );//testing
                 // Finally, create the lessons.
-                Lessons.Add(new Lesson(_userStore.Teacher!.Id, (string)lesson["name"], name, exercises));
+                Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], name, exercises));
             }
             LessonsLoaded?.Invoke(Lessons);
         }
+    }
+    public void GetLessonsForTeacher1()
+    {
+        if (_userStore.Teacher == null) return;
+        Lessons = new List<Lesson>();
+
+        
+        
+        
+            // Get the lessons of the group.
+            var lessons = new TeacherProvider().GetLessons(_userStore.Teacher.Id);
+            if (lessons == null) return;
+            foreach (var lesson in lessons)
+            {
+                // Get the exercises of the lesson.
+                var exercises = new List<Exercise>();
+                var result = new LessonProvider().GetExercises((int)lesson["id"]);
+                result?.ForEach(r => exercises.Add(new Exercise((string)r["text"], (string)r["name"])));
+
+                // Get the name of the teacher.
+                var name = $"{_userStore.Teacher?.Preposition} {_userStore.Teacher?.LastName}";
+                //Console.WriteLine((int)lesson["id"] + " " + (string)lesson["name"]);//testing
+                // Finally, create the lessons.
+                Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], name, exercises));
+            }
+            LessonsLoaded?.Invoke(Lessons);
+        
     }
 
     /*
