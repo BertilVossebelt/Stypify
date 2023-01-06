@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 
 namespace TypingApp.Models;
 
@@ -14,7 +13,7 @@ public class Exercise
     public int AmountOfCharacters { get; }
     public bool IsSelected { get; }
 
-    public Exercise(string text, string name)
+    public Exercise(string text, string? name)
     {
         Name = name;
         Text = text;
