@@ -17,68 +17,55 @@ namespace TypingApp.Commands
             _registerViewModel = registerViewModel;
         }
 
-        // Check of het registercommando uitgevoerd mag worden.
+        // Check if register command is allowed to execute.
         public override bool CanExecute(object? parameter)
         {
             return _registerViewModel.CanCreateAccount;
         }
-
-        // Voer het registercommando uit.
+        
+        /*
+         * Register a new student account.
+         * -------------------------------------
+         * Only used when user is not logged in.
+         */
         public override void Execute(object? parameter)
         {
-            if (DoesAccountExist())
-            {
-                ShowAccountAlreadyExistsError();
-            }
-            else
-            {
-                try
-                {
-                    string password = SecureStringToString(_registerViewModel.Password);
-                    PasswordHash hash = new PasswordHash(password);
-                    byte[] hashedPassword = hash.ToArray();
-                    byte[] salt = hash.Salt;
-                    
-                    new StudentProvider().Create(_registerViewModel.Email, hashedPassword, salt,
-                        _registerViewModel.Preposition, _registerViewModel.FirstName, _registerViewModel.LastName);
-
-                    ShowAccountSuccesfullyCreatedMessage();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-            }
-        }
-
-        // Check of het account al bestaat.
-        private bool DoesAccountExist()
-        {
+            string? message;
+            
             var student = new StudentProvider().GetByEmail(_registerViewModel.Email);
-            return student != null;
-        }
+            if (student != null)
+            { 
+                message = "Er bestaat al een leerling met dit e-mailadres.";
+                MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-        // Laat een error message zien als het account al bestaat.
-        private void ShowAccountAlreadyExistsError()
-        {
-            const string message = "Er bestaat al een account met dit emailadres.";
-            const MessageBoxButton type = MessageBoxButton.OK;
-            const MessageBoxImage icon = MessageBoxImage.Error;
+            try
+            {
+                // Try to register the student.
+                var password = SecureStringToString(_registerViewModel.Password);
+                var hash = new PasswordHash(password);
+                var hashedPassword = hash.ToArray();
+                var salt = hash.Salt;
 
-            MessageBox.Show(message, "Bestaand account", type, icon);
-        }
-
-        // Laat een error message zien als het account al bestaat.
-        private void ShowAccountSuccesfullyCreatedMessage()
-        {
-            const string message = "Account succesvol aangemaakt.";
-            const MessageBoxButton type = MessageBoxButton.OK;
-            const MessageBoxImage icon = MessageBoxImage.Information;
-
-            MessageBox.Show(message, "Account aangemaakt", type, icon);
+                // Add the student to the database.
+                new StudentProvider().Create(_registerViewModel.Email, hashedPassword, salt,
+                    _registerViewModel.Preposition, _registerViewModel.FirstName, _registerViewModel.LastName);
+               
+                // Notify the user that the account has been created.
+                message = "Account succesvol aangemaakt.";
+                MessageBox.Show(message, "Account aangemaakt", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception e)
+            {
+                // Display an error message if the account could not be created.
+                MessageBox.Show(e.ToString());
+            }
         }
         
-        // Convert de SecureString naar een string. (kan niet anders op dit moment)
+        /*
+         * Convert a SecureString to a string.
+         */
         private static string? SecureStringToString(SecureString value)
         {
             var valuePtr = IntPtr.Zero;

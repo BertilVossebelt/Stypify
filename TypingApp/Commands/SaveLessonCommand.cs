@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services;
@@ -25,6 +20,12 @@ namespace TypingApp.Commands
         {
             _teacherMyLessonsNavigationService = TeacherMyLessonsNavigationService;
         }
+        
+        /*
+         * This method is used to save a lesson to the database.
+         * -----------------------------------------------------
+         * Method should only be used for teachers.
+         */
         public override void Execute(object? parameter)
         {
             var lessonProvider = new LessonProvider();    

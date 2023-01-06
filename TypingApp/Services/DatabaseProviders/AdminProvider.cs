@@ -16,7 +16,7 @@ public class AdminProvider : BaseProvider
     }
     
     // Removes a teacher.
-    public Dictionary<string, object>? Delete(string email)
+    public Dictionary<string, object>? DeleteTeacher(string email)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "DELETE FROM [User] WHERE email = @email";
