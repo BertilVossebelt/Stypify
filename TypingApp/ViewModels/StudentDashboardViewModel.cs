@@ -5,6 +5,7 @@ using TypingApp.Commands;
 using TypingApp.Services;
 using System.ComponentModel;
 using TypingApp.Models;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 
 namespace TypingApp.ViewModels;
@@ -12,7 +13,7 @@ namespace TypingApp.ViewModels;
 public class StudentDashboardViewModel : ViewModelBase
 {
     private readonly UserStore _userStore;
-    private List<Lesson> _lessons;
+    private List<Lesson>? _lessons;
     private bool _isFilterChecked;
     private readonly LessonStore _lessonStore;
     private Lesson _selectedLessons;
@@ -22,9 +23,9 @@ public class StudentDashboardViewModel : ViewModelBase
     public ICommand LogOutButton { get; }
     public ICommand StartLessonCommand { get; set; }
     public string WelcomeNameText { get; set; }
-    public string CompletedExercisesText { get; set; }
+    public string? CompletedExercisesText { get; set; }
 
-    public List<Lesson> Lessons
+    public List<Lesson>? Lessons
     {
         get => _lessons;
         set
@@ -94,16 +95,18 @@ public class StudentDashboardViewModel : ViewModelBase
             : "Error, student = Null";
     }
 
-    private string GetCompletedExercises()
+    private string? GetCompletedExercises()
     {
-        return "Aantal gemaakte oefeningen: 0";
+        if (_userStore.Student == null) return null;
+        var completedExercises = new StudentProvider().GetStudentStatistics(_userStore.Student.Id);
+
+        return $"Aantal gemaakte oefeningen: {completedExercises?["completed_exercises"]}";
     }
 
     private void getNonCompletedLessons()
     {
         //TODO: get lessons that are not completed from database
-        Lessons.Clear();
-        // Lessons.Add(new Lesson(1, "Lesson", "Teacher 1"));
+        Lessons?.Clear();
     }
 
     private void FilterCompletedLessons(bool isChecked)

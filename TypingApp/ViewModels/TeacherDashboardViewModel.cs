@@ -115,7 +115,7 @@ public class TeacherDashboardViewModel : ViewModelBase
     private void GetStudentsFromGroup()
     {
         var students = new GroupProvider().GetStudents(SelectedItem.GroupId);
-
+        
         if (students == null) return;
         // TODO: Should be queried from database.
         var characters = new List<Character>
@@ -129,7 +129,6 @@ public class TeacherDashboardViewModel : ViewModelBase
         foreach (var student in students)
         {
             Students.Add(new Student(student, characters));
-
         }
 
         _selectedItem.AmountOfStudents = students.Count;

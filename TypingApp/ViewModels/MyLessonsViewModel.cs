@@ -76,7 +76,7 @@ public class MyLessonsViewModel : ViewModelBase
         Exercises = new List<Exercise>();
         Lessons = new List<Lesson>();
 
-        lessonStore.CurrentLesson = null;
+        lessonStore.SetCurrentLesson(null);
         // Check if user is a teacher.
         if (userStore.Teacher == null) return;
 
@@ -85,7 +85,7 @@ public class MyLessonsViewModel : ViewModelBase
         exercises?.ForEach(e => Exercises?.Add(new Exercise((string)e["text"], (string)e["name"])));
 
         // Populate lessons
-        lessonStore.GetLessons();
+        lessonStore.LoadLessons();
         Lessons = lessonStore.Lessons;
     }
 }

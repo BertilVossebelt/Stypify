@@ -105,4 +105,43 @@ public class StudentProvider : BaseProvider
         
         return ConvertToList(reader, "StudentProvider.LinkToGroup")?[0];
     }
+    
+    public Dictionary<string, object>? GetStudentStatistics(int studentId)
+    {
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [Student] WHERE student_id = @StudentId";
+        cmd.Parameters.Add("@StudentId", SqlDbType.Int).Value = studentId;
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader, "StudentProvider.GetStudentStatistics")?[0];
+    }
+
+    public Dictionary<string, object>? CreateStudentStatistics(int studentId)
+    {
+        // Create link between student and group.
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "INSERT INTO [Student] (student_id, completed_exercises) VALUES (@StudentId, @CompletedExercises); SELECT SCOPE_IDENTITY()";
+        cmd.Parameters.Add("@StudentId", SqlDbType.Int).Value = studentId;
+        cmd.Parameters.Add("@CompletedExercises", SqlDbType.Int).Value = 0;
+        var id = (decimal)cmd.ExecuteScalar();
+        
+        // Retrieve the newly created record.
+        cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [Student] WHERE id = @id";
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+        var reader = cmd.ExecuteReader();
+        
+        return ConvertToList(reader, "StudentProvider.CreateStudentStatistics")?[0];
+    }
+    
+    public Dictionary<string, object>? UpdateStudentStatistics(int studentId, int completedExercises)
+    {
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "UPDATE [Student] SET completed_exercises = @CompletedExercises WHERE student_id = @StudentId";
+        cmd.Parameters.Add("@StudentId", SqlDbType.Int).Value = studentId;
+        cmd.Parameters.Add("@CompletedExercises", SqlDbType.Int).Value = completedExercises;
+        cmd.ExecuteNonQuery();
+
+        return GetStudentStatistics(studentId);
+    }
 }

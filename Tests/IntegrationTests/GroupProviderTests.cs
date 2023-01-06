@@ -190,6 +190,4 @@ public class GroupProviderTests
         // Assert
         Assert.AreEqual("UPDATED", (string)updatedGroup?["code"]!);
     }
-
-    
 }

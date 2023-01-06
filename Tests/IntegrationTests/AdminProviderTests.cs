@@ -1,4 +1,3 @@
-using System.Transactions;
 using NUnit.Framework;
 using Tests.Attributes;
 using TypingApp.Services.DatabaseProviders;

@@ -7,14 +7,14 @@ namespace TypingApp.Services;
 
 public class AuditExerciseService
 {
-    private List<Character> _audited = null!;
+    private List<Character>? _audited = null!;
     private string _input = null!;
     private string _expected = null!;
     
     /*
     * Audits the user input and updates the exercise accordingly.
     */
-    public List<Character> Audit(string input, string expected)
+    public List<Character>? Audit(string input, string expected)
     {
         _input = input; // These need to be here for some reason, don't move them to the constructor.
         _expected = expected;

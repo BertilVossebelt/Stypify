@@ -92,8 +92,8 @@ public class LessonProvider : BaseProvider
             cmd.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
             cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = name;
             cmd.Parameters.Add("@teacherId", SqlDbType.Int).Value = teacherId;
-            var reader = cmd.ExecuteReader();
-            reader.Close();
-        return null;
+            cmd.ExecuteNonQuery();
+
+            return GetById(lessonId);
         }
 }

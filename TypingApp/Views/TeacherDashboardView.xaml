@@ -219,7 +219,7 @@
 
             
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Nog geen groep geselecteerd', TargetNullValue= 'Nog geen groep geselecteerd'}"  Margin="21,0,15,0" FontSize="25" />
+                <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Geen groep geselecteerd', TargetNullValue= 'Geen groep geselecteerd'}"  Margin="21,0,15,0" FontSize="25" />
                 <TextBox Background="Transparent"
                          BorderThickness="0"
                          Text="{Binding SelectedItem.GroupCode, Mode=OneWay, FallbackValue=Geen Code, TargetNullValue=Geen Code}"
@@ -237,7 +237,6 @@
                         BorderThickness="0"
                         Height="20" Width="15"
                         VerticalAlignment="Bottom"/>
-
             </StackPanel>
             
             <StackPanel Margin="15,15,15,0">
@@ -258,26 +257,14 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Height="25" Orientation="Horizontal">
                                         <Label Content="{Binding Path=.FullName}" Width="340" />
-                                        <Label Content="{Binding Path=AmountOfExercises}"  />
+                                        <Label Content="{Binding Path=.CompletedExercises}"  />
                                     </StackPanel>
-                                    <!--
-                                        "<StatusBar Width="260" Margin="0,0,0,0" Height="4" HorizontalAlignment="Left"
-                                               Grid.Column="1" />
-                                    
-                                    <Label Content="55%" Grid.Column="1" HorizontalAlignment="Right"
-                                           VerticalAlignment="Stretch" Padding="0,0,0,0"
-                                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                           Margin="0,0,5,0" />
-                                    -->
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-
-
         </StackPanel>
-
     </Grid>
 </UserControl>

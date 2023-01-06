@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TypingApp.Models;
+using TypingApp.Services.DatabaseProviders;
 
 namespace TypingApp.Stores;
 
@@ -43,7 +44,7 @@ public class UserStore
             new('a'),
             new('t'),
         };
-        
+
         Student = new Student(props, characters);
         if (Student != null) StudentCreated?.Invoke(Student);
     }

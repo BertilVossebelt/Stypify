@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using NUnit.Framework;
+using TypingApp.Models;
 using TypingApp.Services;
 
 namespace Tests.UnitTests;

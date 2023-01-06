@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
 
@@ -10,13 +9,13 @@ public class LessonStore
 {
     private UserStore _userStore;
     
-    public List<Lesson> Lessons { get; private set; }
-    public Lesson CurrentLesson { get; private set; }
+    public List<Lesson>? Lessons { get; private set; }
+    public Lesson? CurrentLesson { get; private set; }
     public int CurrentExercise { get; private set; }
-    public List<Character> AuditedTextAsCharList { get; private set; }
+    public List<Character>? AuditedTextAsCharList { get; private set; }
 
-    public event Action<List<Character>>? AuditedExerciseCreated;
-    public event Action<List<Lesson>>? LessonsLoaded;
+    public event Action<List<Character>?>? AuditedExerciseCreated;
+    public event Action<List<Lesson>?>? LessonsLoaded;
     public event Action<Lesson>? CurrentLessonUpdated;
     public Action<int>? NextExercise;
 
@@ -26,11 +25,6 @@ public class LessonStore
     }
     
     public void LoadLessons()
-    {
-        GetLessons();
-    }
-
-    public void GetLessons()
     {
         Lessons = new List<Lesson>();
         List<Dictionary<string, object>>? groups = null;
@@ -76,10 +70,10 @@ public class LessonStore
      * Also sets the current exercise if
      * user is a student.
      */
-    public void SetCurrentLesson(Lesson lesson)
+    public void SetCurrentLesson(Lesson? lesson)
     {
         // Update current exercise if user is a student.
-        if (_userStore.Student != null)
+        if (_userStore.Student != null && lesson != null)
         {
             var dbLesson = new StudentProvider().GetLessonById(lesson.Id, _userStore.Student.Id);
             if (dbLesson?["place_number"] != null)
@@ -94,7 +88,7 @@ public class LessonStore
         }
 
         CurrentLesson = lesson;
-        CurrentLessonUpdated?.Invoke(CurrentLesson);
+        if (CurrentLesson != null) CurrentLessonUpdated?.Invoke(CurrentLesson);
     }
 
     /*
@@ -105,7 +99,7 @@ public class LessonStore
      */
     public void GoToNextExercise()
     {
-        CurrentExercise = CurrentExercise < CurrentLesson.Exercises.Count - 1 ? CurrentExercise + 1 : 0;
+        CurrentExercise = CurrentLesson != null && CurrentExercise < CurrentLesson.Exercises.Count - 1 ? CurrentExercise + 1 : 0;
         NextExercise?.Invoke(CurrentExercise);
     }
 
@@ -114,7 +108,7 @@ public class LessonStore
     * Audited exercises
     * ==================
     */
-    public void CreateAuditedExercise(List<Character> characters)
+    public void CreateAuditedExercise(List<Character>? characters)
     {
         AuditedTextAsCharList = characters;
         AuditedExerciseCreated?.Invoke(AuditedTextAsCharList);
