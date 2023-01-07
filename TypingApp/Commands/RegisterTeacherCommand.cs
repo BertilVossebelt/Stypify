@@ -4,6 +4,7 @@ using System.Security;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
+using TypingApp.Services.PasswordHash;
 using TypingApp.ViewModels;
 
 namespace TypingApp.Commands;

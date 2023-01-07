@@ -3,6 +3,7 @@ using System.Net;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
+using TypingApp.Services.PasswordHash;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 using NavigationService = TypingApp.Services.NavigationService;

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Tests.Attributes;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
+using TypingApp.Services.PasswordHash;
 
 namespace Tests.IntegrationTests;
 [TestFixture]

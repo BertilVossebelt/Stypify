@@ -122,7 +122,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
         _propertyNameToErrorsDictionary = new Dictionary<string, List<string>>();
     }
     
-    // Events voor data validation
+    // Events for data validation
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
     private void OnErrorsChanged(string propertyName)
     {
@@ -153,7 +153,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
         return _propertyNameToErrorsDictionary.GetValueOrDefault(propertyName, new List<string>());
     }
 
-    // Clear de errors om te checken of de data nu wel correct is.
+    // Clear the errors to check if new data is correct now.
     private void ClearErrors(string propertyName)
     {
         _propertyNameToErrorsDictionary.Remove(propertyName);
@@ -161,7 +161,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
         OnErrorsChanged(propertyName);
     }
     
-    // Voeg een error toe aan de dictionary om dit bij te houden.
+    // Add the error to a dictionary to keep track of it.
     private void AddError(string errorMessage, string propertyName)
     {
         if (!_propertyNameToErrorsDictionary.ContainsKey(propertyName))
@@ -172,7 +172,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
         OnErrorsChanged(propertyName);
     }
 
-    // Check of er errors zijn die de email kan hebben.
+    // Check for potential email errors.
     private void CheckEmailErrors()
     {
         if (string.IsNullOrWhiteSpace(Email))
@@ -182,7 +182,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
         else if (!isValidEmail(Email)) AddError("Voer een correct emailadres in.", nameof(Email));
     }
 
-    // Check of er errors zijn die de voornaam kan hebben.
+    // Check for potential first name errors.
     private void CheckFirstNameErrors()
     {
         if (string.IsNullOrWhiteSpace(FirstName))
@@ -191,7 +191,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
             AddError("Voornaam mag alleen letters bevatten.", nameof(FirstName));
     }
 
-    // Check of er errors zijn die de achternaam kan hebben.
+    // Check for potential last name errors.
     private void CheckLastNameErrors()
     {
         if (string.IsNullOrWhiteSpace(LastName))
@@ -200,7 +200,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
             AddError("Achternaam mag alleen letters bevatten.", nameof(LastName));
     }
 
-    //Check of er errors zijn die het wachtwoord kan hebben.
+    //Check for password errors.
     private void CheckPasswordErrors()
     {
         if (!PasswordConfirmCorrect(Password, PasswordConfirm))
@@ -214,7 +214,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
             AddError("Wachtwoord moet minimaal 6 karakters bevatten.", nameof(Password));
     }
 
-    // Check of er een correct emailadres gebruikt wordt (niet strict).
+    // Check for a correct email address.
     private bool isValidEmail(string email)
     {
         var pattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|" +
@@ -224,7 +224,7 @@ public class RegisterViewModel : ViewModelBase, INotifyDataErrorInfo
         return regex.IsMatch(email);
     }
 
-    // Check of de twee ingevoerde wachtwoorden gelijk zijn.
+    // Check if the two entered passwords are the same.
     private bool PasswordConfirmCorrect(SecureString password, SecureString passwordConfirm)
     {
         var bstr1 = IntPtr.Zero;

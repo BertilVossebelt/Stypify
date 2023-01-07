@@ -69,7 +69,7 @@ public partial class App : Application
 
     private RegisterViewModel CreateRegisterViewModel()
     {
-        var loginNavigationService = new NavigationService(_navigationStore, CreateRegisterViewModel);
+        var loginNavigationService = new NavigationService(_navigationStore, CreateLoginViewModel);
 
         return new RegisterViewModel(loginNavigationService);
     }

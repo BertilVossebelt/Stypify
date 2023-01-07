@@ -9,11 +9,13 @@ namespace TypingApp.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
+        // Commands
         public ICommand GoToRegisterButton { get; }
         public ICommand LoginButton { get; }
         public string Email { get; set; }
         public SecureString Password { get; set; }
 
+        // Constructor
         public LoginViewModel(NavigationService registerNavigationService,
             NavigationService adminDashboardNavigationService, NavigationService studentDashboardNavigationService,
             NavigationService teacherDashboardNavigationService, UserStore userStore, LessonStore lessonStore)
