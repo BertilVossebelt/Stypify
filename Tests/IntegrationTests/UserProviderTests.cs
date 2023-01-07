@@ -49,6 +49,5 @@ public class UserProviderTests
 
         // Assert
         Assert.AreEqual("unit@test.nl", userByEmail?["email"]!);
-
     }
 }

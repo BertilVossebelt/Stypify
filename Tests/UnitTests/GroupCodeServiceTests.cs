@@ -29,30 +29,29 @@ public class GroupCodeServiceTests
         _hash = new PasswordHash("UnitTest");
         _password = _hash.ToArray();
     }
-    //Class_Method_Should_DoSomething_When_Situation()
 
-    [Test]
+    [Test, Rollback]
     public void GroupCodeService_GenerateCode_Should_Return8NumberCode_When_Generated()
     {
         // Arrange
         var groupCodeService = new GroupCodeService();
 
         // Act
-        string groupCode = groupCodeService.GenerateCode();
+        var groupCode = groupCodeService.GenerateCode();
 
         // Assert
         Assert.AreEqual(8, groupCode.Length);
     }
 
-    [Test]
+    [Test, Rollback]
     public void GroupCodeService_GenerateCode_Should_BeUnique_When_Generated()
     {
         // Arrange
         var groupCodeService = new GroupCodeService();
 
         // Act
-        string groupCode1 = groupCodeService.GenerateCode();
-        string groupCode2 = groupCodeService.GenerateCode();
+        var groupCode1 = groupCodeService.GenerateCode();
+        var groupCode2 = groupCodeService.GenerateCode();
 
         // Assert
         Assert.AreNotEqual(groupCode1,groupCode2);
