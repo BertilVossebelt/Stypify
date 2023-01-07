@@ -5,7 +5,6 @@ using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
 
 namespace Tests.IntegrationTests;
-
 [TestFixture]
 public class StudentProviderTests
 {

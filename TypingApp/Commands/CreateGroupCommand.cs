@@ -29,7 +29,7 @@ public class CreateGroupCommand : CommandBase
     {
         string? message;
 
-        if (ValidateGroupData())
+        if (!ValidateGroupData())
         {
             message = "Er is geen naam ingevoerd of geen groepscode gegenereerd."; 
             MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Information);

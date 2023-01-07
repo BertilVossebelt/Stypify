@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using TypingApp.Models;
-using TypingApp.Services;
+﻿using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
