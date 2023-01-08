@@ -44,8 +44,14 @@ public class ExerciseProvider : BaseProvider
         cmd.Parameters.Add("@lesson_id", SqlDbType.Int).Value = lesson_id;
         cmd.Parameters.Add("@exercise_id", SqlDbType.Int).Value = exercise_id;
         var id = (decimal)cmd.ExecuteScalar();
-        
-        return GetById((int)id);
+
+        // Retrieve the newly created link.
+        cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT * FROM [Lesson_Exercise] WHERE id = @id";
+        cmd.Parameters.Add("@id", SqlDbType.Int).Value = (int)id;
+        var reader = cmd.ExecuteReader();
+
+        return ConvertToList(reader, "LessonProvider.LinkToLesson")?[0];
 
     }
 
