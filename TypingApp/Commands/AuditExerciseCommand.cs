@@ -54,7 +54,7 @@ public class AuditExerciseCommand : CommandBase
         var placeNumber = currentExercise < _lessonStore.CurrentLesson.Exercises.Count - 1 ? currentExercise + 1 : 0;
 
         // Check if the user is at the end of lesson to set completed.
-        if (placeNumber == _lessonStore.CurrentLesson.Exercises.Count - 1)
+        if (currentExercise == _lessonStore.CurrentLesson.Exercises.Count -1)
         {
             completed = 1;
             _lessonStore.CurrentLesson.Completed = true;

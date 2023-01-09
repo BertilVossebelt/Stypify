@@ -19,6 +19,14 @@ public class Lesson
 
     public List<Exercise> Exercises { get; set; }
 
+    public Lesson(int id, string name, string teacherName, List<Exercise> exercises)
+    {
+        Id = id;
+        Name = name;
+        TeacherName = teacherName;
+        Exercises = exercises;
+    }
+
     public Lesson(int id, string name, string teacherName, bool completed , List<Exercise> exercises)
     {
         Id = id;

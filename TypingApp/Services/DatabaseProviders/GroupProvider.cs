@@ -28,13 +28,23 @@ public class GroupProvider : BaseProvider
         return ConvertToList(reader, "GroupProvider.GetByCode")?[0];
     }
 
-    public List<Dictionary<string, object>>? GetLessons(int groupId)
+    public List<Dictionary<string, object>>? GetStudentLessons(int groupId)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "SELECT l.id, l.name, l.teacher_id, l.image, ul.completed FROM [Lesson] l JOIN [Group_Lesson] gl ON l.id = gl.lesson_id JOIN [User_Lesson] ul ON l.id = ul.lesson_id WHERE gl.group_id = @groupId";
         cmd.Parameters.Add("@groupId", SqlDbType.Int).Value = groupId;
         var reader = cmd.ExecuteReader();
         
+        return ConvertToList(reader, "GroupProvider.GetLessons");
+    }
+
+    public List<Dictionary<string, object>>? GetLessons(int groupId)
+    {
+        var cmd = GetSqlCommand();
+        cmd.CommandText = "SELECT l.id, l.name, l.teacher_id, l.image FROM [Lesson] l JOIN [Group_Lesson] gl ON l.id = gl.lesson_id WHERE gl.group_id = @groupId";
+        cmd.Parameters.Add("@groupId", SqlDbType.Int).Value = groupId;
+        var reader = cmd.ExecuteReader();
+
         return ConvertToList(reader, "GroupProvider.GetLessons");
     }
 

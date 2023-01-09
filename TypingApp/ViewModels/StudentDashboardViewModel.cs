@@ -43,7 +43,7 @@ public class StudentDashboardViewModel : ViewModelBase
             _selectedLessons = value;
             _lessonStore.SetCurrentLesson(SelectedLesson);
             StartLessonCommand.Execute(this);
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(_selectedLessons));
         }
     }
 
@@ -54,7 +54,7 @@ public class StudentDashboardViewModel : ViewModelBase
         {
             _isFilterChecked = value;
             FilterCompletedLessons(IsFilterChecked);
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(_isFilterChecked));
         }
     }
 
@@ -68,6 +68,8 @@ public class StudentDashboardViewModel : ViewModelBase
 
         WelcomeNameText = GetName();
         CompletedExercisesText = GetCompletedExercises();
+
+        _lessonStore.LoadLessons();
         Lessons = _lessonStore.Lessons; 
 
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
