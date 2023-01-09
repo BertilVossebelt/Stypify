@@ -38,7 +38,7 @@ public class StudentProvider : BaseProvider
         return ConvertToList(reader, "StudentProvider.GetLessonById")?[0];
     }
     
-    public Dictionary<string, object>? UpdateLesson(int lessonId, int studentId, int placeNumber)
+    public Dictionary<string, object>? UpdateLesson(int lessonId, int studentId, int completed, int placeNumber)
     {
         var cmd = GetSqlCommand();
         cmd.CommandText = "UPDATE [User_Lesson] SET place_number = @placeNumber WHERE lesson_id = @lessonId AND student_id = @studentId";
@@ -46,7 +46,14 @@ public class StudentProvider : BaseProvider
         cmd.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
         cmd.Parameters.Add("@placeNumber", SqlDbType.Int).Value = placeNumber;
         cmd.ExecuteNonQuery();
-        
+
+        var cmd2 = GetSqlCommand();
+        cmd2.CommandText = "UPDATE [User_Lesson] SET completed = @completed WHERE lesson_id = @lessonId AND student_id = @studentId";
+        cmd2.Parameters.Add("@lessonId", SqlDbType.Int).Value = lessonId;
+        cmd2.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
+        cmd2.Parameters.Add("@completed", SqlDbType.TinyInt).Value = completed;
+        cmd2.ExecuteNonQuery();
+
         return GetLessonById(lessonId, studentId);
     }
     

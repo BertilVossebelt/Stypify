@@ -179,11 +179,6 @@
                                                     </Border.Background>
                                                 </Border>
 
-                                                <StatusBar Width="100" Height="7" HorizontalAlignment="Center"
-                                                           VerticalAlignment="Top" Margin="0,15,0,0" />
-                                                <Label Content="0%" Foreground="White" VerticalAlignment="Top"
-                                                       HorizontalAlignment="Center" Margin="80,17,0,0">
-                                                </Label>
                                                 <Label x:Name="StudentAmountLabel" Content="{Binding TeacherName}"
                                                        Foreground="White" FontSize="11" HorizontalAlignment="Left"
                                                        VerticalAlignment="Bottom" Margin="10,0,0,15" FontStyle="Italic"
