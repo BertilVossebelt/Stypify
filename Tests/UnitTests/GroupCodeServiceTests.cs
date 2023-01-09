@@ -4,6 +4,7 @@ using Tests.Attributes;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
 using System.Security.Policy;
+using TypingApp.Services.PasswordHash;
 
 namespace Tests.UnitTests;
 

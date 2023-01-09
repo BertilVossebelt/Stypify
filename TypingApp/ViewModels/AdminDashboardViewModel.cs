@@ -138,11 +138,13 @@ public class AdminDashboardViewModel : ViewModelBase, INotifyDataErrorInfo
         }
     }
     
+    // Commands
     public string WelcomeMessage { get; set; }
     public ICommand DeleteTeacherButton { get; }
     public ICommand RegisterTeacherButton { get; }
     public ICommand LogOutButton { get; }
 
+    // Constructor
     public AdminDashboardViewModel(UserStore userStore, NavigationService loginNavigationService)
     {
         _userStore = userStore;

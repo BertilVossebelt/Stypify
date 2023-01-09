@@ -4,6 +4,7 @@ using System.Security;
 using System.Windows;
 using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
+using TypingApp.Services.PasswordHash;
 using TypingApp.ViewModels;
 
 namespace TypingApp.Commands
@@ -50,7 +51,7 @@ namespace TypingApp.Commands
 
                 // Add the student to the database.
                 new StudentProvider().Create(_registerViewModel.Email, hashedPassword, salt,
-                    _registerViewModel.Preposition, _registerViewModel.FirstName, _registerViewModel.LastName);
+                    _registerViewModel.FirstName, _registerViewModel.Preposition, _registerViewModel.LastName);
                
                 // Notify the user that the account has been created.
                 message = "Account succesvol aangemaakt.";
