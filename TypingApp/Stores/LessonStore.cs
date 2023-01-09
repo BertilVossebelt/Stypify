@@ -38,6 +38,8 @@ public class LessonStore
         {
             // Get the lessons of the group.
             var lessons = new GroupProvider().GetLessons((int)group["id"]);
+            //Checks if the user is a student to get the right lessons that have the completed attribute.
+            if (_userStore.Student != null) lessons = new GroupProvider().GetStudentLessons((int)group["id"]);
             if (lessons == null) return;
             
             foreach (var lesson in lessons)
@@ -50,20 +52,65 @@ public class LessonStore
                 // Get the name of the teacher using a helper function.
                 var teacherName = GetTeacherName((int)lesson["teacher_id"]);
                 
+                // Get the completed lessons if user is a student, otherwise it will create the lesson.
+                if(_userStore.Student != null)
+                {
+                    // Gets the variable that checks if a lesson is completed or not.
+                    var completed = lesson["completed"].Equals(0) ? false : true;
+
+                    // Finally, create the lessons.
+                    Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, completed, exercises));
+                }
                 // Finally, create the lessons.
-                Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, exercises));
+                else Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, exercises));
             }
         }
         
         LessonsLoaded?.Invoke(Lessons);
     }
-    
+    public void LoadUncompletedLessons()
+    {
+        Lessons = new List<Lesson>();
+        List<Dictionary<string, object>>? groups = null;
+
+        // Get the groups from the user that is logged in.
+        if (_userStore.Student != null) groups = new StudentProvider().GetGroups(_userStore.Student.Id);
+        if (_userStore.Teacher != null) groups = new TeacherProvider().GetGroups(_userStore.Teacher.Id);
+        if (groups == null) return;
+
+        foreach (var group in groups)
+        {
+            // Get the uncompleted lessons of the group.
+            var lessons = new GroupProvider().GetUncompletedLessons((int)group["id"]);
+            if (lessons == null) return;
+
+            foreach (var lesson in lessons)
+            {
+                // Get the exercises of the lesson and add them to a list
+                var exercises = new List<Exercise>();
+                var result = new LessonProvider().GetExercises((int)lesson["id"]);
+                result?.ForEach(r => exercises.Add(new Exercise((string)r["text"], (string)r["name"])));
+
+                // Get the name of the teacher using a helper function.
+                var teacherName = GetTeacherName((int)lesson["teacher_id"]);
+                // Gets the variable that checks if a lesson is completed or not.
+                var completed = lesson["completed"].Equals(0) ? false : true;
+
+                // Finally, create the lessons.
+                Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, completed, exercises));
+            }
+        }
+
+        LessonsLoaded?.Invoke(Lessons);
+    }
+
+
     /*
     * ========
     * Lessons
     * ========
     */
-    
+
     /*
      * Updates the current lesson.
      * ---------------------------------

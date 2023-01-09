@@ -41,6 +41,8 @@ public class StudentDashboardViewModel : ViewModelBase
         set
         {
             _selectedLessons = value;
+            _lessonStore.SetCurrentLesson(SelectedLesson);
+            StartLessonCommand.Execute(this);
             OnPropertyChanged(nameof(_selectedLessons));
         }
     }
@@ -52,7 +54,7 @@ public class StudentDashboardViewModel : ViewModelBase
         {
             _isFilterChecked = value;
             FilterCompletedLessons(IsFilterChecked);
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(_isFilterChecked));
         }
     }
 
@@ -66,23 +68,17 @@ public class StudentDashboardViewModel : ViewModelBase
 
         WelcomeNameText = GetName();
         CompletedExercisesText = GetCompletedExercises();
+
+        _lessonStore.LoadLessons();
         Lessons = _lessonStore.Lessons; 
 
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
         StartLessonCommand = new NavigateCommand(lessonNavigationService);
         AddToGroupButton = new NavigateCommand(linkToGroupNavigationService); 
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
+        
+    }
 
-        PropertyChanged -= SelectLesson;
-        PropertyChanged += SelectLesson;
-    }
-    
-    private void SelectLesson(object? sender, PropertyChangedEventArgs e)
-    {
-        _lessonStore.SetCurrentLesson(SelectedLesson);
-        StartLessonCommand.Execute(this);
-    }
-    
     private string GetName()
     {
         if (_userStore.Student?.Preposition != null)
@@ -105,8 +101,8 @@ public class StudentDashboardViewModel : ViewModelBase
 
     private void getNonCompletedLessons()
     {
-        //TODO: get lessons that are not completed from database
-        Lessons?.Clear();
+        _lessonStore.LoadUncompletedLessons();
+        Lessons = _lessonStore.Lessons;
     }
 
     private void FilterCompletedLessons(bool isChecked)
@@ -117,6 +113,7 @@ public class StudentDashboardViewModel : ViewModelBase
         }
         else
         {
+            _lessonStore.LoadLessons();
             Lessons = _lessonStore.Lessons;
         }
     }

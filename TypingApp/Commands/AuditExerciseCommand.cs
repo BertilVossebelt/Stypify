@@ -47,15 +47,23 @@ public class AuditExerciseCommand : CommandBase
         var lessonId = _lessonStore.CurrentLesson.Id;
         var studentId = _userStore.Student.Id;
         var currentExercise = _lessonStore.CurrentExercise;
+        var completed = _lessonStore.CurrentLesson.Completed.Equals(true) ? 1 : 0;
         
         var placeNumber = currentExercise < _lessonStore.CurrentLesson.Exercises.Count - 1 ? currentExercise + 1 : 0;
-        
+
+        // Check if the user is at the end of lesson to set completed.
+        if (currentExercise == _lessonStore.CurrentLesson.Exercises.Count -1)
+        {
+            completed = 1;
+            _lessonStore.CurrentLesson.Completed = true;
+        }
         // Get the lesson from the database.
         var studentProvider = new StudentProvider();
         var lesson = studentProvider.GetLessonById(lessonId, studentId);
         
         // If the lesson is null, create a new one.
         if (lesson == null) studentProvider.CreateLesson(lessonId, studentId, placeNumber); // Create a new lesson.
-        else studentProvider.UpdateLesson(lessonId, studentId, placeNumber); // Update place_number.
+        else studentProvider.UpdateLesson(lessonId, studentId, completed, placeNumber); // Update place_number and completed.
+
     }
 }

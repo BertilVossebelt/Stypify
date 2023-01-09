@@ -59,7 +59,7 @@ public class GroupCodeServiceTests
     }
 
     [Test, Rollback]
-    public void GroupCodeService_UpdateCodeInDatabase_Should_UpdateCodeInDataBase_When_Executed()
+    public void GroupCodeService_UpdateCodeInDatabase_Should_UpdateCodeInDataBase_When_GivenIdAndNewCode()
     {
         // Arrange
         var groupCodeService = new GroupCodeService();
