@@ -39,9 +39,9 @@ public class LessonStore
             // Get the lessons of the group.
             var lessons = new GroupProvider().GetLessons((int)group["id"]);
             //Checks if the user is a student to get the right lessons that have the completed attribute.
-            if (_userStore.Student != null) lessons = new GroupProvider().GetStudentLessons((int)group["id"]);
+            if (_userStore.Student != null) lessons = new GroupProvider().GetLessonsWithCompleteAttribute((int)group["id"]);
             if (lessons == null) return;
-            
+           
             foreach (var lesson in lessons)
             {
                 // Get the exercises of the lesson and add them to a list
@@ -56,7 +56,7 @@ public class LessonStore
                 if(_userStore.Student != null)
                 {
                     // Gets the variable that checks if a lesson is completed or not.
-                    var completed = lesson["completed"].Equals(0) ? false : true;
+                    var completed = lesson["completed"].Equals(0) || lesson["completed"].Equals(DBNull.Value) ? false : true;
 
                     // Finally, create the lessons.
                     Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, completed, exercises));
@@ -81,7 +81,7 @@ public class LessonStore
         foreach (var group in groups)
         {
             // Get the uncompleted lessons of the group.
-            var lessons = new GroupProvider().GetUncompletedLessons((int)group["id"]);
+            var lessons = new GroupProvider().GetLessonsWithCompleteAttribute ((int)group["id"]);
             if (lessons == null) return;
 
             foreach (var lesson in lessons)
@@ -93,11 +93,16 @@ public class LessonStore
 
                 // Get the name of the teacher using a helper function.
                 var teacherName = GetTeacherName((int)lesson["teacher_id"]);
-                // Gets the variable that checks if a lesson is completed or not.
-                var completed = lesson["completed"].Equals(0) ? false : true;
 
+                // Gets the variable that checks if a lesson is completed or not.
+                var completed = lesson["completed"].Equals(0) || lesson["completed"].Equals(DBNull.Value) ? false : true;
+
+                if (!completed)
+                {
                 // Finally, create the lessons.
                 Lessons.Add(new Lesson((int)lesson["id"], (string)lesson["name"], teacherName, completed, exercises));
+                }
+
             }
         }
 
