@@ -1,5 +1,6 @@
 using System.Windows;
 using TypingApp.Services;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
 using TypingApp.ViewModels;
 
@@ -29,7 +30,7 @@ public class CreateExerciseCommand : CommandBase
         string? message;
 
         // Validate input.
-        if (ValidateExerciseData())
+        if (!ValidateExerciseData())
         {
             message = "Er is geen naam of geen tekst ingevoerd."; 
             MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -39,6 +40,9 @@ public class CreateExerciseCommand : CommandBase
         // Store exercise if user is a teacher.
         if (_userStore.Teacher != null)
         {
+            //Save to database using a provider.
+            new ExerciseProvider().Create(_userStore.Teacher.Id, _createExerciseViewModel.ExerciseName, _createExerciseViewModel.ExerciseText);
+
             message = $"{_createExerciseViewModel.ExerciseName} is opgeslagen.";
             MessageBox.Show(message, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -54,6 +58,7 @@ public class CreateExerciseCommand : CommandBase
     private bool ValidateExerciseData()
     {
         if (_createExerciseViewModel.ExerciseName is "" or null) return false;
-        return _createExerciseViewModel.ExerciseText is not ("" or null);
+        if (_createExerciseViewModel.ExerciseText is "" or null) return false;
+        else return true;
     }
 }
