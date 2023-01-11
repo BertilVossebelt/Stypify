@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
-using TypingApp.Services;
+using TypingApp.Models;
 using TypingApp.Services.DatabaseProviders;
+using TypingApp.Services.PasswordHash;
 using TypingApp.ViewModels;
 
 namespace TypingApp.Commands;
@@ -19,46 +18,54 @@ public class RegisterTeacherCommand : CommandBase
         _adminDashboardViewModel = adminDashboardViewModel;
     }
 
+    public override bool CanExecute(object? parameter)
+    {
+        return _adminDashboardViewModel.CanCreateAccount;
+    }
+
+    /*
+     * Register a new teacher account.
+     * --------------------------------------
+     * Method should only be used for admins.
+     */
     public override void Execute(object? parameter)
     {
-        // TODO: Refactoren, te lange en ingewikkelde functie. Gebruik Providers!
-        var password = SecureStringToString(_adminDashboardViewModel.Password);
-        var passwordConfirm = SecureStringToString(_adminDashboardViewModel.PasswordConfirm);
-
-        if (password != null && !password.Equals(passwordConfirm))
-        {
-            MessageBox.Show("De twee wachtwoorden moeten gelijk zijn.", "Wachtwoorden niet gelijk",
-                MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-        else if (DoesAccountExist())
-        {
-            MessageBox.Show("Er bestaat al een account met dit emailadres.", "Bestaand account",
-                MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-        else
-        {
-            try
-            {
-                new AdminProvider().RegisterTeacher(_adminDashboardViewModel.Email, _adminDashboardViewModel.Password,
-                    _adminDashboardViewModel.Preposition, _adminDashboardViewModel.FirstName,
-                    _adminDashboardViewModel.LastName);
-                
-                MessageBox.Show("Account succesvol aangemaakt", "Account aangemaakt", MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-    }
-
-    private bool DoesAccountExist()
-    {
+        string? message;
         var teacher = new TeacherProvider().GetByEmail(_adminDashboardViewModel.Email);
-        return teacher != null;
+        if (teacher != null)
+        {
+            message = "Er bestaat al een docent met dit e-mailadres.";
+            MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
+        try
+        {
+            // Try to create a new teacher account.
+            var password = SecureStringToString(_adminDashboardViewModel.Password);
+            var hash = new PasswordHash(password);
+            var hashedPassword = hash.ToArray();
+            var salt = hash.Salt;
+
+            // Add the new teacher to the database using the teacher provider.
+            new TeacherProvider().Create(_adminDashboardViewModel.Email, hashedPassword, salt,
+                _adminDashboardViewModel.FirstName, _adminDashboardViewModel.Preposition,
+                _adminDashboardViewModel.LastName);
+
+            // Notify the user that the account has been created.
+            message = "Account succesvol aangemaakt.";
+            MessageBox.Show(message, "Succes", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception e)
+        {
+            // Display an error message if the account could not be created.
+            MessageBox.Show(e.ToString());
+        }
     }
     
+    /*
+     * Convert a SecureString to a string.
+     */
     private static string? SecureStringToString(SecureString value)
     {
         var valuePtr = IntPtr.Zero;

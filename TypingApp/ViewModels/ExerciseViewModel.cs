@@ -10,8 +10,8 @@ namespace TypingApp.ViewModels;
 
 public class ExerciseViewModel : ViewModelBase
 {
-    private ObservableCollection<Character> _textAsCharList;
-    public ObservableCollection<Character> TextAsCharList
+    private ObservableCollection<Character>? _textAsCharList;
+    public ObservableCollection<Character>? TextAsCharList
     {
         get => _textAsCharList;
         set
@@ -28,11 +28,9 @@ public class ExerciseViewModel : ViewModelBase
         exerciseStore.ExerciseCreated += OnExerciseChanged;
         exerciseStore.ExerciseUpdated += OnExerciseChanged;
 
-        if (userStore.Student?.Characters != null)
-        {
-            var generateExerciseCommand = new GenerateExerciseCommand(exerciseStore, userStore.Student.Characters);
-            generateExerciseCommand.Execute(this);
-        }
+        // Check if user has characters.
+        if (userStore.Student?.Characters == null) return;
+        new GenerateExerciseCommand(exerciseStore, userStore.Student.Characters).Execute(this);
     }
     
     private void OnExerciseChanged(List<Character> characters)

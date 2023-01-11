@@ -32,14 +32,14 @@ public class GroupCodeService
         return groupCode;
     }
 
-    public bool VerifyCode(string groupCode)
+    private bool VerifyCode(string groupCode)
     {
         var group = new GroupProvider().GetByCode(groupCode);
         return group == null;
     }
-    public void updateCodeInDatabase(int groupId, string groupCode)
+    
+    public void UpdateCodeInDatabase(int groupId, string groupCode)
     {
-        
         new GroupProvider().UpdateGroupCode(groupId, groupCode);
     }
 }

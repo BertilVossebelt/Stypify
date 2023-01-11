@@ -1,6 +1,4 @@
-using System;
 using System.Windows;
-using TypingApp.Models;
 using TypingApp.Services;
 using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
@@ -20,26 +18,44 @@ public class CreateGroupCommand : CommandBase
         _userStore = userStore;
         _teacherDashboardNavigationService = teacherDashboardNavigationService;
         _addGroupViewModel = addGroupViewModel;
-
     }
-
+    
+    /*
+     * Creates a new group and adds it to the database.
+     * ------------------------------------------------
+     * Method should only be used for teachers.
+     */
     public override void Execute(object? parameter)
     {
-        if (_addGroupViewModel.GroupName is "" or null)
+        string? message;
+
+        if (!ValidateGroupData())
         {
-            MessageBox.Show("Je moet een naam invullen", "Geen naam", MessageBoxButton.OK, MessageBoxImage.Error);
+            message = "Er is geen naam ingevoerd of geen groepscode gegenereerd."; 
+            MessageBox.Show(message, "Fout", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 
-        var saveMessageBox = MessageBox.Show("Weet je zeker dat je deze groep wilt opslaan", "Opslaan", MessageBoxButton.YesNo, MessageBoxImage.Question);
-        
+        // Ask user for confirmation.
+        message = "Weet je zeker dat je deze groep wilt opslaan";
+        var saveMessageBox = MessageBox.Show(message, "Opslaan", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (saveMessageBox != MessageBoxResult.Yes) return;
         if(_userStore.Teacher == null) return;
 
-        //Save here to database
+        //Save to database using a provider.
         new GroupProvider().Create(_userStore.Teacher.Id, _addGroupViewModel.GroupName, _addGroupViewModel.GroupCode);
         
+        // Navigate back to the teacher dashboard.
         var navigateCommand = new NavigateCommand(_teacherDashboardNavigationService);
         navigateCommand.Execute(this);
+    }
+    
+    /*
+     * Validate the input from the user.
+     */
+    private bool ValidateGroupData()
+    {
+        if (_addGroupViewModel.GroupName is "" or null) return false;
+        return _addGroupViewModel.GroupCode is not ("" or null);
     }
 }

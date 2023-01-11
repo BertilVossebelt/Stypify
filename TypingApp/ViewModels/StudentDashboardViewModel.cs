@@ -1,36 +1,49 @@
+using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using TypingApp.Commands;
 using TypingApp.Services;
-using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
+using System.ComponentModel;
 using TypingApp.Models;
+using TypingApp.Services.DatabaseProviders;
 using TypingApp.Stores;
-using Group = TypingApp.Models.Group;
-//using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using TypingApp.Views;
 
 namespace TypingApp.ViewModels;
 
 public class StudentDashboardViewModel : ViewModelBase
 {
     private readonly UserStore _userStore;
-    private ObservableCollection<Lesson> _lessons;
+    private List<Lesson>? _lessons;
     private bool _isFilterChecked;
+    private readonly LessonStore _lessonStore;
+    private Lesson _selectedLessons;
 
     public ICommand StartPracticeButton { get; }
     public ICommand AddToGroupButton { get; }
     public ICommand LogOutButton { get; }
-
+    public ICommand StartLessonCommand { get; set; }
     public string WelcomeNameText { get; set; }
-    public string CompletedExercisesText { get; set; }
+    public string? CompletedExercisesText { get; set; }
 
-    public ObservableCollection<Lesson> Lessons
+    public List<Lesson>? Lessons
     {
         get => _lessons;
         set
         {
             _lessons = value;
             OnPropertyChanged();
+        }
+    }
+
+    public Lesson SelectedLesson
+    {
+        get => _selectedLessons;
+        set
+        {
+            _selectedLessons = value;
+            _lessonStore.SetCurrentLesson(SelectedLesson);
+            StartLessonCommand.Execute(this);
+            OnPropertyChanged(nameof(_selectedLessons));
         }
     }
 
@@ -41,27 +54,30 @@ public class StudentDashboardViewModel : ViewModelBase
         {
             _isFilterChecked = value;
             FilterCompletedLessons(IsFilterChecked);
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(_isFilterChecked));
         }
     }
 
-    public StudentDashboardViewModel(UserStore userStore, NavigationService exerciseNavigationService,
-        NavigationService linkToGroupNavigationService, NavigationService loginNavigationService)
+    public StudentDashboardViewModel(UserStore userStore, LessonStore lessonStore,
+        NavigationService exerciseNavigationService,
+        NavigationService linkToGroupNavigationService, NavigationService loginNavigationService,
+        NavigationService lessonNavigationService)
     {
         _userStore = userStore;
+        _lessonStore = lessonStore;
 
         WelcomeNameText = GetName();
         CompletedExercisesText = GetCompletedExercises();
 
+        _lessonStore.LoadLessons();
+        Lessons = _lessonStore.Lessons; 
+
         StartPracticeButton = new NavigateCommand(exerciseNavigationService);
-        AddToGroupButton = new NavigateCommand(linkToGroupNavigationService);
+        StartLessonCommand = new NavigateCommand(lessonNavigationService);
+        AddToGroupButton = new NavigateCommand(linkToGroupNavigationService); 
         LogOutButton = new LogOutCommand(userStore, loginNavigationService);
-
-        Lessons = new ObservableCollection<Lesson>();
-        //Dummy Lessons
-        getLessons();
+        
     }
-
 
     private string GetName()
     {
@@ -70,34 +86,23 @@ public class StudentDashboardViewModel : ViewModelBase
             return $"Welkom {_userStore.Student.FirstName} {_userStore.Student.Preposition} {_userStore.Student.LastName}";
         }
 
-        if(_userStore.Student?.Preposition == null) {
-            return $"Welkom {_userStore.Student?.FirstName} {_userStore.Student?.LastName}";
-        }
-
-        return "Error, student = Null";
+        return _userStore.Student?.Preposition == null
+            ? $"Welkom {_userStore.Student?.FirstName} {_userStore.Student?.LastName}"
+            : "Error, student = Null";
     }
 
-    private string GetCompletedExercises()
+    private string? GetCompletedExercises()
     {
-        return "Aantal gemaakte oefeningen: 0";
-    }
+        if (_userStore.Student == null) return null;
+        var completedExercises = new StudentProvider().GetStudentStatistics(_userStore.Student.Id);
 
-
-    private void getLessons()
-    {
-        //TODO: get lessons from database
-        Lessons.Clear();
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
-        Lessons.Add(new Lesson("Completed lesson", "Teacher 1", 1));
+        return $"Aantal gemaakte oefeningen: {completedExercises?["completed_exercises"]}";
     }
 
     private void getNonCompletedLessons()
     {
-        //TODO: get lessons that are not completed from database
-        Lessons.Clear();
-        Lessons.Add(new Lesson("Lesson", "Teacher 1", 1));
+        _lessonStore.LoadUncompletedLessons();
+        Lessons = _lessonStore.Lessons;
     }
 
     private void FilterCompletedLessons(bool isChecked)
@@ -106,6 +111,10 @@ public class StudentDashboardViewModel : ViewModelBase
         {
             getNonCompletedLessons();
         }
-        else getLessons();
+        else
+        {
+            _lessonStore.LoadLessons();
+            Lessons = _lessonStore.Lessons;
+        }
     }
 }

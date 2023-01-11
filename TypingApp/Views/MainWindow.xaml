@@ -6,9 +6,9 @@
         xmlns:views="clr-namespace:TypingApp.Views"
         xmlns:viewModels="clr-namespace:TypingApp.ViewModels"
         mc:Ignorable="d"
-        Title="TypingApp" 
-        Height="700" 
-        Width="1200" >
+        Title="Stypify - Maakt leren leuk!" 
+        MinHeight="700" 
+        MinWidth="1200" >
     <!-- Maximized window: WindowState="Maximized" -->
     <!-- Borderless window: WindowStyle="None" -->
     <!-- <local:ExerciseView DataContext="{Binding CurrentViewModel}"/> -->
@@ -52,6 +52,14 @@
 
             <DataTemplate DataType="{x:Type viewModels:MyLessonsViewModel}">
                 <views:MyLessonsView />
+            </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewModels:CreateLessonViewModel}">
+                <views:CreateLessonView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:LessonViewModel}">
+                <views:LessonView />
             </DataTemplate>
         </Grid.Resources>
         

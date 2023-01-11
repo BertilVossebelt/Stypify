@@ -30,19 +30,20 @@
 
         </Style>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="205.903"/>
             <RowDefinition Height="30" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition />
             <ColumnDefinition Width="50" />
         </Grid.ColumnDefinitions>
 
@@ -65,15 +66,36 @@
 
             </Grid>
         </StackPanel>
-        
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock Margin="0, 20, 0, 0" Text="Mijn lessen" FontSize="30"></TextBlock>
-            <ScrollViewer x:Name="Scrollviewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" Height="200">
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5,0,10" Text="Mijn lessen" FontSize="30"></TextBlock>
+        <Button Grid.Row="1" Grid.Column="1" Command="{Binding CreateLessonButton}"
+                Foreground="White"
+                Width="250"
+                BorderThickness="0"
+                Background="Purple"
+                FontSize="18"
+                HorizontalAlignment="Right" Margin="850,10,0,10">
+            <Button.BitmapEffect>
+                <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4"
+                                        Opacity="1" />
+            </Button.BitmapEffect>
+            Les toevoegen
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="18"></Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,30" Grid.RowSpan="3">
+
+            <ScrollViewer x:Name="Scrollviewer"  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" >
                 <ListBox ItemsSource="{Binding Lessons}"
                          SelectedItem="{Binding Path=SelectedLesson, Mode=TwoWay}"
                          SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                          BorderBrush="Transparent" Background="Transparent"
-                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" SelectedIndex="2">
+                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" />
@@ -89,11 +111,11 @@
                                                     VerticalAlignment="Center" BorderThickness="5" CornerRadius="20"
                                                     Visibility="Visible" IsManipulationEnabled="True" Height="200">
                                         <Border.Background>
-                                            <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
+                                            <ImageBrush Stretch="Fill" ImageSource="/Views/Images/Nos.png" />
                                         </Border.Background>
                                     </Border>
 
-                                    <Label x:Name="LessonNameLabel" Content="{Binding Path=LessonName}"
+                                    <Label x:Name="LessonNameLabel" Content="{Binding Path=Name, FallbackValue='Geen naam'}"
                                                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                                    HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
                                                    Margin="9,0,0,30" Foreground="White" FontSize="18"
@@ -120,8 +142,8 @@
                 </ListBox>
             </ScrollViewer>
         </StackPanel>
-        <Button Grid.Row="1" Grid.Column="0" BorderThickness="0" BorderBrush="Purple"
-                Background="Purple" Click="GoLeft">
+        <Button Grid.Row="2" Grid.Column="0" BorderBrush="Purple" Background="Purple"
+                        Click="GoLeft">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"></Setter>
@@ -134,18 +156,18 @@
                             <RowDefinition Height="177*" />
                             <RowDefinition Height="23*" />
                         </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10,125,10,0"
-                                    Grid.RowSpan="2">
+                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                            Grid.RowSpan="2">
                             <Rectangle Stroke="Purple" Fill="Purple" VerticalAlignment="Top" />
-                            <Polygon Points="0,0 30,25, 0,50" Stroke="Purple" Fill="Purple" />
+                            <Polygon Points="0,0 20,15, 0,30" Stroke="Purple" Fill="Purple" />
                         </StackPanel>
                         <ContentPresenter VerticalAlignment="Top" Margin="0,100,0,0" />
                     </Grid>
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <Button Grid.Row="1" Grid.Column="2" BorderThickness="0" BorderBrush="Purple"
-                Background="Purple" Click="GoRight">
+        <Button Grid.Row="2" Grid.Column="2" BorderThickness="0" BorderBrush="Purple" Background="Purple"
+                        Click="GoRight">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"></Setter>
@@ -154,29 +176,28 @@
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <StackPanel Orientation="Horizontal" Margin="10,125,10,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <Rectangle Stroke="Purple" Fill="Purple" VerticalAlignment="Top" />
-                            <Polygon Points="0,0 30,25, 0,50" Stroke="Purple" Fill="Purple" />
+                            <Polygon Points="0,0 20,15, 0,30" Stroke="Purple" Fill="Purple" />
                         </StackPanel>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Grid>
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <StackPanel Grid.Row="2" Grid.Column="1" DockPanel.Dock="Bottom" Height="10">
+        <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,10,0,10">
             <Line Stretch="Fill" Stroke="Gray" X2="1" Height="10" StrokeDashArray="2 2"
                   VerticalAlignment="Bottom" />
         </StackPanel>
-        <TextBlock Grid.Row="3" Grid.Column="1" Margin="0, 5, 0, 10" Text="Mijn oefeningen" FontSize="30"></TextBlock>
-        <Button Grid.Row="3" Grid.Column="1" Command="{Binding CreateExerciseButton}"
-                DockPanel.Dock="Right"
+
+        <TextBlock Grid.Row="4" Grid.Column="1" Margin="0,5,0,10" Text="Mijn oefeningen" FontSize="30"></TextBlock>
+        <Button Grid.Row="4" Grid.Column="1" Command="{Binding CreateExerciseButton}"
                 Foreground="White"
                 Width="250"
-                Height="35"
                 BorderThickness="0"
                 Background="Purple"
                 FontSize="18"
-                HorizontalAlignment="Right">
+                HorizontalAlignment="Right" Margin="850,10,0,10">
             <Button.BitmapEffect>
                 <DropShadowBitmapEffect Color="#9A0098" Direction="300" Softness="0" ShadowDepth="4"
                                         Opacity="1" />
@@ -189,74 +210,70 @@
             </Button.Resources>
         </Button>
 
-
-
-        <WrapPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center">
-            
-            <ScrollViewer VerticalScrollBarVisibility="Visible" 
-                          Height="250" HorizontalScrollBarVisibility="Hidden">
-                
-                <ListBox ItemsSource="{Binding Exercises}"
+        <ListBox ItemsSource="{Binding Exercises}"
                          SelectedItem="{Binding Path=SelectedExercise, Mode=TwoWay}"
                          SelectionMode="Single" 
                          BorderBrush="Transparent" 
                          Background="Transparent"
                          ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
-                         SelectedIndex="2"
-                         HorizontalContentAlignment="Stretch">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="3"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+                         HorizontalContentAlignment="Stretch"
+                         Grid.Row="5" Grid.Column="1"
+                         Grid.RowSpan="2" Grid.ColumnSpan="1"
+                         HorizontalAlignment="Stretch"   >
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4" VerticalAlignment="Top"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border x:Name="ExerciseBorderItem" 
-                                        BorderThickness="1"
-                                        BorderBrush="Purple"
-                                        CornerRadius="7"
-                                        Height="100"
-                                        VerticalAlignment="Top"
-                                        Padding="10">
-                                <Border.Background>
-                                    <SolidColorBrush Color="#EFDEFE"/>
-                                </Border.Background>
-                                
-                                <StackPanel Width="300">
-                                    <TextBlock Text="{Binding Path=Name}" 
-                                               Margin="0, 0, 0 , 7" 
-                                               FontSize="20" />
-                                    <TextBlock Text="{Binding Path=Text}"/>
-                                    <TextBlock Text="Aantal karakters: 35" 
-                                               Margin="0, 7, 0 , 0" 
-                                               HorizontalAlignment="Right"
-                                               FontStyle="Italic"/>
-                                </StackPanel>
-                            </Border>
-                            <DataTemplate.Triggers>
-                                <DataTrigger 
-                                         Binding="{Binding 
-                                                     RelativeSource={RelativeSource 
-                                                     Mode=FindAncestor, 
-                                                     AncestorType={x:Type ListBoxItem}}, 
-                                                     Path=IsSelected}" 
-                                         Value="True">
-                                    <Setter 
-                                             TargetName="ExerciseBorderItem"
-                                             Property="BorderBrush" 
-                                             Value="Purple" />
-                                    <Setter
-                                        TargetName="ExerciseBorderItem" 
-                                        Property="BorderThickness"
-                                        Value="6" />
-                                </DataTrigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border x:Name="ExerciseBorderItem" 
+                            BorderThickness="1"
+                            BorderBrush="Purple"
+                            CornerRadius="7"
+                            Height="100"
+                            VerticalAlignment="Top"
+                            Padding="10"
+                            >
+                        <Border.Background>
+                            <SolidColorBrush Color="#EFDEFE"/>
+                        </Border.Background>
 
-        </WrapPanel>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=Name}" 
+                                       HorizontalAlignment="Left"
+                                       Margin="0, 0, 0 , 7" 
+                                       FontSize="20"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxWidth="200"
+                                       />
+
+                            <TextBlock Text="{Binding Path=Text}" 
+                                       HorizontalAlignment="Left"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxWidth="200"/>
+
+                            <TextBlock Text="{Binding Path=AmountOfCharacters,StringFormat='Aantal karakters: {0}'}" 
+                                       HorizontalAlignment="Right"
+                                       FontStyle="Italic"/>
+                        </StackPanel>
+                    </Border>
+                    <DataTemplate.Triggers>
+                        <DataTrigger 
+                            Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" 
+                            Value="True">
+                            <Setter TargetName="ExerciseBorderItem"
+                                    Property="BorderBrush" 
+                                    Value="Purple" />
+                            <Setter
+                                    TargetName="ExerciseBorderItem" 
+                                    Property="BorderThickness"
+                                    Value="6" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

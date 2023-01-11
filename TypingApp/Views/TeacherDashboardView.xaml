@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:TypingApp.Views"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1200">
 
@@ -163,7 +162,7 @@
                                  SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
                                  SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                  BorderBrush="Transparent" Background="Transparent"
-                                 ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" SelectedIndex="2">
+                                 ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" />
@@ -179,7 +178,7 @@
                                                     VerticalAlignment="Center" BorderThickness="5" CornerRadius="20"
                                                     Visibility="Visible" IsManipulationEnabled="True" Height="170">
                                                 <Border.Background>
-                                                    <ImageBrush Stretch="Fill" ImageSource="/Views/Nos.png" />
+                                                    <ImageBrush Stretch="Fill" ImageSource="/Views/Images/Nos.png" />
                                                 </Border.Background>
                                             </Border>
 
@@ -218,22 +217,26 @@
                 </Grid>
             </DockPanel>
 
-            <!--  HIER IMPLEMENTEREN VAN LESSEN (er moet dan boven en onder ook nog wat aangepast/verwijderd/aangemaakt worden) -->
+            
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Nog geen groep geselecteerd', TargetNullValue= 'Nog geen groep geselecteerd'}"  Margin="21,0,15,0" FontSize="25" />
+                <TextBlock Text = "{Binding SelectedItem.GroupName ,FallbackValue='Geen groep geselecteerd', TargetNullValue= 'Geen groep geselecteerd'}"  Margin="21,0,15,0" FontSize="25" />
                 <TextBox Background="Transparent"
                          BorderThickness="0"
                          Text="{Binding SelectedItem.GroupCode, Mode=OneWay, FallbackValue=Geen Code, TargetNullValue=Geen Code}"
                          VerticalAlignment="Bottom"
                          FontStyle="Italic"
-                         Margin="0,0, 5,0"
+                         Margin="0,0, 2,0"
                          IsReadOnly="True"
                          TextWrapping="Wrap" />
                 
-                <Button Command="{Binding UpdateGroupsCodeButton}" Height="15" VerticalAlignment="Bottom" Width="15">
-                    
-                </Button>
-
+                <Button Command="{Binding UpdateGroupsCodeButton}" 
+                        Content="⟳"
+                        VerticalContentAlignment="Bottom"
+                        FontSize="15"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Height="20" Width="15"
+                        VerticalAlignment="Bottom"/>
             </StackPanel>
             
             <StackPanel Margin="15,15,15,0">
@@ -253,27 +256,15 @@
                                         <ColumnDefinition Width="300" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Height="25" Orientation="Horizontal">
-                                        <Label Content="{Binding Path=FullName}" Width="340" />
-                                        <Label Content="{Binding Path=AmountOfExercises}"  />
+                                        <Label Content="{Binding Path=.FullName}" Width="340" />
+                                        <Label Content="{Binding Path=.CompletedExercises}"  />
                                     </StackPanel>
-                                    <!--
-                                        "<StatusBar Width="260" Margin="0,0,0,0" Height="4" HorizontalAlignment="Left"
-                                               Grid.Column="1" />
-                                    
-                                    <Label Content="55%" Grid.Column="1" HorizontalAlignment="Right"
-                                           VerticalAlignment="Stretch" Padding="0,0,0,0"
-                                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                           Margin="0,0,5,0" />
-                                    -->
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-
-
         </StackPanel>
-
     </Grid>
 </UserControl>
